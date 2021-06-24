@@ -1,0 +1,202 @@
+JFDML JFormDesigner: "7.0.4.0.360" Java: "11.0.6" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+			"$horizontalGroup": "par l {comp Main::t:p:1153:p}"
+			"$verticalGroup": "par l {comp Main::l:::x}"
+		} ) {
+			name: "this"
+			"defaultCloseOperation": 3
+			add( new FormContainer( "javax.swing.JTabbedPane", new FormLayoutManager( class javax.swing.JTabbedPane ) ) {
+				name: "Main"
+				"background": new java.awt.Color( 255, 255, 255, 255 )
+				"name": "Главное"
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+					"$horizontalGroup": "par l {seq t {space :::p, comp jScrollPane2:::p:777:p, space :::x, par l:::p {par l {comp class_list::t:p:176:p, comp jLabel1::t:p::p, par l:t::p {comp status_msg::l:::x, comp excep_msg::l:p:168:p}}, seq t {comp create_btn:::p:99:p, space :::x, comp exit_btn:::p:99:p}, comp server_btn::l:::x, comp save_bnt::l:::x}, space :p:79:p}}"
+					"$verticalGroup": "par l {seq l {space :::p, par l {seq {comp jScrollPane2:::::x, space :p:24:p}, seq {comp jLabel1:::p::p, space :::p, comp class_list:::p:153:p, space :p:19:p, comp status_msg:::p::p, space :::p, comp excep_msg:::p:52:p, space :p:44:p, comp server_btn:::p:45:p, space :p:26:p, par b {comp create_btn::b:p::p, comp exit_btn::b:p::p}, space :p:22:p, comp save_bnt:::p::p, space :::x}}}}"
+				} ) {
+					name: "jPanel1"
+					add( new FormComponent( "java.awt.Button" ) {
+						name: "save_bnt"
+						"actionCommand": "Сохранить"
+						"label": "Cохранить"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "save_bntActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "exit_btn"
+						"background": new java.awt.Color( 255, 102, 102, 255 )
+						"font": new java.awt.Font( "Verdana", 1, 14 )
+						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"text": "Выйти"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "exit_btnActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "create_btn"
+						"background": new java.awt.Color( 0, 204, 0, 255 )
+						"font": new java.awt.Font( "Verdana", 1, 14 )
+						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"text": "Помощь"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "create_btnActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "server_btn"
+						"background": new java.awt.Color( 255, 102, 0, 255 )
+						"font": new java.awt.Font( "Verdana", 1, 14 )
+						"foreground": new java.awt.Color( 255, 255, 255, 255 )
+						"text": "Начать передачу данных"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "server_btnActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "jLabel1"
+						"font": new java.awt.Font( "Tahoma", 1, 14 )
+						"text": "Подключенные устройства"
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "status_msg"
+						"text": "Статус:"
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "excep_msg"
+					} )
+					add( new FormComponent( "java.awt.List" ) {
+						name: "class_list"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "class_listActionPerformed", true ) )
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "jScrollPane2"
+						add( new FormComponent( "javax.swing.JTable" ) {
+							name: "location_table"
+							"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
+								add( "ID" )
+								add( "Дата" )
+								add( "Широта" )
+								add( "Долгота" )
+								add( "Абсолютная высота" )
+								add( "Расстояние" )
+								add( "Скорость" )
+							}, new java.util.Vector {
+								add( class java.lang.Integer )
+								add( class java.lang.String )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+							}, new java.util.Vector {
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+							}, new java.util.Vector {
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+							} )
+						} )
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Модуль оцифровки трассы"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+					"$horizontalGroup": "par l {seq l {space :::p, comp jScrollPane4:::p:777:p, par l {seq l {space :p:80:p, par l:::p {comp status_msg1::l:::x, comp excep_msg1::l:p:168:p}}, seq l {space :p:62:p, par l:::p {comp jLabel2::::210:x, comp jScrollPane1:::::x}}}, space ::98:x}}"
+					"$verticalGroup": "par l {seq l {space :::p, comp jScrollPane4::::536:x, space :p:24:p}, seq l {space :p:20:p, comp jLabel2:::p::p, space u:::p, comp jScrollPane1:::p:104:p, space :p:47:p, comp status_msg1:::p::p, space :::p, comp excep_msg1:::p:52:p, space :::x}}"
+				} ) {
+					name: "jPanel2"
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "jScrollPane4"
+						add( new FormComponent( "javax.swing.JTable" ) {
+							name: "location_table2"
+							"model": new com.jformdesigner.model.SwingTableModel( new java.util.Vector, new java.util.Vector {
+								add( "ID" )
+								add( "Дата" )
+								add( "Широта" )
+								add( "Долгота" )
+								add( "Абсолютная высота" )
+								add( "Расстояние" )
+								add( "Скорость" )
+							}, new java.util.Vector {
+								add( class java.lang.Integer )
+								add( class java.lang.String )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+								add( class java.lang.Double )
+							}, new java.util.Vector {
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+								add( true )
+							}, new java.util.Vector {
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+								add( null )
+							} )
+						} )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "jLabel2"
+						"font": new java.awt.Font( "Tahoma", 1, 14 )
+						"text": "Подключенные устройства"
+					} )
+					add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
+						name: "jScrollPane1"
+						add( new FormComponent( "javax.swing.JList" ) {
+							name: "connect_avto_list"
+							"model": new javax.swing.DefaultListModel {
+								addElement( "Item 1" )
+								addElement( "Item 2" )
+								addElement( "Item 3" )
+								addElement( "Item 4" )
+								addElement( "Item 5" )
+							}
+							auxiliary() {
+								"JavaCodeGenerator.typeParameters": "String"
+							}
+						} )
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "status_msg1"
+						"text": "Статус:"
+					} )
+					add( new FormComponent( "javax.swing.JLabel" ) {
+						name: "excep_msg1"
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Положение транспортов"
+				} )
+				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
+					"$horizontalGroup": "par l {comp kit::t::1153:x}"
+					"$verticalGroup": "par l {comp kit::t::566:x}"
+				} ) {
+					name: "maps"
+					"preferredSize": new java.awt.Dimension( 500, 500 )
+					add( new FormComponent( "org.jxmapviewer.JXMapKit" ) {
+						name: "kit"
+					} )
+				}, new FormLayoutConstraints( null ) {
+					"title": "Отображение"
+				} )
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"size": new java.awt.Dimension( 1325, 630 )
+			"location": new java.awt.Point( 0, 0 )
+		} )
+	}
+}
