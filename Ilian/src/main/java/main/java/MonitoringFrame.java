@@ -1,15 +1,19 @@
 package main.java;
 
 import org.jxmapviewer.JXMapKit;
+import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.OSMTileFactoryInfo;
-import org.jxmapviewer.viewer.DefaultTileFactory;
-import org.jxmapviewer.viewer.GeoPosition;
-import org.jxmapviewer.viewer.TileFactory;
-import org.jxmapviewer.viewer.TileFactoryInfo;
+import org.jxmapviewer.VirtualEarthTileFactoryInfo;
+import org.jxmapviewer.input.PanMouseInputListener;
+import org.jxmapviewer.input.ZoomMouseWheelListenerCursor;
+import org.jxmapviewer.painter.CompoundPainter;
+import org.jxmapviewer.painter.Painter;
+import org.jxmapviewer.viewer.*;
 
 import main.java.*;
 
 import java.awt.*;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -17,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -25,6 +30,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.LayoutStyle;
+import javax.swing.event.MouseInputListener;
 import javax.swing.plaf.synth.Region;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
@@ -45,18 +51,91 @@ public class MonitoringFrame extends javax.swing.JFrame {
     Socket socket;
     DefaultTableModel modeltab, modeltab2;
     CreateServer[] createsev = new CreateServer[10];
-    static ExecutorService executeIt = Executors.newFixedThreadPool(2);
+    static ExecutorService executeIt = Executors.newFixedThreadPool(5);
     String predString;
+
+    java.util.List<Painter<JXMapViewer>> painters = new ArrayList<Painter<JXMapViewer>>();
+    
     /**
      * Creates new form MonitoringFrame
      */
+    private void MyPositionActionPerformed(ActionEvent e) {
+        TileFactoryInfo info = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
+        DefaultTileFactory tileFactory = new DefaultTileFactory(info);
+        kit.setTileFactory(tileFactory);
+
+        MouseInputListener mia = new PanMouseInputListener(kit);
+        kit.addMouseListener(mia);
+        kit.addMouseMotionListener(mia);
+        //kit.addMouseWheelListener(new ZoomMouseWheelListenerCursor(kit));
+
+        RoutePainter routePainter = new RoutePainter(createsev[0].getGeopisitions());
+        kit.zoomToBestFit(new HashSet<GeoPosition>(createsev[0].getGeopisitions()), 0.7);
+
+        Set<Waypoint> waypoints = new HashSet<Waypoint>(Arrays.asList(
+                new DefaultWaypoint(createsev[0].getGeopisitions().get(0)),
+                new DefaultWaypoint(createsev[0].getGeopisitions().get(createsev[0].getGeopisitions().size() - 1))));
+
+        // Create a waypoint painter that takes all the waypoints
+        WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<Waypoint>();
+        waypointPainter.setWaypoints(waypoints);
+
+        // Create a compound painter that uses both the route-painter and the waypoint-painter
+        painters.add(routePainter);
+        painters.add(waypointPainter);
+
+        CompoundPainter<JXMapViewer> painter = new CompoundPainter<JXMapViewer>(painters);
+        kit.setOverlayPainter(painter);
+        kit.setAddressLocation(new GeoPosition(31.52455, 25.5163565));
+    }
+
+    private void CellActionPerformed(ActionEvent e) {
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+
+                Set<Waypoint> waypoints = null;
+                WaypointPainter<Waypoint> waypointPainter;
+                while(true) {
+                    for (int i = 0; i < createsev.length; i++) {
+                        if(createsev[i] != null) {
+                            waypoints = new HashSet<Waypoint>(Arrays.asList(new DefaultWaypoint(createsev[i].getPosition())));
+                        }
+                    }
+
+                    waypointPainter = new WaypointPainter<Waypoint>();
+                    waypointPainter.setWaypoints(waypoints);
+                    painters.add(waypointPainter);
+                    CompoundPainter<JXMapViewer> painter = new CompoundPainter<>(painters);
+                    kit.setOverlayPainter(painter);
+
+                    try {
+                        Thread.sleep(5000);
+                        painters.remove(waypointPainter);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread thread = new Thread(run);
+        thread.start();
+    }
+
+    private void zoomPlusActionPerformed(ActionEvent e) {
+        kit.setZoom(kit.getZoom()-1);
+    }
+
+    private void zoomMinusActionPerformed(ActionEvent e) {
+        kit.setZoom(kit.getZoom()+1);
+    }
+
     public MonitoringFrame() {
         initComponents();
         modeltab = (DefaultTableModel) location_table.getModel();
         modeltab2 = (DefaultTableModel) location_table2.getModel();
      
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -88,7 +167,11 @@ public class MonitoringFrame extends javax.swing.JFrame {
         status_msg1 = new JLabel();
         excep_msg1 = new JLabel();
         maps = new JPanel();
-        kit = new JXMapKit();
+        MyPosition = new JButton();
+        Cell = new JButton();
+        kit = new JXMapViewer();
+        zoomPlus = new JButton();
+        zoomMinus = new JButton();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -101,13 +184,13 @@ public class MonitoringFrame extends javax.swing.JFrame {
 
             //======== jPanel1 ========
             {
-                jPanel1.setBorder ( new javax . swing. border .CompoundBorder ( new javax . swing. border .TitledBorder ( new javax
-                . swing. border .EmptyBorder ( 0, 0 ,0 , 0) ,  "JF\u006frm\u0044es\u0069gn\u0065r \u0045va\u006cua\u0074io\u006e" , javax. swing
-                .border . TitledBorder. CENTER ,javax . swing. border .TitledBorder . BOTTOM, new java. awt .
-                Font ( "D\u0069al\u006fg", java .awt . Font. BOLD ,12 ) ,java . awt. Color .red
-                ) ,jPanel1. getBorder () ) ); jPanel1. addPropertyChangeListener( new java. beans .PropertyChangeListener ( ){ @Override
-                public void propertyChange (java . beans. PropertyChangeEvent e) { if( "\u0062or\u0064er" .equals ( e. getPropertyName (
-                ) ) )throw new RuntimeException( ) ;} } );
+                jPanel1.setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax.
+                swing. border. EmptyBorder( 0, 0, 0, 0) , "JFor\u006dDesi\u0067ner \u0045valu\u0061tion", javax. swing. border
+                . TitledBorder. CENTER, javax. swing. border. TitledBorder. BOTTOM, new java .awt .Font ("Dia\u006cog"
+                ,java .awt .Font .BOLD ,12 ), java. awt. Color. red) ,jPanel1. getBorder
+                ( )) ); jPanel1. addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java
+                .beans .PropertyChangeEvent e) {if ("bord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException
+                ( ); }} );
 
                 //---- save_bnt ----
                 save_bnt.setActionCommand("\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c");
@@ -315,24 +398,58 @@ public class MonitoringFrame extends javax.swing.JFrame {
             {
                 maps.setPreferredSize(new Dimension(500, 500));
 
-                kit.setDefaultProvider(JXMapKit.DefaultProviders.OpenStreetMaps);
+                //---- MyPosition ----
+                MyPosition.setText("Road");
+                MyPosition.addActionListener(e -> MyPositionActionPerformed(e));
 
-                TileFactoryInfo info = new OSMTileFactoryInfo();
-                TileFactory tf = new DefaultTileFactory(info);
-                kit.setTileFactory(tf);
-                kit.setZoom(200);
-                kit.setAddressLocation(new GeoPosition(42.8737614,74.6137305));
+                //---- Cell ----
+                Cell.setText("Points");
+                Cell.addActionListener(e -> CellActionPerformed(e));
 
+                //---- zoomPlus ----
+                zoomPlus.setText("+");
+                zoomPlus.addActionListener(e -> zoomPlusActionPerformed(e));
+
+                //---- zoomMinus ----
+                zoomMinus.setText("-");
+                zoomMinus.addActionListener(e -> zoomMinusActionPerformed(e));
 
                 GroupLayout mapsLayout = new GroupLayout(maps);
                 maps.setLayout(mapsLayout);
                 mapsLayout.setHorizontalGroup(
                     mapsLayout.createParallelGroup()
-                        .addComponent(kit, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 1153, Short.MAX_VALUE)
+                        .addGroup(mapsLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(kit, GroupLayout.PREFERRED_SIZE, 1035, GroupLayout.PREFERRED_SIZE)
+                            .addGroup(mapsLayout.createParallelGroup()
+                                .addGroup(mapsLayout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addGroup(mapsLayout.createParallelGroup()
+                                        .addComponent(MyPosition)
+                                        .addComponent(Cell)))
+                                .addGroup(mapsLayout.createSequentialGroup()
+                                    .addGap(35, 35, 35)
+                                    .addGroup(mapsLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(zoomPlus, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(zoomMinus, GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))))
+                            .addGap(33, 33, 33))
                 );
                 mapsLayout.setVerticalGroup(
                     mapsLayout.createParallelGroup()
-                        .addComponent(kit, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+                        .addGroup(mapsLayout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addComponent(MyPosition)
+                            .addGap(18, 18, 18)
+                            .addComponent(Cell)
+                            .addGap(18, 18, 18)
+                            .addComponent(zoomPlus)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(zoomMinus)
+                            .addContainerGap(377, Short.MAX_VALUE))
+                        .addGroup(mapsLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(kit, GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE)
+                            .addContainerGap())
                 );
             }
             Main.addTab("\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", maps);
@@ -342,7 +459,9 @@ public class MonitoringFrame extends javax.swing.JFrame {
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
             contentPaneLayout.createParallelGroup()
-                .addComponent(Main, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 1153, GroupLayout.PREFERRED_SIZE)
+                .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+                    .addComponent(Main, GroupLayout.PREFERRED_SIZE, 1153, GroupLayout.PREFERRED_SIZE)
+                    .addGap(170, 170, 170))
         );
         contentPaneLayout.setVerticalGroup(
             contentPaneLayout.createParallelGroup()
@@ -417,7 +536,8 @@ public class MonitoringFrame extends javax.swing.JFrame {
         try{
             final ServerSocket serverSocket = new ServerSocket(24500);
             System.out.println("Сервер создан ждем подключения");
-             status_msg.setText("Сервер успешно создан"); 
+             status_msg.setText("Сервер успешно создан");
+
 
             
             Runnable runnable = new Runnable() {
@@ -429,19 +549,20 @@ public class MonitoringFrame extends javax.swing.JFrame {
                  Socket clientSocket;
                        try {
                            clientSocket = serverSocket.accept();
-                           createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg);
+                           createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg,i);
                            executeIt.execute(createsev[i]);
-                           createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
-                           executeIt.execute(createsev[i]);
+
+//                           createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
+//                           executeIt.execute(createsev[i]);
                            i++;
                        } catch (IOException ex) {
                            Logger.getLogger(MonitoringFrame.class.getName()).log(Level.SEVERE, null, ex);
                        }
                  
-                   JOptionPane.showMessageDialog(null, 
-                              "Клиент подключился", 
-                              "Клиент", 
-                              JOptionPane.WARNING_MESSAGE);
+//                   JOptionPane.showMessageDialog(null,
+//                              "Клиент подключился",
+//                              "Клиент",
+//                              JOptionPane.WARNING_MESSAGE);
                  
             }
                 }
@@ -470,7 +591,7 @@ public class MonitoringFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_exit_btnActionPerformed
 
     private void save_bntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_bntActionPerformed
-        // TODO add your handling code here:
+//         TODO add your handling code here:
         
     String str = createsev[0].getData();
                              if(str != predString){
@@ -603,7 +724,11 @@ public class MonitoringFrame extends javax.swing.JFrame {
     private JLabel status_msg1;
     private JLabel excep_msg1;
     private JPanel maps;
-    private JXMapKit kit;
+    private JButton MyPosition;
+    private JButton Cell;
+    private JXMapViewer kit;
+    private JButton zoomPlus;
+    private JButton zoomMinus;
     // End of variables declaration//GEN-END:variables
 
   

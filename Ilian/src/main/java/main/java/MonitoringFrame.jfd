@@ -4,7 +4,7 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {comp Main::t:p:1153:p}"
+			"$horizontalGroup": "par l {seq t {comp Main:::p:1153:p, space :p:170:p}}"
 			"$verticalGroup": "par l {comp Main::l:::x}"
 		} ) {
 			name: "this"
@@ -182,13 +182,33 @@ new FormModel {
 					"title": "Положение транспортов"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-					"$horizontalGroup": "par l {comp kit::t::1153:x}"
-					"$verticalGroup": "par l {comp kit::t::566:x}"
+					"$horizontalGroup": "par l {seq l {space :::p, comp kit:::p:1035:p, par l {seq {space s:::p, par l {comp MyPosition:::p::p, comp Cell:::p::p}}, seq l {space :p:35:p, par l:::p {comp zoomPlus:::p:43:p, comp zoomMinus::::0:x}}}, space :p:33:p}}"
+					"$verticalGroup": "par l {seq {space :p:21:p, comp MyPosition:::p::p, space s:::p, comp Cell:::p::p, space s:::p, comp zoomPlus:::p::p, space u:::p, comp zoomMinus:::p::p, space ::377:x}, seq l {space :::p, comp kit::::554:x, space :::p}}"
 				} ) {
 					name: "maps"
 					"preferredSize": new java.awt.Dimension( 500, 500 )
-					add( new FormComponent( "org.jxmapviewer.JXMapKit" ) {
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "MyPosition"
+						"text": "Road"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "MyPositionActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "Cell"
+						"text": "Points"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "CellActionPerformed", true ) )
+					} )
+					add( new FormComponent( "org.jxmapviewer.JXMapViewer" ) {
 						name: "kit"
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "zoomPlus"
+						"text": "+"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "zoomPlusActionPerformed", true ) )
+					} )
+					add( new FormComponent( "javax.swing.JButton" ) {
+						name: "zoomMinus"
+						"text": "-"
+						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "zoomMinusActionPerformed", true ) )
 					} )
 				}, new FormLayoutConstraints( null ) {
 					"title": "Отображение"
