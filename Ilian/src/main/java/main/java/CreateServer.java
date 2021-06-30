@@ -1,7 +1,5 @@
 package main.java;
 
-import org.jxmapviewer.viewer.GeoPosition;
-
 import java.awt.List;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -47,21 +45,6 @@ public class CreateServer implements Runnable{
     private String name_client;
     private JTable myTable;
     DefaultTableModel modeltab;
-    private GeoPosition position;
-
-    public GeoPosition getPosition() {
-        return position;
-    }
-
-    public boolean isAlive(){
-        return clientSocket.isConnected();
-    }
-
-    private ArrayList<GeoPosition> geopisitions = new ArrayList<>();
-
-    public ArrayList<GeoPosition> getGeopisitions() {
-        return geopisitions;
-    }
 
     public boolean isFlag() {
         return flag;
@@ -130,15 +113,13 @@ public class CreateServer implements Runnable{
                                 subStr1 = str.split(delimeter);
                                 System.out.println(Integer.parseInt(subStr1[0]) + subStr1[1] + Double.parseDouble(subStr1[2]) +
                                                                                      Double.parseDouble(subStr1[3]) + Double.parseDouble(subStr1[4]) + Double.parseDouble(subStr1[5]) + Double.parseDouble(subStr1[6]));
-                                position = new GeoPosition(Double.parseDouble(subStr1[2]), Double.parseDouble(subStr1[3]));
-                                geopisitions.add(position);
                             synchronized(modeltab)
                             {
                                 modeltab.insertRow(modeltab.getRowCount(), new Object[]{Integer.parseInt(subStr1[0]),subStr1[1],Double.parseDouble(subStr1[2]),
                                                                                      Double.parseDouble(subStr1[3]),Double.parseDouble(subStr1[4]),Double.parseDouble(subStr1[5]),Double.parseDouble(subStr1[6])});
                                 }
                                  Thread.sleep(2000);
-                            }   
+                            }
                         }         
                     } 
                 catch(Exception ex)
