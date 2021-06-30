@@ -182,8 +182,8 @@ new FormModel {
 					"title": "Положение транспортов"
 				} )
 				add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-					"$horizontalGroup": "par l {seq l {space :::p, comp kit:::p:1035:p, par l {seq {space s:::p, par l {comp MyPosition:::p::p, comp Cell:::p::p}}, seq l {space :p:35:p, par l:::p {comp zoomPlus:::p:43:p, comp zoomMinus::::0:x}}}, space :p:33:p}}"
-					"$verticalGroup": "par l {seq {space :p:21:p, comp MyPosition:::p::p, space s:::p, comp Cell:::p::p, space s:::p, comp zoomPlus:::p::p, space u:::p, comp zoomMinus:::p::p, space ::377:x}, seq l {space :::p, comp kit::::554:x, space :::p}}"
+					"$horizontalGroup": "par l {seq l {par l {seq {space :p:1059:p, par l {comp MyPosition:::p::p, comp Cell:::p::p}}, seq l {space :p:1076:p, par l:::p {comp zoomPlus:::p:43:p, comp zoomMinus::::0:x}}}, space :p:33:p}}"
+					"$verticalGroup": "par l {seq {space :p:21:p, comp MyPosition:::p::p, space s:::p, comp Cell:::p::p, space s:::p, comp zoomPlus:::p::p, space u:::p, comp zoomMinus:::p::p, space ::377:x}}"
 				} ) {
 					name: "maps"
 					"preferredSize": new java.awt.Dimension( 500, 500 )
@@ -196,9 +196,6 @@ new FormModel {
 						name: "Cell"
 						"text": "Points"
 						addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "CellActionPerformed", true ) )
-					} )
-					add( new FormComponent( "org.jxmapviewer.JXMapViewer" ) {
-						name: "kit"
 					} )
 					add( new FormComponent( "javax.swing.JButton" ) {
 						name: "zoomPlus"
