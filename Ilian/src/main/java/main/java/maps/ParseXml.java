@@ -34,34 +34,35 @@ public class ParseXml {
 
         Node root = document.getDocumentElement();
 
-        NodeList books = ((Element) root).getElementsByTagName("ReliefItems");
+        NodeList relief = ((Element) root).getElementsByTagName("RI");
 
-        for(int i = 0; i < books.getLength(); i++) {
-            Element book =  (Element)books.item(i);
+
+        for (int k = 0; k < relief.getLength(); k++) {
+            Element book = (Element) relief.item(k);
             ReliefItems reliefItems = new ReliefItems();
-            if(book.getNodeType() != Node.ELEMENT_NODE) {
+            if (book.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
-            if(book.hasChildNodes()){
-                NodeList booksInto = book.getElementsByTagName("Point");
+            if (book.hasChildNodes()) {
+                NodeList booksInto = book.getElementsByTagName("P");
 
                 for (int j = 0; j < booksInto.getLength(); j++) {
-                    Element bookInto = (Element) booksInto.item(i);
-                    if(book.getNodeType() != Node.ELEMENT_NODE) {
+                    Element bookInto = (Element)booksInto.item(j);
+                    if (book.getNodeType() != Node.ELEMENT_NODE) {
                         continue;
                     }
 
-                    reliefItems.setId(Long.parseLong(book.getAttribute("Id")));
-                    reliefItems.setX(Double.parseDouble(bookInto.getAttribute("x")));
-                    reliefItems.setY(Double.parseDouble(bookInto.getAttribute("y")));
-                    reliefItems.setZ(Double.parseDouble(bookInto.getAttribute("z")));
+                    reliefItems.setId(Long.parseLong(book.getAttribute("ID")));
+                    reliefItems.setX(Double.parseDouble(bookInto.getAttribute("X")));
+                    reliefItems.setY(Double.parseDouble(bookInto.getAttribute("Y")));
+                    reliefItems.setZ(Double.parseDouble(bookInto.getAttribute("Z")));
 
                 }
-            }else {
-                reliefItems.setId(Long.parseLong(book.getAttribute("Id")));
-                reliefItems.setX(Double.parseDouble(book.getAttribute("x")));
-                reliefItems.setY(Double.parseDouble(book.getAttribute("y")));
-                reliefItems.setZ(Double.parseDouble(book.getAttribute("z")));
+            } else {
+                reliefItems.setId(Long.parseLong(book.getAttribute("ID")));
+                reliefItems.setX(Double.parseDouble(book.getAttribute("X")));
+                reliefItems.setY(Double.parseDouble(book.getAttribute("Y")));
+                reliefItems.setZ(Double.parseDouble(book.getAttribute("Z")));
             }
 
             this.reliefItems.add(reliefItems);
