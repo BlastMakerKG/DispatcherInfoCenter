@@ -1,5 +1,3 @@
-package main.java;
-
 import java.awt.List;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -92,7 +90,7 @@ public class CreateServer implements Runnable{
 //         myThread.start();
 //    }
     
-    public CreateServer(Socket socket,List client_list,JTable loc_table,JLabel label,int id){
+    public CreateServer(Socket socket,List client_list,JTable loc_table,JLabel label){
         this.clientSocket = socket;
         name_client = clientSocket.getInetAddress().getCanonicalHostName();
         client_list.add(clientSocket.getInetAddress().getCanonicalHostName());

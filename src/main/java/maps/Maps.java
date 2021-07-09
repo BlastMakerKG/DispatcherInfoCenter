@@ -1,4 +1,4 @@
-package main.java.maps;
+package maps;
 
 
 import org.jxmapviewer.JXMapViewer;
@@ -97,14 +97,30 @@ public class Maps  extends JPanel{
     }
 
     private static class Canvas extends JPanel {
-        private static final int maxX = 500;
-        private static final int maxY = 500;
+        private static final int maxX = 1000;
+        private static final int maxY = 1000;
         private static double zoom = 1;
 
         public Canvas() {
             this.setPreferredSize(new Dimension(maxX, maxY));
             this.setFocusable(true);
             this.setBackground(Color.BLACK);
+
+            addMouseListener(new MouseAdapter() {
+                private Color background;
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    background = getBackground();
+                    setBackground(Color.RED);
+                    repaint();
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    setBackground(background);
+                }
+            });
 
             Button zoomIn = new Button("Zoom In");
             zoomIn.addActionListener(new ActionListener() {
@@ -170,6 +186,11 @@ public class Maps  extends JPanel{
                 }
                 temp = item;
             }
+        }
+
+        @Override
+        public Dimension getPreferredSize() {
+            return new Dimension(20000, 20000);
         }
 
     }

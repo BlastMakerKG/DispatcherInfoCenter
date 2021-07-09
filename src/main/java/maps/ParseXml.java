@@ -1,4 +1,4 @@
-package main.java.maps;
+package maps;
 
 import lombok.Getter;
 import org.w3c.dom.Document;

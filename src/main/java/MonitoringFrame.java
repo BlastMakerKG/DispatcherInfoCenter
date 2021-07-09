@@ -1,11 +1,16 @@
-package main.java;
 
-import main.java.maps.Maps;
+import Dependes.TrafficPlan;
+import lombok.SneakyThrows;
+import maps.Maps;
+import org.xml.sax.SAXException;
+
 import java.awt.*;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.*;
 import javax.swing.GroupLayout;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class MonitoringFrame extends JFrame {
 
@@ -32,6 +37,7 @@ public class MonitoringFrame extends JFrame {
         }
 
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @SneakyThrows
             public void run() {
                 setVisible(true);
                 initComponents();
@@ -39,7 +45,7 @@ public class MonitoringFrame extends JFrame {
         });
     }
 
-    private void initComponents() {
+    private void initComponents() throws ParserConfigurationException, SAXException, IOException {
         Main = new JTabbedPane();
 
         //======== this ========
@@ -58,8 +64,9 @@ public class MonitoringFrame extends JFrame {
             Main.addTab("\u041f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442\u043e\u0432", currentlyData);
 
             Maps maps = new Maps();
-
             Main.addTab("\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", maps);
+
+            TrafficPlan trafficPlan = new TrafficPlan();
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
