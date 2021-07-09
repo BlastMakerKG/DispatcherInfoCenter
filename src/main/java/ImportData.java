@@ -239,7 +239,7 @@ public class ImportData extends JPanel {
                         Socket clientSocket;
                         try {
                             clientSocket = serverSocket.accept();
-                            createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg,i);
+                            createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg);
                             executeIt.execute(createsev[i]);
 
 //                           createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
