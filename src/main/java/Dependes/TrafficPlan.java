@@ -93,7 +93,7 @@ public class TrafficPlan extends JFrame {
             g2.scale(zoom, zoom);
 //            g2.drawLine(5,5,5,getHeight());
 //            g2.drawLine(5,getHeight()-5,getWidth()-5,getHeight()-5);
-            g2.setColor(Color.RED);
+            g2.setColor(Color.GREEN);
 
 //            for (int i = 0; i < getWidth(); i = i+10) {
 //                g2.drawLine(0, i, 10, i);
