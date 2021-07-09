@@ -88,18 +88,22 @@ public class Maps  extends JPanel{
         updateUI();
     }
 
-    private void zoomPlusActionPerformed(ActionEvent e) {
+    private static double zoom = 1;
 
+    private void zoomPlusActionPerformed(ActionEvent e) {
+        zoom += 0.1;
+        canvas.repaint();
     }
 
     private void zoomMinusActionPerformed(ActionEvent e) {
-
+        zoom -= 0.1;
+        canvas.repaint();
     }
 
     private static class Canvas extends JPanel {
         private static final int maxX = 1000;
         private static final int maxY = 1000;
-        private static double zoom = 1;
+//        private static double zoom = 1;
 
         public Canvas() {
             this.setPreferredSize(new Dimension(maxX, maxY));
@@ -122,23 +126,23 @@ public class Maps  extends JPanel{
                 }
             });
 
-            Button zoomIn = new Button("Zoom In");
-            zoomIn.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    zoom += 0.1;
-                    repaint();
-                }
-            });
-            add(zoomIn);
-
-            Button zoomOut = new Button("Zoom Out");
-            zoomOut.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    zoom -= 0.1;
-                    repaint();
-                }
-            });
-            add(zoomOut);
+//            Button zoomIn = new Button("Zoom In");
+//            zoomIn.addActionListener(new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    zoom += 0.1;
+//                    repaint();
+//                }
+//            });
+//            add(zoomIn);
+//
+//            Button zoomOut = new Button("Zoom Out");
+//            zoomOut.addActionListener(new ActionListener() {
+//                public void actionPerformed(ActionEvent e) {
+//                    zoom -= 0.1;
+//                    repaint();
+//                }
+//            });
+//            add(zoomOut);
 
 
             // add(circle); // Comment back in if using JLayeredPane
