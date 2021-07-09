@@ -1,5 +1,9 @@
+import Dependes.TrafficPlan;
+import org.xml.sax.SAXException;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -239,13 +243,16 @@ public class ImportData extends JPanel {
                         Socket clientSocket;
                         try {
                             clientSocket = serverSocket.accept();
+
+                            TrafficPlan trafficPlan = new TrafficPlan(clientSocket);
+
                             createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg);
                             executeIt.execute(createsev[i]);
 
 //                           createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
 //                           executeIt.execute(createsev[i]);
                             i++;
-                        } catch (IOException ex) {
+                        } catch (IOException | ParserConfigurationException | SAXException ex) {
                             Logger.getLogger(MonitoringFrame.class.getName()).log(Level.SEVERE, null, ex);
                         }
 

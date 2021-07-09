@@ -65,8 +65,6 @@ public class MonitoringFrame extends JFrame {
 
             Maps maps = new Maps();
             Main.addTab("\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", maps);
-
-            TrafficPlan trafficPlan = new TrafficPlan();
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);

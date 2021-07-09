@@ -6,11 +6,15 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.List;
 
 public class TrafficPlan extends JFrame {
 
-    public TrafficPlan() throws IOException, SAXException, ParserConfigurationException {
+    private Socket socket;
+
+    public TrafficPlan(Socket socket) throws IOException, SAXException, ParserConfigurationException {
+        this.socket = socket;
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(300,300);
@@ -30,6 +34,10 @@ public class TrafficPlan extends JFrame {
     private Button zoomOut = new Button("Zoom Out");
 
     private JPanel panelka(){
+
+        TransferFile file = new TransferFile(socket);
+        file.receiveFile("plans.xml");
+
         panel.setLayout(null);
 
         xLabel.setLocation(graph.getWidth()/2,graph.getHeight()+25);
