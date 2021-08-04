@@ -11,6 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import java.util.List;
 public class ParseXml {
 
     private List<ReliefItems> reliefItems = new ArrayList<>();
-    private LinkedList<ReliefItems> geoLines = new LinkedList<>();
+    private HashMap< Integer, LinkedList<ReliefItems>> geoLines = new HashMap<>();
     private String filePath ;
 
     public ParseXml(String filePath) {
@@ -30,16 +31,22 @@ public class ParseXml {
         return this.reliefItems;
     }
 
-    public void loadLinks() throws ParserConfigurationException, IOException, SAXException {
+    public void loadLinks() {
+        int index = 0;
+        NodeList relief = null;
+        try {
 
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 
-        Document document = documentBuilderFactory.newDocumentBuilder().parse(this.filePath);
-        document.getDocumentElement().normalize();
+            Document document = documentBuilderFactory.newDocumentBuilder().parse(this.filePath);
+            document.getDocumentElement().normalize();
 
-        Node root = document.getDocumentElement();
+            Node root = document.getDocumentElement();
 
-        NodeList relief = ((Element) root).getElementsByTagName("RI");
+            relief = ((Element) root).getElementsByTagName("RI");
+        }catch (ParserConfigurationException | IOException | SAXException e) {
+            e.printStackTrace();
+        }
 
 
         for (int k = 0; k < relief.getLength(); k++) {
@@ -50,8 +57,10 @@ public class ParseXml {
             }
             if (book.hasChildNodes()) {
                 NodeList booksInto = book.getElementsByTagName("P");
+                LinkedList<ReliefItems> temp = new LinkedList<>();
 
                 for (int j = 0; j < booksInto.getLength(); j++) {
+
                     Element bookInto = (Element)booksInto.item(j);
                     if (book.getNodeType() != Node.ELEMENT_NODE) {
                         continue;
@@ -62,8 +71,10 @@ public class ParseXml {
                     reliefItems.setY(Double.parseDouble(bookInto.getAttribute("Y")));
                     reliefItems.setZ(Double.parseDouble(bookInto.getAttribute("Z")));
 
-                    this.geoLines.add(reliefItems);
+                    temp.add(reliefItems);
                 }
+                this.geoLines.put(index, temp);
+                index++;
             } else {
                 reliefItems.setId(Long.parseLong(book.getAttribute("ID")));
                 reliefItems.setX(Double.parseDouble(book.getAttribute("X")));

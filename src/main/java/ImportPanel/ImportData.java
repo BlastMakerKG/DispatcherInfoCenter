@@ -1,5 +1,11 @@
+package ImportPanel;
+
 import Dependes.TrafficPlan;
+import Server.CreateServer;
+import maps.lwjgl.GameMain;
 import org.xml.sax.SAXException;
+import Frame.MonitoringFrame;
+//import sun.awt.resources.awt;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -8,6 +14,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +29,7 @@ public class ImportData extends JPanel {
     private JLabel jLabel1;
     private JLabel status_msg;
     private JLabel excep_msg;
-    private List class_list;
+    private java.awt.List class_list;
     private JScrollPane jScrollPane2;
 
     private CreateServer[] createsev;
@@ -41,17 +49,36 @@ public class ImportData extends JPanel {
         jLabel1 = new JLabel();
         status_msg = new JLabel();
         excep_msg = new JLabel();
-        class_list = new List();
+        class_list = new java.awt.List();
         jScrollPane2 = new JScrollPane();
         location_table = new JTable();
         modeltab = (DefaultTableModel) location_table.getModel();
+
+
+        Button maps = new Button("Maps");
+        maps.setSize(100,20);
+        maps.setLocation(save_bnt.getLocation().x, save_bnt.getY()+40);
+        maps.addActionListener(e -> {
+            Runnable run = new Runnable() {
+                @Override
+                public void run() {
+                    GameMain maps = new GameMain();
+                }
+            };
+
+            Thread thread = new Thread(run);
+            thread.start();
+        });
+
+        add(maps);
+
+
         //======== jPanel1 ========
         {
             setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
                     0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
                     . BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-                    red) , getBorder( )) ); addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java .
-                                                                                                                                                                                  beans .PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+                    red) , getBorder( )) ); addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java.beans.PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
 
             //---- save_bnt ----
             save_bnt.setActionCommand("\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c");
@@ -111,6 +138,8 @@ public class ImportData extends JPanel {
                 jScrollPane2.setViewportView(location_table);
             }
 
+
+
             GroupLayout jPanel1Layout = new GroupLayout(this);
             setLayout(jPanel1Layout);
             jPanel1Layout.setHorizontalGroup(
@@ -164,9 +193,13 @@ public class ImportData extends JPanel {
     }
 
 
+    private List<String[]> data = new ArrayList<>();
 
-    private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_create_btnActionPerformed
-        // TODO add your handling code here:
+    public List<String[]> getData(){
+        return data;
+    }
+
+    private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {
         Runnable run = new Runnable()
         {
             @Override
@@ -181,7 +214,7 @@ public class ImportData extends JPanel {
                             if(predString == null)
                             {
                                 String str = createsev[j].getData();
-                                String[] subStr1, subStr2;
+                                String[] subStr1;
                                 String delimeter = ",";
                                 subStr1 = str.split(delimeter);
                                 modeltab.insertRow(modeltab.getRowCount(), new Object[]{Integer.parseInt(subStr1[0])+" "+count++,subStr1[1],Double.parseDouble(subStr1[2]),
@@ -192,7 +225,7 @@ public class ImportData extends JPanel {
                             else{
                                 String str = createsev[j].getData();
                                 if(str != predString){
-                                    String[] subStr1, subStr2;
+                                    String[] subStr1;
                                     String delimeter = ",";
                                     subStr1 = str.split(delimeter);
                                     modeltab.insertRow(modeltab.getRowCount(), new Object[]{Integer.parseInt(subStr1[0])+" "+count++,subStr1[1],Double.parseDouble(subStr1[2]),
@@ -222,10 +255,9 @@ public class ImportData extends JPanel {
         Thread thread = new Thread(run);
         thread.start();
 
-    }//GEN-LAST:event_create_btnActionPerformed
+    }
 
-    private void server_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_server_btnActionPerformed
-        // TODO add your handling code here:
+    private void server_btnActionPerformed(java.awt.event.ActionEvent evt) {
 
         try{
             final ServerSocket serverSocket = new ServerSocket(24500);
@@ -244,15 +276,17 @@ public class ImportData extends JPanel {
                         try {
                             clientSocket = serverSocket.accept();
 
-                            TrafficPlan trafficPlan = new TrafficPlan(clientSocket);
-
-                            createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg);
+//                            TrafficPlan trafficPlan = new TrafficPlan(clientSocket);
+//
+                            createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg,data);
                             executeIt.execute(createsev[i]);
+
+
 
 //                           createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
 //                           executeIt.execute(createsev[i]);
                             i++;
-                        } catch (IOException | ParserConfigurationException | SAXException ex) {
+                        } catch (IOException ex) {
                             Logger.getLogger(MonitoringFrame.class.getName()).log(Level.SEVERE, null, ex);
                         }
 
@@ -287,16 +321,23 @@ public class ImportData extends JPanel {
         System.exit(0);
     }//GEN-LAST:event_exit_btnActionPerformed
 
-    private void save_bntActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_bntActionPerformed
-//         TODO add your handling code here:
+    private void save_bntActionPerformed(java.awt.event.ActionEvent evt) {
 
-        String str = createsev[0].getData();
-        if (str != predString) {
-            String[] subStr1, subStr2;
-            String delimeter = ",";
-            subStr1 = str.split(delimeter);
-            modeltab.insertRow(5, new Object[]{Integer.parseInt(subStr1[0]), "Hello", Double.parseDouble(subStr1[2]),
-                    Double.parseDouble(subStr1[3]), Double.parseDouble(subStr1[4]), Double.parseDouble(subStr1[5]), Double.parseDouble(subStr1[6])});
+        XMLImport xmlFile = new XMLImport();
+
+        for (int i = 0; i < createsev.length; i++) {
+            data = createsev[i].getDatas();
+        }
+
+        xmlFile.save(data);
+
+//        String str = createsev[0].getData();
+//        if (str != predString) {
+//            String[] subStr1, subStr2;
+//            String delimeter = ",";
+//            subStr1 = str.split(delimeter);
+//            modeltab.insertRow(5, new Object[]{Integer.parseInt(subStr1[0]), "Hello", Double.parseDouble(subStr1[2]),
+//                    Double.parseDouble(subStr1[3]), Double.parseDouble(subStr1[4]), Double.parseDouble(subStr1[5]), Double.parseDouble(subStr1[6])});
 //        try{
 //
 //        JFileChooser fileChooser = new JFileChooser();
@@ -361,4 +402,4 @@ public class ImportData extends JPanel {
 
         }
     }
-}
+

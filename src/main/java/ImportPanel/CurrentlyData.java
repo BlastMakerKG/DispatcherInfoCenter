@@ -1,3 +1,5 @@
+package ImportPanel;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -45,6 +47,9 @@ public class CurrentlyData extends JPanel {
                 });
                 jScrollPane4.setViewportView(location_table2);
             }
+
+
+
 
             //---- jLabel2 ----
             jLabel2.setFont(new Font("Tahoma", Font.BOLD, 14));

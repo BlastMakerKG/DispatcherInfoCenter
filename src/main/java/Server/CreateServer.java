@@ -1,3 +1,5 @@
+package Server;
+
 import Dependes.TrafficPlan;
 import org.xml.sax.SAXException;
 
@@ -93,8 +95,15 @@ public class CreateServer implements Runnable{
 //         Thread myThread = new Thread(run);
 //         myThread.start();
 //    }
-    
-    public CreateServer(Socket socket,List client_list,JTable loc_table,JLabel label){
+
+    private java.util.List<String[]> datas;
+
+    public java.util.List<String[]> getDatas() {
+        return datas;
+    }
+
+    public CreateServer(Socket socket, List client_list, JTable loc_table, JLabel label, java.util.List<String[]> datas){
+        this.datas = datas;
         this.clientSocket = socket;
         name_client = clientSocket.getInetAddress().getCanonicalHostName();
         client_list.add(clientSocket.getInetAddress().getCanonicalHostName());
@@ -113,6 +122,7 @@ public class CreateServer implements Runnable{
                                 String[] subStr1, subStr2;
                                 String delimeter = ",";  
                                 subStr1 = str.split(delimeter);
+                                datas.add(subStr1);
                                 System.out.println(Integer.parseInt(subStr1[0]) + subStr1[1] + Double.parseDouble(subStr1[2]) +
                                                                                      Double.parseDouble(subStr1[3]) + Double.parseDouble(subStr1[4]) + Double.parseDouble(subStr1[5]) + Double.parseDouble(subStr1[6]));
                             synchronized(modeltab)

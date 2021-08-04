@@ -1,7 +1,10 @@
+package Frame;
 
-import Dependes.TrafficPlan;
+import ImportPanel.CurrentlyData;
+import ImportPanel.ImportData;
+import Server.CreateServer;
 import lombok.SneakyThrows;
-import maps.Maps;
+//import maps.Maps;
 import org.xml.sax.SAXException;
 
 import java.awt.*;
@@ -63,8 +66,8 @@ public class MonitoringFrame extends JFrame {
             CurrentlyData currentlyData = new CurrentlyData();
             Main.addTab("\u041f\u043e\u043b\u043e\u0436\u0435\u043d\u0438\u0435 \u0442\u0440\u0430\u043d\u0441\u043f\u043e\u0440\u0442\u043e\u0432", currentlyData);
 
-            Maps maps = new Maps();
-            Main.addTab("\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", maps);
+//            Maps maps = new Maps();
+//            Main.addTab("\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", maps);
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
