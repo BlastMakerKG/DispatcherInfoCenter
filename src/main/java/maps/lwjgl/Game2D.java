@@ -1,31 +1,10 @@
 package maps.lwjgl;
 
-import maps.ParseXml;
-import maps.ReliefItems;
-import maps.lwjgl.fontRendering.TextMaster;
-import maps.lwjgl.fontRendering.fontMeshCreator.FontType;
-import maps.lwjgl.fontRendering.fontMeshCreator.GUIText;
-import maps.lwjgl.gameobjects.Layer;
-import maps.lwjgl.gameobjects.Player;
-import maps.lwjgl.gameobjects.Point;
-//import fontMeshCreator.FontType;
-//import fontMeshCreator.GUIText;
-//import fontRendering.TextMaster;
-import org.lwjgl.input.Keyboard;
+import maps.*;
+import maps.lwjgl.gameobjects.*;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.util.vector.Vector2f;
-import org.xml.sax.SAXException;
-//import renderEngine.Loader;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class Game2D {
 

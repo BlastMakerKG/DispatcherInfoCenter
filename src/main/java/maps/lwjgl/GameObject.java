@@ -1,9 +1,6 @@
 package maps.lwjgl;
 
-import maps.lwjgl.Animation;
-import maps.lwjgl.Sprite;
 import lombok.Getter;
-import org.lwjgl.input.Mouse;
 
 import static org.lwjgl.opengl.GL11.*;
 
