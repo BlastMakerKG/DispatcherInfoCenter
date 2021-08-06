@@ -37,6 +37,7 @@ public class ImportData extends JPanel {
     private String predString;
     private DefaultTableModel modeltab;
     private JTable location_table;
+    private Button maps;
 
     public ImportData(CreateServer[] createsev, ExecutorService executeIt ) {
         this.createsev = createsev;
@@ -53,24 +54,14 @@ public class ImportData extends JPanel {
         jScrollPane2 = new JScrollPane();
         location_table = new JTable();
         modeltab = (DefaultTableModel) location_table.getModel();
+        maps = new Button("Maps");
 
 
-        Button maps = new Button("Maps");
-        maps.setSize(100,20);
-        maps.setLocation(save_bnt.getLocation().x, save_bnt.getY()+40);
-        maps.addActionListener(e -> {
-            Runnable run = new Runnable() {
-                @Override
-                public void run() {
-                    GameMain maps = new GameMain();
-                }
-            };
+//        maps.setSize(100,20);
+//        maps.setLocation(save_bnt.getLocation().x, save_bnt.getY()+40);
+//        maps.addActionListener(e -> maps());
 
-            Thread thread = new Thread(run);
-            thread.start();
-        });
-
-        add(maps);
+//        add(maps);
 
 
         //======== jPanel1 ========
@@ -81,9 +72,18 @@ public class ImportData extends JPanel {
                     red) , getBorder( )) ); addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java.beans.PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
 
             //---- save_bnt ----
-            save_bnt.setActionCommand("\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c");
+            save_bnt.setActionCommand("Сохранить");
             save_bnt.setLabel("C\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c");
             save_bnt.addActionListener(e -> save_bntActionPerformed(e));
+
+
+            // ---- Maps ---
+            maps.setActionCommand("Create maps");
+            maps.addActionListener(e -> maps());
+            maps.setLabel("Maps");
+            maps.setBackground(Color.gray);
+            maps.setForeground(Color.cyan);
+            maps.setFont(new Font("TimeNewRoman",Font.BOLD, 14));
 
             //---- exit_btn ----
             exit_btn.setBackground(new Color(255, 102, 102));
@@ -161,7 +161,8 @@ public class ImportData extends JPanel {
                                                     .addComponent(exit_btn, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))
                                             .addComponent(server_btn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(save_bnt, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGap(79, 79, 79))
+                                            .addComponent(maps, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGap(79, 79, 79))
             );
             jPanel1Layout.setVerticalGroup(
                     jPanel1Layout.createParallelGroup()
@@ -186,10 +187,26 @@ public class ImportData extends JPanel {
                                                             .addComponent(create_btn)
                                                             .addComponent(exit_btn))
                                                     .addGap(22, 22, 22)
+                                                    .addComponent(maps, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                                    .addGap(10,10,10)
                                                     .addComponent(save_bnt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+
+//                                                    .addGap(22,22,22)
             );
         }
+    }
+
+    private void maps(){
+        Runnable run = new Runnable() {
+            @Override
+            public void run() {
+                GameMain maps = new GameMain();
+            }
+        };
+
+        Thread thread = new Thread(run);
+        thread.start();
     }
 
 

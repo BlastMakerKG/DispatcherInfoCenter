@@ -2,8 +2,12 @@ package maps.lwjgl;
 
 import maps.*;
 import maps.lwjgl.gameobjects.*;
+import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+
 import java.util.*;
 
 public class Game2D {
@@ -14,11 +18,15 @@ public class Game2D {
     private ParseXml parse = new ParseXml("F:\\Krsu\\untitled\\src\\main\\java\\example.xml");
     private HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
     private List<ReliefItems> list =  parse.getReliefItems();
+    private List<WriteText> VerticalTexts;
+    private List<WriteText> HorisontalTexts;
 
 
     public Game2D(){
         items = new ArrayList<>();
         layers = new ArrayList<>();
+        VerticalTexts = new ArrayList<>();
+        HorisontalTexts = new ArrayList<>();
         parse.loadLinks();
 
         for (ReliefItems item : list) {
@@ -40,19 +48,6 @@ public class Game2D {
             }
         }
 
-        first =true;
-        GameObject temp1 = null;
-        for (GameObject ob : items){
-            if(first){
-                first =false;
-            }else{
-                ob.x = ob.x - temp1.x;
-                ob.y = ob.y - temp1.y;
-            }
-            temp1 = ob;
-        }
-
-
         items.add(new Point(Display.getHeight() /2 - 20, Display.getWidth() / 2 - 20));
         items.add(new Point(Display.getHeight() /2 +20, Display.getWidth() / 2 + 20));
         items.add(new Point(Display.getHeight() - 40, Display.getWidth() - 40));
@@ -67,20 +62,13 @@ public class Game2D {
 
         line(items.get(items.size()-2).x, items.get(items.size()-2).y, items.get(items.size()-3).x, items.get(items.size()-3).y);
 
-//        Loader loader = new Loader();
-//        TextMaster.init(loader);
-//        FontType font = new FontType(loader.loadTexture("src/main/java/maps/lwjgl/fontRendering/fonts/harrington"), new File("src/main/java/maps/lwjgl/fontRendering/fonts/harrington.fnt"));
-//        GUIText text = new GUIText(x+" " + y, 2, font, new Vector2f(0,0), 1, true);
-//        text.setColour(1, 1, 1);
-
-
-
         for (int i = 20; i < Display.getHeight(); i = i + 50) {
             layers.add(new Layer(15,i,10,2));
-//            texts.add(new GUIText(String.valueOf((-Display.getHeight()/2)+i), 2, font1, new Vector2f(5,i), 1, true));
+            HorisontalTexts.add(new WriteText(new StringBuilder(String.valueOf(i)), 26,i/2));
         }
         for (int i = 20; i < Display.getWidth(); i = i+50) {
             layers.add(new Layer(i, 15, 2,10));
+            VerticalTexts.add(new WriteText(new StringBuilder(String.valueOf(i)), i-5,16));
         }
     }
 
@@ -112,6 +100,9 @@ public class Game2D {
     }
 
     public void getInput(){
+        if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+            Display.destroy();
+        }
 
         float zoom = Mouse.getDWheel() * 0.008f;
         float mouseX = 0, mouseY = 0;
@@ -121,14 +112,29 @@ public class Game2D {
         }
 
         for(GameObject ob : items){
-            if(!(ob instanceof Layer)){
+            if(! (ob.x == 0 && ob.y == 0)) {
                 ob.resize(zoom);
             }
-
             ob.x += mouseX;
             ob.y += mouseY;
         }
 
+        for(WriteText wr : VerticalTexts){
+            wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())-mouseX));
+            if(zoom < 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())/2));
+            }else if(zoom > 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())*2));
+            }
+        }
+        for(WriteText wr : HorisontalTexts){
+            wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())-mouseY));
+            if(zoom < 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())/2));
+            }else if(zoom > 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())*2));
+            }
+        }
     }
 
     public void render(){
@@ -138,14 +144,33 @@ public class Game2D {
         for(GameObject wall : layers){
             wall.render();
         }
+        for (WriteText wr : VerticalTexts){
+            wr.render();
+        }
+        for (WriteText wr : HorisontalTexts){
+            wr.render();
+        }
     }
 
     public void update(){
+        if(Display.isFullscreen()){
+            try {
+                Display.setDisplayMode(new DisplayMode(1920,1080));
+            } catch (LWJGLException e) {
+                e.printStackTrace();
+            }
+        }
         for (GameObject go : items) {
             go.update();
         }
         for(GameObject wall : layers){
             wall.update();
+        }
+        for(WriteText wr : VerticalTexts){
+            wr.update();
+        }
+        for (WriteText wr : HorisontalTexts){
+            wr.update();
         }
     }
 }

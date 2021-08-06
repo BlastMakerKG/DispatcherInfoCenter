@@ -28,20 +28,31 @@ public abstract class GameObject {
     }
 
     public void resize(float zoom){
-         if( zoom > 0){
-            this.x -= zoom*0.5;
-            this.y -= zoom*0.5;
-            this.spr.setSx(spr.getSx()+zoom);
-            this.spr.setSy(spr.getSy()+zoom);
-        }else if(this.spr.getSx() <= 1.5f && this.spr.getSy() <= 1.5f){
-            this.spr.setSy(1.5f);
-            this.spr.setSx(1.5f);
-        }else{
-            this.x += -zoom*.5;
-            this.y += -zoom*0.5;
-            this.spr.setSx(spr.getSx()+zoom);
-            this.spr.setSy(spr.getSy()+zoom);
+
+        if(zoom>0){
+            this.x /= 2;
+            this.y /= 2;
+        }else if(zoom < 0){
+            this.x *= 2;
+            this.y *= 2;
         }
+
+
+
+//         if( zoom > 0){
+//            this.x -= zoom*0.5;
+//            this.y -= zoom*0.5;
+//            this.spr.setSx(spr.getSx()+zoom);
+//            this.spr.setSy(spr.getSy()+zoom);
+//        }else if(this.spr.getSx() <= 1.5f && this.spr.getSy() <= 1.5f){
+//            this.spr.setSy(1.5f);
+//            this.spr.setSx(1.5f);
+//        }else{
+//            this.x += -zoom*.5;
+//            this.y += -zoom*0.5;
+//            this.spr.setSx(spr.getSx()+zoom);
+//            this.spr.setSy(spr.getSy()+zoom);
+//        }
     }
 
     protected void init(float r, float g, float b, float sx,float sy, float x,float y){
