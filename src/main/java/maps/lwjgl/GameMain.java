@@ -72,11 +72,11 @@ public class GameMain {
 
     private static void  initDisplay(){
         try {
-            Display.setDisplayMode(new DisplayMode(800,600));
+            Display.setDisplayMode(new DisplayMode(1280,720));
             Display.create();
             Keyboard.create();
             Mouse.create();
-//            Display.setResizable(true);
+            Display.setResizable(true);
             Display.setVSyncEnabled(true);
             Display.setFullscreen(true);
         } catch (LWJGLException e) {

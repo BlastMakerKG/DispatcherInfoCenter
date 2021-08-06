@@ -30,7 +30,7 @@ public class Point extends GameObject {
     }
 
 
-    private void move(float x, float y){
+    public void move(float x, float y){
         this.x += x;
         this.y += y;
     }
