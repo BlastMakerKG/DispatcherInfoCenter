@@ -1,4 +1,4 @@
-package ImportPanel;
+package XmlFile;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,7 +36,7 @@ public class XMLImport {
             }
 
 
-            File file = new File("src\\main\\java\\test.xml");
+            File file = new File("src\\main\\resources\\test.xml");
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");

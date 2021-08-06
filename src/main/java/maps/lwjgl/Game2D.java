@@ -1,6 +1,7 @@
 package maps.lwjgl;
 
-import maps.*;
+import XmlFile.ParseXml;
+import XmlFile.ReliefItems;
 import maps.lwjgl.gameobjects.*;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
@@ -13,7 +14,7 @@ public class Game2D {
 
     private List<GameObject> items;
     private List<Layer> layers;
-    private ParseXml parse = new ParseXml("F:\\Krsu\\untitled\\src\\main\\java\\example.xml");
+    private ParseXml parse = new ParseXml("F:\\Krsu\\untitled\\src\\main\\resources\\example.xml");
     private HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
     private List<ReliefItems> list =  parse.getReliefItems();
     private List<WriteText> VerticalTexts;

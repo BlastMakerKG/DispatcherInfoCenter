@@ -1,4 +1,4 @@
-package maps;
+package XmlFile;
 
 import lombok.Getter;
 import org.w3c.dom.*;

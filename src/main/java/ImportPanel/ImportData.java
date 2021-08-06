@@ -1,6 +1,7 @@
 package ImportPanel;
 
 import Server.CreateServer;
+import XmlFile.XMLImport;
 import maps.lwjgl.GameMain;
 import Frame.MonitoringFrame;
 
@@ -25,6 +26,7 @@ public class ImportData extends JPanel {
     private JLabel jLabel1;
     private JLabel status_msg;
     private JLabel excep_msg;
+    private Button maps;
     private java.awt.List class_list;
     private JScrollPane jScrollPane2;
 
@@ -33,7 +35,7 @@ public class ImportData extends JPanel {
     private String predString;
     private DefaultTableModel modeltab;
     private JTable location_table;
-    private Button maps;
+
 
     public ImportData(CreateServer[] createsev, ExecutorService executeIt ) {
         this.createsev = createsev;
@@ -53,19 +55,16 @@ public class ImportData extends JPanel {
         maps = new Button("Maps");
 
 
-//        maps.setSize(100,20);
-//        maps.setLocation(save_bnt.getLocation().x, save_bnt.getY()+40);
-//        maps.addActionListener(e -> maps());
-
-//        add(maps);
-
-
         //======== jPanel1 ========
         {
             setBorder (new javax. swing. border. CompoundBorder( new javax .swing .border .TitledBorder (new javax. swing. border. EmptyBorder(
                     0, 0, 0, 0) , "JF\u006frmD\u0065sig\u006eer \u0045val\u0075ati\u006fn", javax. swing. border. TitledBorder. CENTER, javax. swing. border. TitledBorder
                     . BOTTOM, new java .awt .Font ("Dia\u006cog" ,java .awt .Font .BOLD ,12 ), java. awt. Color.
-                    red) , getBorder( )) ); addPropertyChangeListener (new java. beans. PropertyChangeListener( ){ @Override public void propertyChange (java.beans.PropertyChangeEvent e) {if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( ); }} );
+                    red) , getBorder( )) ); addPropertyChangeListener (new java. beans. PropertyChangeListener( ){
+                        @Override public void propertyChange (java.beans.PropertyChangeEvent e) {
+                            if ("\u0062ord\u0065r" .equals (e .getPropertyName () )) throw new RuntimeException( );
+                        }
+                    } );
 
             //---- save_bnt ----
             save_bnt.setActionCommand("Сохранить");
