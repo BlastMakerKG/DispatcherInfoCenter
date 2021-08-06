@@ -1,32 +1,15 @@
 package Server;
 
-import Dependes.TrafficPlan;
-import org.xml.sax.SAXException;
-
 import java.awt.List;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.ParserConfigurationException;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author student2
- */
 public class CreateServer implements Runnable{
 
     /**

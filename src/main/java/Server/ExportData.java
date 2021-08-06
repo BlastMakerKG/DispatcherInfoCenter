@@ -8,10 +8,6 @@ import javax.swing.JTable;
 import javax.swing.table.TableModel;
 
 
-/**
- *
- * @author student2
- */
 public class ExportData {
     
 //    public static void ExportToCSVfile(JTable table,File pathToExportTo) throws IOException, ClassNotFoundException

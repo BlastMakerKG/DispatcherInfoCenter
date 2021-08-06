@@ -1,15 +1,11 @@
 package ImportPanel;
 
-import Dependes.TrafficPlan;
 import Server.CreateServer;
 import maps.lwjgl.GameMain;
-import org.xml.sax.SAXException;
 import Frame.MonitoringFrame;
-//import sun.awt.resources.awt;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
 import java.net.ServerSocket;
