@@ -1,4 +1,4 @@
-package Mine;
+package maps.lwjgl;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
 import lombok.*;

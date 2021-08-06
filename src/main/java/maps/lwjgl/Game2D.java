@@ -18,8 +18,8 @@ public class Game2D {
     private ParseXml parse = new ParseXml("F:\\Krsu\\untitled\\src\\main\\java\\example.xml");
     private HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
     private List<ReliefItems> list =  parse.getReliefItems();
-    private List<Mine.WriteText> VerticalTexts;
-    private List<Mine.WriteText> HorisontalTexts;
+    private List<WriteText> VerticalTexts;
+    private List<WriteText> HorisontalTexts;
 
 
     public Game2D(){
@@ -64,11 +64,11 @@ public class Game2D {
 
         for (int i = 20; i < Display.getHeight(); i = i + 50) {
             layers.add(new Layer(15,i,10,2));
-            HorisontalTexts.add(new Mine.WriteText(new StringBuilder(String.valueOf(i)), 26,i-10));
+            HorisontalTexts.add(new WriteText(new StringBuilder(String.valueOf(i)), 26,i/2));
         }
         for (int i = 20; i < Display.getWidth(); i = i+50) {
             layers.add(new Layer(i, 15, 2,10));
-            VerticalTexts.add(new Mine.WriteText(new StringBuilder(String.valueOf(i)), i-5,16));
+            VerticalTexts.add(new WriteText(new StringBuilder(String.valueOf(i)), i-5,16));
         }
     }
 
@@ -119,11 +119,21 @@ public class Game2D {
             ob.y += mouseY;
         }
 
-        for(Mine.WriteText wr : VerticalTexts){
+        for(WriteText wr : VerticalTexts){
             wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())-mouseX));
+            if(zoom < 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())/2));
+            }else if(zoom > 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())*2));
+            }
         }
-        for(Mine.WriteText wr : HorisontalTexts){
+        for(WriteText wr : HorisontalTexts){
             wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())-mouseY));
+            if(zoom < 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())/2));
+            }else if(zoom > 0){
+                wr.setRenderString(new StringBuilder().append(Float.valueOf(wr.getRenderString().toString())*2));
+            }
         }
     }
 
@@ -134,10 +144,10 @@ public class Game2D {
         for(GameObject wall : layers){
             wall.render();
         }
-        for (Mine.WriteText wr : VerticalTexts){
+        for (WriteText wr : VerticalTexts){
             wr.render();
         }
-        for (Mine.WriteText wr : HorisontalTexts){
+        for (WriteText wr : HorisontalTexts){
             wr.render();
         }
     }
@@ -156,10 +166,10 @@ public class Game2D {
         for(GameObject wall : layers){
             wall.update();
         }
-        for(Mine.WriteText wr : VerticalTexts){
+        for(WriteText wr : VerticalTexts){
             wr.update();
         }
-        for (Mine.WriteText wr : HorisontalTexts){
+        for (WriteText wr : HorisontalTexts){
             wr.update();
         }
     }
