@@ -7,14 +7,12 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
-
 import java.util.*;
 
 public class Game2D {
 
     private List<GameObject> items;
     private List<Layer> layers;
-//    private List<GUIText> texts;
     private ParseXml parse = new ParseXml("F:\\Krsu\\untitled\\src\\main\\java\\example.xml");
     private HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
     private List<ReliefItems> list =  parse.getReliefItems();
