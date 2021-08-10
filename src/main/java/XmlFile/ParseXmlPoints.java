@@ -10,13 +10,13 @@ import java.util.*;
 
 
 @Getter
-public class ParseXml {
+public class ParseXmlPoints {
 
     private List<ReliefItems> reliefItems = new ArrayList<>();
     private HashMap< Integer, LinkedList<ReliefItems>> geoLines = new HashMap<>();
     private String filePath ;
 
-    public ParseXml(String filePath) {
+    public ParseXmlPoints(String filePath) {
         this.filePath = filePath;
     }
 
@@ -44,7 +44,6 @@ public class ParseXml {
 
         for (int k = 0; k < relief.getLength(); k++) {
             Element book = (Element) relief.item(k);
-            ReliefItems reliefItems = new ReliefItems();
             if (book.getNodeType() != Node.ELEMENT_NODE) {
                 continue;
             }
@@ -53,9 +52,9 @@ public class ParseXml {
                 LinkedList<ReliefItems> temp = new LinkedList<>();
 
                 for (int j = 0; j < booksInto.getLength(); j++) {
-
+                    ReliefItems reliefItems = new ReliefItems();
                     Element bookInto = (Element)booksInto.item(j);
-                    if (book.getNodeType() != Node.ELEMENT_NODE) {
+                    if (bookInto.getNodeType() != Node.ELEMENT_NODE) {
                         continue;
                     }
 
@@ -69,6 +68,7 @@ public class ParseXml {
                 this.geoLines.put(index, temp);
                 index++;
             } else {
+                ReliefItems reliefItems = new ReliefItems();
                 reliefItems.setId(Long.parseLong(book.getAttribute("ID")));
                 reliefItems.setX(Double.parseDouble(book.getAttribute("X")));
                 reliefItems.setY(Double.parseDouble(book.getAttribute("Y")));

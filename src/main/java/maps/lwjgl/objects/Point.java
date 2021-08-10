@@ -1,10 +1,10 @@
-package maps.lwjgl.gameobjects;
+package maps.lwjgl.objects;
 
-import maps.lwjgl.GameObject;
+import maps.lwjgl.Objects;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-public class Point extends GameObject {
+public class Point extends Objects {
 
     public static final float SIZE = 16;
 

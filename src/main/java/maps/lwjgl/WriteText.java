@@ -45,7 +45,7 @@ public class WriteText {
         // Bind the texture object to the GL_TEXTURE_2D target, specifying that it will be a 2D texture.
         glBindTexture(GL_TEXTURE_2D, fontTexture);
         // Use TWL's utility classes to load the png file.
-        PNGDecoder decoder = new PNGDecoder(new FileInputStream("src\\main\\java\\maps\\lwjgl\\myfont.png"));
+        PNGDecoder decoder = new PNGDecoder(new FileInputStream("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\myfont.png"));
         ByteBuffer buffer = BufferUtils.createByteBuffer(4 * decoder.getWidth() * decoder.getHeight());
         decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
         buffer.flip();
@@ -92,15 +92,15 @@ public class WriteText {
         // Iterate over all the characters in the string.
         for (int i = 0; i < string.length(); i++) {
             // Get the ASCII-code of the character by type-casting to integer.
-            int asciiCode = (int) string.charAt(i);
+            int asciiCode = string.charAt(i);
             // There are 16 cells in a texture, and a texture coordinate ranges from 0.0 to 1.0.
             final float cellSize = 1.0f / gridSize;
             // The cell's x-coordinate is the greatest integer smaller than remainder of the ASCII-code divided by the
             // amount of cells on the x-axis, times the cell size.
-            float cellX = ((int) asciiCode % gridSize) * cellSize;
+            float cellX = ( asciiCode % gridSize) * cellSize;
             // The cell's y-coordinate is the greatest integer smaller than the ASCII-code divided by the amount of
             // cells on the y-axis.
-            float cellY = ((int) asciiCode / gridSize) * cellSize;
+            float cellY = ( asciiCode / gridSize) * cellSize;
             glTexCoord2f(cellX, cellY + cellSize);
             glVertex2f(i * characterWidth / 3, y);
             glTexCoord2f(cellX + cellSize, cellY + cellSize);

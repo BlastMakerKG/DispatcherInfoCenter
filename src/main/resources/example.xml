@@ -1,19 +1,5 @@
 <?xml version="1.0" encoding="windows-1251" ?>
   <BlastMaker_Project FormatVersion="3" AppName="BlastMaker_6_5_15_5sel3.exe" AppVersion="6.5.15.5" Size="720" LicenseInfo="POLYM" Source="NGOK(C:\Program Files\BlastMaker\NGOK.mdb)" SiteName="" SiteID="5">
-    <Block ID="1975551185" HorizonID="1420138479" HorizonName="810" Name="Block4-v5" HorizonLevel="812.5" TopLevel="839.150" LumpSize="400" HoleSpace="6.80000019073486" RowDistance="6.5" HoleCloseness="1" HoleDiameter="0.250999987125397" HoleOverboring="0" HoleTamping="6" RockID="959626628" CrushEnergy="1.48656094074249" ExplosiveRate="1.06765925884247" BottomResistance="12.1957235336304" UseDrillingEnergy="0" Created="40110.453" Modified="43085.494" Blasted="36524" BlastQuality="-1" Volume="0.00" CustomVolume="0.00" UseCustomVolume="0" Area="0.0" HolesNumber="361" TotalHolesLength="0.0" TotalExplosivesWeight="0.0" DefaultChargeTemplateUID="1006842199" DefaultHolesSpace="0" DefaultRowsDistance="0" DefaultExplosiveRatio="0" VariableChargeForExplosiveRate="-1" VariableChargeForDrillingEnergy="-1" AutoChargeBoreholes="0" AutoChargeByExplosiveRate="0" UseVoronoiZones="0" TriangulatedBottom="0" BottomTriangulationUID="-1" SlopeBottom="0" SlopePointX1="0" SlopePointY1="0" SlopePointZ1="0" SlopePointX2="0" SlopePointY2="0" SlopePointZ2="0" SlopePointX3="0" SlopePointY3="0" SlopePointZ3="0" DangerZone="0" BottomTargetUID="-1" UpperBenchUID="-1" TextProperty1="" TextProperty2="" TextProperty3="" Comment="" HoleName1Descr="" HoleName2Descr="" HoleName3Descr="" HoleLength1Descr="" HoleLength2Descr="" HoleLength3Descr="" HoleLength4Descr="">
-      <P N="0" X="12334.615" Y="77229.109" Z="816.417"/>
-      <P N="1" X="12341.982" Y="77164.789" Z="836.316"/>
-      <P N="2" X="12507.703" Y="77183.289" Z="839.109"/>
-      <P N="3" X="12547.666" Y="77187.680" Z="838.494"/>
-      <P N="4" X="12540.316" Y="77250.938" Z="812.500"/>
-      <P N="5" X="12496.869" Y="77251.188" Z="812.500"/>
-      <P N="6" X="12477.597" Y="77251.055" Z="812.604"/>
-      <P N="7" X="12451.754" Y="77247.453" Z="812.604"/>
-      <P N="8" X="12429.332" Y="77246.000" Z="812.604"/>
-      <P N="9" X="12405.144" Y="77243.648" Z="812.604"/>
-      <P N="10" X="12392.014" Y="77241.109" Z="813.190"/>
-      <P N="11" X="12354.187" Y="77233.547" Z="815.131"/>
-    </Block>
     <ReliefItems>
       <RI ID="1106185765" TID="883153527" X="12496.351" Y="77231.000" Z="837.272"/>
       <RI ID="1237805511" TID="883153527" X="12496.351" Y="77231.000" Z="837.272"/>

@@ -6,11 +6,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
 import static org.lwjgl.opengl.GL11.*;
 
-public class GameMain {
+public class CreateLWJGL {
 
-    private static Game2D game;
+    private static LWJGLDisplay game;
 
-    public GameMain() {
+    public CreateLWJGL() {
         initDisplay();
         initGl();
         initGame();
@@ -21,18 +21,18 @@ public class GameMain {
     }
 
     private static void initGame(){
-        game = new Game2D();
+        game = new LWJGLDisplay();
     }
 
     private static void cleanup(){
         Keyboard.destroy();
         Mouse.destroy();
-        Display.destroy();
+        org.lwjgl.opengl.Display.destroy();
 
     }
 
     private static void gameLoop(){
-        while (!Display.isCloseRequested()){
+        while (!org.lwjgl.opengl.Display.isCloseRequested()){
             getInput();
 
 
@@ -56,14 +56,14 @@ public class GameMain {
 
         game.render();
 
-        Display.update();
-        Display.sync(60);
+        org.lwjgl.opengl.Display.update();
+        org.lwjgl.opengl.Display.sync(60);
     }
 
     private static  void initGl(){
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, Display.getWidth(),0,Display.getHeight(), -1,10);
+        glOrtho(0, org.lwjgl.opengl.Display.getWidth(),0, Display.getHeight(), -1,10);
         glMatrixMode(GL_MODELVIEW);
 
         glDisable(GL_DEPTH_TEST);
@@ -72,13 +72,13 @@ public class GameMain {
 
     private static void  initDisplay(){
         try {
-            Display.setDisplayMode(new DisplayMode(1280,720));
-            Display.create();
+            org.lwjgl.opengl.Display.setDisplayMode(new DisplayMode(1280,720));
+            org.lwjgl.opengl.Display.create();
             Keyboard.create();
             Mouse.create();
-            Display.setResizable(true);
-            Display.setVSyncEnabled(true);
-            Display.setFullscreen(true);
+            org.lwjgl.opengl.Display.setResizable(true);
+            org.lwjgl.opengl.Display.setVSyncEnabled(true);
+            org.lwjgl.opengl.Display.setFullscreen(true);
         } catch (LWJGLException e) {
             e.printStackTrace();
         }

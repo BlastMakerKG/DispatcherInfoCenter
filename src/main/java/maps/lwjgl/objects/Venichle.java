@@ -1,19 +1,19 @@
-package maps.lwjgl.gameobjects;
+package maps.lwjgl.objects;
 
-import maps.lwjgl.GameObject;
+import maps.lwjgl.Objects;
 import lombok.Setter;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 @Setter
-public class Player extends GameObject {
+public class Venichle extends Objects {
 
     public static float SIZE = 16;
     private float r = 0.1f,g=1.0f,b=0.1f;
     private float speed = 4f;
 
-    public Player(float x,float y){
+    public Venichle(float x, float y){
         init(r,g,b, SIZE, SIZE, x,y);
     }
 

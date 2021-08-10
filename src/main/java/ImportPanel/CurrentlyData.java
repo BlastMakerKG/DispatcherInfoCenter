@@ -31,15 +31,10 @@ public class CurrentlyData extends JPanel {
 
                 //---- location_table2 ----
                 location_table2.setModel(new DefaultTableModel(
-                        new Object[][] {
-                        },
-                        new String[] {
-                                "ID", "\u0414\u0430\u0442\u0430", "\u0428\u0438\u0440\u043e\u0442\u0430", "\u0414\u043e\u043b\u0433\u043e\u0442\u0430", "\u0410\u0431\u0441\u043e\u043b\u044e\u0442\u043d\u0430\u044f \u0432\u044b\u0441\u043e\u0442\u0430", "\u0420\u0430\u0441\u0441\u0442\u043e\u044f\u043d\u0438\u0435", "\u0421\u043a\u043e\u0440\u043e\u0441\u0442\u044c"
-                        }
+                        new Object[][] {},
+                        new String[] {"ID", "Дата", "Широта", "Долгота", "Абсолютная высота", "Расстояние", "Скорость"}
                 ) {
-                    Class<?>[] columnTypes = new Class<?>[] {
-                            Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class
-                    };
+                    Class<?>[] columnTypes = new Class<?>[] {Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class};
                     @Override
                     public Class<?> getColumnClass(int columnIndex) {
                         return columnTypes[columnIndex];
@@ -53,11 +48,10 @@ public class CurrentlyData extends JPanel {
 
             //---- jLabel2 ----
             jLabel2.setFont(new Font("Tahoma", Font.BOLD, 14));
-            jLabel2.setText("\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0435\u043d\u043d\u044b\u0435 \u0443\u0441\u0442\u0440\u043e\u0439\u0441\u0442\u0432\u0430");
+            jLabel2.setText("Подключенные устройства");
 
             //======== jScrollPane1 ========
             {
-
                 //---- connect_avto_list ----
                 connect_avto_list.setModel(new AbstractListModel<String>() {
                     String[] values = {
@@ -76,7 +70,7 @@ public class CurrentlyData extends JPanel {
             }
 
             //---- status_msg1 ----
-            status_msg1.setText("\u0421\u0442\u0430\u0442\u0443\u0441:");
+            status_msg1.setText("Статус:");
 
             GroupLayout jPanel2Layout = new GroupLayout(this);
             setLayout(jPanel2Layout);
