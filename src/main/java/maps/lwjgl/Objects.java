@@ -5,13 +5,11 @@ import lombok.Getter;
 import static org.lwjgl.opengl.GL11.*;
 
 @Getter
-public abstract class GameObject {
+public abstract class Objects {
     protected float x;
     protected float y;
 
     protected Sprite spr;
-
-    private Animation anim;
 
     public void update(){
 

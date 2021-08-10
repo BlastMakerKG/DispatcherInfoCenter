@@ -1,4 +1,4 @@
-package ImportPanel;
+package XmlFile;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -12,20 +12,17 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.List;
 
-public class XMLImport {
-
-    Document doc;
-
+public class ImportDataInXML {
 
     public void save(List<String[]> data){
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
         factory.setNamespaceAware(true);
         try {
-             doc = factory.newDocumentBuilder().newDocument();
+            Document doc = factory.newDocumentBuilder().newDocument();
 
 
             Element root = doc.createElement("SaveData");
-            //root.setAttribute("xmlns", "http://www.javacore.ru/schemas/");
+            root.setAttribute("xmlns", "http://www.javacore.ru/schemas/");
 
             int i=0;
             doc.appendChild(root);
@@ -36,16 +33,14 @@ public class XMLImport {
             }
 
 
-            File file = new File("src\\main\\java\\test.xml");
+            File file = new File("src\\main\\resources\\test.xml");
 
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.transform(new DOMSource(doc), new StreamResult(file));
 
-        } catch (ParserConfigurationException | TransformerConfigurationException e) {
+        } catch (ParserConfigurationException | TransformerException e) {
         e.printStackTrace();
-    } catch (TransformerException e) {
-            e.printStackTrace();
         }
     }
 

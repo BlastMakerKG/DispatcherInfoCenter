@@ -1,53 +1,32 @@
 package Server;
 
-import Dependes.TrafficPlan;
-import org.xml.sax.SAXException;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.awt.List;
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.ParserConfigurationException;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author student2
- */
+@Getter
+@Setter
 public class CreateServer implements Runnable{
 
-    /**
-     * @return the clientSocket
-     */
     public Socket getClientSocket() {
         return clientSocket;
     }
 
-    /**
-     * @param clientSocket the clientSocket to set
-     */
     public void setClientSocket(Socket clientSocket) {
         this.clientSocket = clientSocket;
     }
 
     private String data;
-    private String data1="";
     public String status = "";
     private String name_client;
-    private JTable myTable;
     DefaultTableModel modeltab;
 
     public boolean isFlag() {
@@ -66,30 +45,27 @@ public class CreateServer implements Runnable{
 //
 //        modeltab = (DefaultTableModel) loc_table.getModel();
 //
-//        Runnable run = new Runnable(){
-//            @Override
-//            public void run() {
-//                try{
-//                    while(!clientSocket.isClosed()){
-//                        if(data != null){
+//        Runnable run = () -> {
+//            try{
+//                while(!clientSocket.isClosed()){
+//                    if(data != null){
 //
-//                                 String str = data;
-//                                String[] subStr1, subStr2;
-//                                String delimeter = ",";
-//                                subStr1 = str.split(delimeter);
-//                                System.out.println(Integer.parseInt(subStr1[0]) + subStr1[1] + Double.parseDouble(subStr1[2]) +
-//                                                                                     Double.parseDouble(subStr1[3]) + Double.parseDouble(subStr1[4]) + Double.parseDouble(subStr1[5]) + Double.parseDouble(subStr1[6]));
-//                                modeltab.insertRow(queue, new Object[]{Integer.parseInt(subStr1[0]),subStr1[1],Double.parseDouble(subStr1[2]),
-//                                                                                     Double.parseDouble(subStr1[3]),Double.parseDouble(subStr1[4]),Double.parseDouble(subStr1[5]),Double.parseDouble(subStr1[6])});
-//                                 Thread.sleep(2000);
-//                                 modeltab.removeRow(queue);
-//                            }
-//                    }
-//                    }
-//                catch(Exception ex)
-//                {
-//                    ex.printStackTrace();
+//                             String str = data;
+//                            String[] subStr1, subStr2;
+//                            String delimeter = ",";
+//                            subStr1 = str.split(delimeter);
+//                            System.out.println(Integer.parseInt(subStr1[0]) + subStr1[1] + Double.parseDouble(subStr1[2]) +
+//                                                                                 Double.parseDouble(subStr1[3]) + Double.parseDouble(subStr1[4]) + Double.parseDouble(subStr1[5]) + Double.parseDouble(subStr1[6]));
+//                            modeltab.insertRow(queue, new Object[]{Integer.parseInt(subStr1[0]),subStr1[1],Double.parseDouble(subStr1[2]),
+//                                                                                 Double.parseDouble(subStr1[3]),Double.parseDouble(subStr1[4]),Double.parseDouble(subStr1[5]),Double.parseDouble(subStr1[6])});
+//                             Thread.sleep(2000);
+//                             modeltab.removeRow(queue);
+//                        }
 //                }
+//                }
+//            catch(Exception ex)
+//            {
+//                ex.printStackTrace();
 //            }
 //        };
 //         Thread myThread = new Thread(run);
@@ -111,33 +87,30 @@ public class CreateServer implements Runnable{
          
         modeltab = (DefaultTableModel) loc_table.getModel();
         
-        Runnable run = new Runnable(){
-            @Override
-            public void run() {
-                try{
-                    while(!clientSocket.isClosed()){
-                        if(data != null){
-                            
-                                 String str = data;
-                                String[] subStr1, subStr2;
-                                String delimeter = ",";  
-                                subStr1 = str.split(delimeter);
-                                datas.add(subStr1);
-                                System.out.println(Integer.parseInt(subStr1[0]) + subStr1[1] + Double.parseDouble(subStr1[2]) +
-                                                                                     Double.parseDouble(subStr1[3]) + Double.parseDouble(subStr1[4]) + Double.parseDouble(subStr1[5]) + Double.parseDouble(subStr1[6]));
-                            synchronized(modeltab)
-                            {
-                                modeltab.insertRow(modeltab.getRowCount(), new Object[]{Integer.parseInt(subStr1[0]),subStr1[1],Double.parseDouble(subStr1[2]),
-                                                                                     Double.parseDouble(subStr1[3]),Double.parseDouble(subStr1[4]),Double.parseDouble(subStr1[5]),Double.parseDouble(subStr1[6])});
-                                }
-                                 Thread.sleep(2000);
+        Runnable run = () -> {
+            try{
+                while(!clientSocket.isClosed()){
+                    if(data != null){
+
+                             String str = data;
+                            String[] splitStr;
+                            String delimeter = ",";
+                            splitStr = str.split(delimeter);
+                            datas.add(splitStr);
+                            System.out.println(Integer.parseInt(splitStr[0]) + splitStr[1] + Double.parseDouble(splitStr[2]) +
+                                                                                 Double.parseDouble(splitStr[3]) + Double.parseDouble(splitStr[4]) + Double.parseDouble(splitStr[5]) + Double.parseDouble(splitStr[6]));
+                        synchronized(modeltab)
+                        {
+                            modeltab.insertRow(modeltab.getRowCount(), new Object[]{Integer.parseInt(splitStr[0]),splitStr[1],Double.parseDouble(splitStr[2]),
+                                                                                 Double.parseDouble(splitStr[3]),Double.parseDouble(splitStr[4]),Double.parseDouble(splitStr[5]),Double.parseDouble(splitStr[6])});
                             }
-                        }         
-                    } 
-                catch(Exception ex)
-                {
-                    ex.printStackTrace();
-                }  
+                             Thread.sleep(2000);
+                        }
+                    }
+                }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
             }
         };
          Thread myThread = new Thread(run);
@@ -190,34 +163,6 @@ public class CreateServer implements Runnable{
             
         }
 
-    }
-
-    /**
-     * @return the data
-     */
-    public String getData() {
-        return data;
-    }
-
-    /**
-     * @param data the data to set
-     */
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    /**
-     * @return the name_client
-     */
-    public String getName_client() {
-        return name_client;
-    }
-
-    /**
-     * @param name_client the name_client to set
-     */
-    public void setName_client(String name_client) {
-        this.name_client = name_client;
     }
     
 }
