@@ -57,23 +57,6 @@ public abstract class Objects {
                 line.setSy(line.getSy()*2);
             }
         }
-
-
-
-//         if( zoom > 0){
-//            this.x -= zoom*0.5;
-//            this.y -= zoom*0.5;
-//            this.spr.setSx(spr.getSx()+zoom);
-//            this.spr.setSy(spr.getSy()+zoom);
-//        }else if(this.spr.getSx() <= 1.5f && this.spr.getSy() <= 1.5f){
-//            this.spr.setSy(1.5f);
-//            this.spr.setSx(1.5f);
-//        }else{
-//            this.x += -zoom*.5;
-//            this.y += -zoom*0.5;
-//            this.spr.setSx(spr.getSx()+zoom);
-//            this.spr.setSy(spr.getSy()+zoom);
-//        }
     }
 
     protected void line(float x1,float y1, Line.Sprite spr){

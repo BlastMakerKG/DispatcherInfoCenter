@@ -7,9 +7,8 @@ import static org.lwjgl.opengl.GL11.*;
 @Setter
 public class Venichle extends Objects {
 
-    public static float SIZE = 16;
+    public static float SIZE = 8;
     private float r = 0.1f,g=1.0f,b=0.1f;
-    private float speed = 4f;
 
     private Venichle.Sprite spr;
 
