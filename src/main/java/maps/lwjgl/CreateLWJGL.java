@@ -4,14 +4,20 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
+
+import java.util.ArrayList;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class CreateLWJGL {
 
     private static LWJGLDisplay game;
+    private static ArrayList<DisplayMode> resolutions = new ArrayList<>();
 
     public CreateLWJGL() {
         initDisplay();
+        initDisplaymodes();
+
         initGl();
         initGame();
 
@@ -55,30 +61,59 @@ public class CreateLWJGL {
         //Draw
 
         game.render();
+//        for (int i = 0; i < resolutions.size(); i++) {
+//            if(Display.getDisplayMode().getWidth() >resolutions.get(i).getWidth() && Display.getDisplayMode().getHeight() >resolutions.get(i).getHeight()){
+//                try {
+//                    Display.setDisplayMode(resolutions.get(i));
+//                } catch (LWJGLException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
 
-        org.lwjgl.opengl.Display.update();
-        org.lwjgl.opengl.Display.sync(60);
+        Display.update();
+        Display.sync(60);
     }
 
     private static  void initGl(){
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, org.lwjgl.opengl.Display.getWidth(),0, Display.getHeight(), -1,10);
+        glOrtho(0, Display.getWidth(),0, Display.getHeight(), -1,10);
         glMatrixMode(GL_MODELVIEW);
 
         glDisable(GL_DEPTH_TEST);
         glClearColor(0,0,0,0);
     }
 
+    private static void initDisplaymodes(){
+        try {
+            Display.setResizable(true);
+            Display.setVSyncEnabled(true);
+//            Display.setFullscreen(true);
+            DisplayMode[] modes = Display.getAvailableDisplayModes();
+            for (int i = 0; i < modes.length; i++) {
+                DisplayMode current = modes[i];
+                resolutions.add(current);
+            }
+//            for (int i = 1; i < resolutions.size(); i++) {
+//                if(resolutions.get(i-1).getWidth() > resolutions.get(i).getWidth() && resolutions.get(i-1).getHeight() > resolutions.get(i).getHeight()){
+//                    DisplayMode temp = resolutions.get(i-1);
+//                    resolutions.set(i-1, resolutions.get(i));
+//                    resolutions.set(i, temp);
+//                }
+//            }
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private static void  initDisplay(){
         try {
-            org.lwjgl.opengl.Display.setDisplayMode(new DisplayMode(1280,720));
-            org.lwjgl.opengl.Display.create();
+            Display.setDisplayMode(new DisplayMode(1280,720));
+            Display.create();
             Keyboard.create();
             Mouse.create();
-            org.lwjgl.opengl.Display.setResizable(true);
-            org.lwjgl.opengl.Display.setVSyncEnabled(true);
-            org.lwjgl.opengl.Display.setFullscreen(true);
+
         } catch (LWJGLException e) {
             e.printStackTrace();
         }

@@ -1,6 +1,10 @@
 package maps.lwjgl;
 
 import lombok.Getter;
+import maps.lwjgl.objects.Layer;
+import maps.lwjgl.objects.Line;
+import maps.lwjgl.objects.Point;
+import maps.lwjgl.objects.Venichle;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -9,7 +13,10 @@ public abstract class Objects {
     protected float x;
     protected float y;
 
-    protected Sprite spr;
+    protected Point.Sprite spr;
+    protected Line.Sprite line;
+    protected Venichle.Sprite car;
+    protected Layer.Sprite layer;
 
     public void update(){
 
@@ -19,7 +26,15 @@ public abstract class Objects {
         glPushMatrix();
         {
             glTranslated(x, y,0);
-            spr.render();
+            if(spr != null) {
+                spr.render();
+            }else if(line != null){
+                line.render();
+            }else if(car != null){
+                car.render();
+            }else if(layer != null){
+                layer.render();
+            }
         }
 
         glPopMatrix();
@@ -30,9 +45,17 @@ public abstract class Objects {
         if(zoom>0){
             this.x /= 2;
             this.y /= 2;
+            if(line != null){
+                line.setSx(line.getSx()/2);
+                line.setSy(line.getSy()/2);
+            }
         }else if(zoom < 0){
             this.x *= 2;
             this.y *= 2;
+            if(line != null){
+                line.setSx(line.getSx()*2);
+                line.setSy(line.getSy()*2);
+            }
         }
 
 
@@ -53,16 +76,26 @@ public abstract class Objects {
 //        }
     }
 
-    protected void init(float r, float g, float b, float sx,float sy, float x,float y){
-        this.x = x;
-        this.y = y;
-        this.spr = Sprite.builder()
-                        .r(r)
-                        .g(g)
-                        .b(b)
-                        .sx(sx)
-                        .sy(sy)
-                    .build();
+    protected void line(float x1,float y1, Line.Sprite spr){
+        this.x = x1;
+        this.y = y1;
+        this.line = spr;
     }
 
+    protected void point(float x, float y, Point.Sprite spr){
+        this.x = x;
+        this.y = y;
+        this.spr = spr;
+    }
+
+    protected void venichle(float x, float y, Venichle.Sprite spr){
+        this.x = x;
+        this.y = y;
+        this.car = spr;
+    }
+    protected void layer(float x, float y, Layer.Sprite spr){
+        this.x = x;
+        this.y = y;
+        this.layer = spr;
+    }
 }

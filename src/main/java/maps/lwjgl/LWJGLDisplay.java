@@ -3,12 +3,12 @@ package maps.lwjgl;
 import XmlFile.ParseXmlPoints;
 import XmlFile.ReliefItems;
 import maps.lwjgl.objects.*;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+
 import java.util.*;
+
 
 public class LWJGLDisplay {
 
@@ -29,19 +29,19 @@ public class LWJGLDisplay {
         layers = new ArrayList<>();
         VerticalTexts = new ArrayList<>();
         HorisontalTexts = new ArrayList<>();
-        parse.loadLinks();
-
         geolines = new HashMap<>();
+
+        parse.loadLinks();
 
         central_point = new Layer(0,0,1,1);
         text_center = new WriteText(new StringBuilder(central_point.x + "  "+ central_point.y), 100, 100);
 
         for (ReliefItems item : list) {
-            points.add(new Point((float) (org.lwjgl.opengl.Display.getHeight() /2 + (item.getX())), (float) (org.lwjgl.opengl.Display.getWidth() / 2 + (item.getY()))));
+            points.add(new Point((float) (item.getX()), (float) (item.getY())));
         }
 
         ReliefItems temp = null;
-        boolean first =true;
+        boolean first = true;
 
         for (int i = 0; i < geoLines.size(); i++) {
             for (ReliefItems item : geoLines.get(i)){
@@ -64,10 +64,10 @@ public class LWJGLDisplay {
         points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60));
         points.add(new Venichle((float)Display.getHeight() /2 - Venichle.SIZE / 2, (float)Display.getWidth() / 2 - Venichle.SIZE/2));
 
-        layers.add(new Layer(20,20, 2, org.lwjgl.opengl.Display.getHeight()));
-        layers.add(new Layer(20, 20, org.lwjgl.opengl.Display.getWidth(), 2));
+        layers.add(new Layer(20,20, 2, Display.getHeight()));
+        layers.add(new Layer(20, 20, Display.getWidth(), 2));
 
-//        line(points.get(points.size()-2).x, points.get(points.size()-2).y, points.get(points.size()-3).x, points.get(points.size()-3).y);
+        line(points.get(points.size()-2).x, points.get(points.size()-2).y, points.get(points.size()-3).x, points.get(points.size()-3).y);
 
         for (int i = 20; i < org.lwjgl.opengl.Display.getHeight(); i = i + 50) {
             layers.add(new Layer(15,i,10,2));
@@ -83,36 +83,15 @@ public class LWJGLDisplay {
     private List<Objects> line(float x1, float y1, float x2, float y2){
         List<Objects> temp = new ArrayList<>();
 
-        x1 += Point.SIZE/2;
-        x2 += Point.SIZE/2;
-        y1 += Point.SIZE/2;
-        y2 += Point.SIZE/2;
-
-        if(x1 < x2 && y1 < y2){
-            for (float i = x1; i < x2; i++, y1++) {
-                temp.add(new Layer(i,y1, 1,1));
-            }
-        }else if(x1 > x2 && y1 < y2){
-            for (float i = x1; i > x2; i--, y1+=1.13) {
-                temp.add(new Layer(i,y1, 1,1));
-            }
-        }else if(x1 > x2 && y1 > y2){
-            for (float i = x1; i > x2; i--, y1--) {
-                temp.add(new Layer(i,y1, 1,1));
-            }
-        }else{
-            for (float i = x1; i < x2; i++, y1--) {
-                temp.add(new Layer(i,y1, 1,1));
-            }
-        }
-
+        Line line = new Line(x1,y1,x2,y2);
+        temp.add(line);
 
         return temp;
     }
 
     public void getInput(){
         if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
-            org.lwjgl.opengl.Display.destroy();
+            Display.destroy();
         }
 
         float zoom = Mouse.getDWheel() * 0.008f;
@@ -184,13 +163,6 @@ public class LWJGLDisplay {
     }
 
     public void update(){
-        if(org.lwjgl.opengl.Display.isFullscreen()){
-            try {
-                org.lwjgl.opengl.Display.setDisplayMode(new DisplayMode(1920,1080));
-            } catch (LWJGLException e) {
-                e.printStackTrace();
-            }
-        }
         for (Objects go : points) {
             go.update();
         }
