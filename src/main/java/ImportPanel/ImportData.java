@@ -202,9 +202,9 @@ public class ImportData extends JPanel {
 
     private List<String[]> data = new ArrayList<>();
 
-    public List<String[]> getData(){
-        return data;
-    }
+//    public List<String[]> getData(){
+//        return data;
+//    }
 
     private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {
         Runnable run = () -> {
