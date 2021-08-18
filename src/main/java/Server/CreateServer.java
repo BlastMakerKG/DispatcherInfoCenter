@@ -1,5 +1,8 @@
 package Server;
 
+import Server.DB.dao.DataDaoHibernateImpl;
+import Server.DB.service.DataService;
+import Server.DB.service.DataServiceImpl;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -124,6 +127,11 @@ public class CreateServer implements Runnable{
             {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(getClientSocket().getInputStream()));
                 data = reader.readLine();
+
+                DataService dataService = new DataServiceImpl();
+                dataService.cleanDataTable();
+                dataService.saveData(data);
+
                 if(data != null)
                 {
                     
