@@ -9,7 +9,7 @@ public class Layer extends Objects {
     private Layer.Sprite spr;
 
     public Layer(float x , float y, float sizeX, float sizeY){
-        this.spr = new Layer.Sprite(0.5f,0,0.5f,sizeX,sizeY);
+        this.spr = new Layer.Sprite(1f,0.8f,0.1f,sizeX,sizeY);
         layer(x, y, spr);
     }
 

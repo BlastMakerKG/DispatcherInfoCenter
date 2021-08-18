@@ -136,6 +136,5 @@ public class WriteText {
         }
     }
 
-    public void update() {
-    }
+    public void update() { }
 }

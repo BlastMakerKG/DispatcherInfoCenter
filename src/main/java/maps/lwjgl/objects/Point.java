@@ -1,6 +1,10 @@
 package maps.lwjgl.objects;
 
+import XmlFile.ReliefItems;
 import maps.lwjgl.Objects;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -10,7 +14,7 @@ public class Point extends Objects {
     private Sprite spr;
 
     public Point(float x, float y) {
-        this.spr = new Point.Sprite(1,0,0,SIZE,SIZE);
+        this.spr = new Point.Sprite(0.1f,0.1f,0.1f,SIZE,SIZE);
         point(x,y, spr);
     }
 

@@ -14,7 +14,7 @@ public class Line extends Objects {
     public Line(float x, float y, float x2, float y2) {
         this.sx = x2 -x;
         this.sy = y2 - y;
-        this.spr = new Line.Sprite(0,1,0,sx, sy);
+        this.spr = new Line.Sprite(1,1,1,sx, sy);
         line(x,y, spr);
     }
 
