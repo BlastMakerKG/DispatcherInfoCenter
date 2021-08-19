@@ -129,7 +129,7 @@ public class CreateServer implements Runnable{
                 data = reader.readLine();
 
                 DataService dataService = new DataServiceImpl();
-                dataService.cleanDataTable();
+                dataService.createDataTable();
                 dataService.saveData(data);
 
                 if(data != null)

@@ -3,6 +3,8 @@ package Frame;
 import ImportPanel.CurrentlyData;
 import ImportPanel.ImportData;
 import Server.CreateServer;
+import Server.DB.service.DataService;
+import Server.DB.service.DataServiceImpl;
 
 import java.awt.*;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +20,10 @@ public class MonitoringFrame extends JFrame {
     static ExecutorService executeIt = Executors.newFixedThreadPool(5);
 
     public MonitoringFrame() {
+
+        DataService dataService = new DataServiceImpl();
+        dataService.createDataTable();
+        dataService.saveData("gfdgdgd");
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

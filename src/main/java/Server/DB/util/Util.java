@@ -10,7 +10,7 @@ import org.hibernate.cfg.Configuration;
 import java.util.Properties;
 
 public class Util {
-    static final String URL = "jdbc:mysql://localhost:3306/DispatcherInfoCenter";
+    static final String URL = "jdbc:mysql://localhost:3306/dispatcherinfocenter";
     static final String USER = "root";
     static final String PSW = "1111";
 

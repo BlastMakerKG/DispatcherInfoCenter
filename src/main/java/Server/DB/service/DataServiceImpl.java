@@ -1,5 +1,6 @@
 package Server.DB.service;
 
+import Server.DB.dao.DataDao;
 import Server.DB.dao.DataDaoHibernateImpl;
 import Server.DB.model.Data;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public class DataServiceImpl implements DataService{
 
-    DataDaoHibernateImpl dataDaoHibernate = new DataDaoHibernateImpl();
+    DataDao dataDaoHibernate = new DataDaoHibernateImpl();
     @Override
     public void createDataTable() {
         dataDaoHibernate.createDataTable();

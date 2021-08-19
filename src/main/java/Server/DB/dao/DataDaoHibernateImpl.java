@@ -10,14 +10,17 @@ import java.util.List;
 
 public class DataDaoHibernateImpl implements DataDao{
 
-    public DataDaoHibernateImpl() {};
+    public DataDaoHibernateImpl() {
+
+    }
 
     @Override
     public void createDataTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS Data(id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, data nvarchar(200))");
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS Data(id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, data nvarchar(200) NOT NULL)").executeUpdate();
             transaction.commit();
+            session.close();
         } catch(Exception e) {
             System.out.println(e.getMessage());
         }
@@ -29,6 +32,7 @@ public class DataDaoHibernateImpl implements DataDao{
             Transaction transaction = session.beginTransaction();
             session.createSQLQuery("DROP TABLE IF EXISTS Data").executeUpdate();
             transaction.commit();
+            session.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -42,6 +46,7 @@ public class DataDaoHibernateImpl implements DataDao{
             transaction = session.getTransaction();
             session.save(data1);
             transaction.commit();
+            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
@@ -56,6 +61,7 @@ public class DataDaoHibernateImpl implements DataDao{
             Data data = session.get(Data.class, id);
             session.delete(data);
             transaction.commit();
+            session.close();
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -69,6 +75,7 @@ public class DataDaoHibernateImpl implements DataDao{
             transaction = session.getTransaction();
             datas = session.createQuery("FROM Data").list();
             transaction.commit();
+            session.close();
         } catch (Exception e) {
             if (transaction != null) {
                 transaction.rollback();
