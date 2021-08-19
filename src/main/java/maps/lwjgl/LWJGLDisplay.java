@@ -36,8 +36,12 @@ public class LWJGLDisplay {
         central_point = new Layer(0,0,1,1);
         text_center = new WriteText(new StringBuilder(central_point.x + "  "+ central_point.y), 100, 100);
 
+        list.sort(ReliefItems::compareTo);
+        float r = 0.1f, g = 1.0f, b =0.1f;
         for (ReliefItems item : list) {
-            points.add(new Point((float) (item.getX()), (float) (item.getY())));
+            points.add(new Point((float) (item.getX()), (float) (item.getY()), r,g,b));
+            r+=0.05f;
+            g-=0.01f;
         }
 
         ReliefItems temp = null;
@@ -55,13 +59,13 @@ public class LWJGLDisplay {
             }
         }
 
-        points.add(new Point((float) Display.getHeight() /2 - 20, (float)Display.getWidth() / 2 - 20));
-        points.add(new Point((float)Display.getHeight() /2 +20, (float)Display.getWidth() / 2 + 20));
-        points.add(new Point((float)Display.getHeight() - 40, (float)Display.getWidth() - 40));
-        points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60));
-        points.add(new Point((float)Display.getHeight() /2 - 60, (float)Display.getWidth() / 2 - 60));
-        points.add(new Point((float)Display.getHeight() /2 - 80, (float)Display.getWidth() / 2 + 80));
-        points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60));
+        points.add(new Point((float) Display.getHeight() /2 - 20, (float)Display.getWidth() / 2 - 20, r,g,b));
+        points.add(new Point((float)Display.getHeight() /2 +20, (float)Display.getWidth() / 2 + 20, r,g,b));
+        points.add(new Point((float)Display.getHeight() - 40, (float)Display.getWidth() - 40, r,g,b));
+        points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60, r,g,b));
+        points.add(new Point((float)Display.getHeight() /2 - 60, (float)Display.getWidth() / 2 - 60, r,g,b));
+        points.add(new Point((float)Display.getHeight() /2 - 80, (float)Display.getWidth() / 2 + 80, r,g,b));
+        points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60, r,g,b));
         points.add(new Venichle((float)Display.getHeight() /2 - Venichle.SIZE / 2, (float)Display.getWidth() / 2 - Venichle.SIZE/2));
 
         layers.add(new Layer(20,20, 2, Display.getHeight()));
@@ -71,11 +75,11 @@ public class LWJGLDisplay {
 
         for (int i = 20; i < org.lwjgl.opengl.Display.getHeight(); i = i + 50) {
             layers.add(new Layer(15,i,10,2));
-            HorisontalTexts.add(new WriteText(new StringBuilder(String.valueOf((int)(central_point.y + i))), 26,i/2));
+            HorisontalTexts.add(new WriteText(new StringBuilder(String.valueOf(Math.round(central_point.y + i))), 26,i/2));
         }
         for (int i = 20; i < org.lwjgl.opengl.Display.getWidth(); i = i+50) {
             layers.add(new Layer(i, 15, 2,10));
-            VerticalTexts.add(new WriteText(new StringBuilder(String.valueOf(central_point.x + i)), i-5,16));
+            VerticalTexts.add(new WriteText(new StringBuilder(String.valueOf(Math.round(central_point.x + i))), i-5,16));
         }
     }
 
@@ -119,22 +123,22 @@ public class LWJGLDisplay {
         central_point.x += mouseX;
         central_point.y += mouseY;
         central_point.resize(zoom);
-        text_center.setRenderString(new StringBuilder().append(points.get(0).x).append(" ").append(points.get(0).y));
+        text_center.setRenderString(new StringBuilder().append(Math.round(points.get(0).x)).append(" ").append(Math.round(points.get(0).y)));
 
         for(WriteText wr : VerticalTexts){
-            wr.setRenderString(new StringBuilder().append(Float.parseFloat(wr.getRenderString().toString())-mouseX));
+            wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString())-mouseX)));
             if(zoom < 0){
-                wr.setRenderString(new StringBuilder().append(Float.parseFloat(wr.getRenderString().toString())/2));
+                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString())/2)));
             }else if(zoom > 0){
-                wr.setRenderString(new StringBuilder().append(Float.parseFloat(wr.getRenderString().toString())*2));
+                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString())*2)));
             }
         }
         for(WriteText wr : HorisontalTexts) {
-            wr.setRenderString(new StringBuilder().append(Float.parseFloat(wr.getRenderString().toString()) - mouseY));
+            wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) - mouseY)));
             if (zoom < 0) {
-                wr.setRenderString(new StringBuilder().append(Float.parseFloat(wr.getRenderString().toString()) / 2));
+                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) / 2)));
             } else if (zoom > 0) {
-                wr.setRenderString(new StringBuilder().append(Float.parseFloat(wr.getRenderString().toString()) * 2));
+                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) * 2)));
             }
         }
     }

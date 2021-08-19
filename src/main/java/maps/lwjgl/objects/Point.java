@@ -10,11 +10,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Point extends Objects {
 
-    public static final float SIZE = 8;
+    public static final float SIZE = 4;
     private Sprite spr;
 
-    public Point(float x, float y) {
-        this.spr = new Point.Sprite(0.1f,0.1f,0.1f,SIZE,SIZE);
+    public Point(float x, float y, float r,float g,float b) {
+//        0.1f,0.1f,0.1f
+        this.spr = new Point.Sprite(r,g,b,SIZE,SIZE);
         point(x,y, spr);
     }
 
@@ -36,6 +37,7 @@ public class Point extends Objects {
 
         public void render() {
             glColor3f(r, g, b);
+
 
             glBegin(GL_QUADS);
 
