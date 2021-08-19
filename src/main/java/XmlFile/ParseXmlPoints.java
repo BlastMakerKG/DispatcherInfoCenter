@@ -63,6 +63,7 @@ public class ParseXmlPoints {
                     reliefItems.setY(Double.parseDouble(bookInto.getAttribute("Y")));
                     reliefItems.setZ(Double.parseDouble(bookInto.getAttribute("Z")));
 
+                    this.reliefItems.add(reliefItems);
                     temp.add(reliefItems);
                 }
                 this.geoLines.put(index, temp);
