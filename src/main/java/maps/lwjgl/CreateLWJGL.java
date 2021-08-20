@@ -4,7 +4,9 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.DisplayMode;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
