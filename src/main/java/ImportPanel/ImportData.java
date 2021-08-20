@@ -21,11 +21,6 @@ import java.util.logging.Logger;
 
 public class ImportData extends JPanel {
 
-//    private Button save_bnt;
-//    private JButton exit_btn;
-//    private JButton create_btn;
-//    private JButton server_btn;
-//    private JLabel jLabel1;
     private JLabel status_msg;
     private JLabel excep_msg;
     private JButton maps;
@@ -42,24 +37,28 @@ public class ImportData extends JPanel {
     public ImportData(CreateServer[] createsev, ExecutorService executeIt ) {
 
         this.setLayout(null);
-        this.setSize(800,900);
+        this.setSize(800,600);
         menu();
         pane();
 
         this.createsev = createsev;
         this.executeIt = executeIt;
+        excep_msg = new JLabel();
 
     }
 
     private JPanel menu;
-    private JButton start = null;
-    private JButton stop = null;
-    private JButton help = null;
-    private JButton save = null;
+    private JButton start;
+    private JButton stop;
+    private JButton help;
+    private JButton save;
+    private JLabel statusShow;
     private JComboBox<String> box;
+    private JTable location_table2;
 
     private void menu(){
         menu = new JPanel();
+        location_table2 = new JTable();
         menu.setSize(this.getWidth(), 30);
         menu.setLayout(null);
         menu.setLocation(5,5);
@@ -67,15 +66,13 @@ public class ImportData extends JPanel {
         menu.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 
 
-        try {
-            start = new JButton(new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\start.png"))));
-            stop = new JButton(new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\stop.png"))));
-            help = new JButton(new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\help.png"))));
-            save = new JButton(new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\save.png"))));
-            maps = new JButton(new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\maps.png"))));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        start = new JButton(uploadIcon("start"));
+        stop = new JButton(uploadIcon("stop"));
+        help = new JButton(uploadIcon("help"));
+        save = new JButton(uploadIcon("save"));
+        maps = new JButton(uploadIcon("maps"));
+
+
 
         start.setLocation(10,5);
         start.setSize(20,20);
@@ -86,7 +83,7 @@ public class ImportData extends JPanel {
         stop.setSize(20,20);
         stop.setLocation(40,5);
         stop.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
-        stop.addActionListener(e -> exit_btnActionPerformed(e));
+        stop.addActionListener(e -> stop_btnActionPerformed(e));
         menu.add(stop);
 
         help.setSize(20,20);
@@ -102,11 +99,16 @@ public class ImportData extends JPanel {
         save.addActionListener(e -> save_bntActionPerformed(e));
         menu.add(save);
 
-        status_msg = new JLabel("Status");
-        status_msg.setSize(50,20);
+        status_msg = new JLabel("Status:");
+        status_msg.setSize(70,20);
         status_msg.setLocation(130,5);
         status_msg.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
         menu.add(status_msg);
+
+        statusShow = new JLabel(uploadIcon("no"));
+        statusShow.setSize(20,20);
+        statusShow.setLocation(175,5);
+        menu.add(statusShow);
 
         box = new JComboBox<String>();
         box.setSize(100,20);
@@ -115,19 +117,28 @@ public class ImportData extends JPanel {
                 String[] str = server.getData().split(",");
                 box.addItem(str[1]);
             }
-        box.setLocation(190,5);
+        box.setLocation(220,5);
         menu.add(box);
 
 
 
         maps.addActionListener(e -> maps());
         maps.setSize(20,20);
-        maps.setLocation(300,5);
+        maps.setLocation(330,5);
         maps.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
         menu.add(maps);
 
 
         add(menu);
+    }
+
+    private ImageIcon uploadIcon(String filename){
+        try {
+            return new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\"+filename+".png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private JPanel main;
@@ -137,19 +148,15 @@ public class ImportData extends JPanel {
         main.setVisible(true);
         main.setLayout(null);
         main.setLocation(5, 40);
-        main.setSize(this.getWidth(), this.getHeight()-40-5);
-        main.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        main.setSize(this.getWidth(), this.getHeight()-20);
+//        main.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 
         class_list = new java.awt.List();
         jScrollPane2 = new JScrollPane();
         location_table = new JTable();
         modeltab = (DefaultTableModel) location_table.getModel();
 
-//        class_list.addActionListener(e -> class_listActionPerformed(e));
-
-        jScrollPane2.setSize(main.getWidth(), main.getHeight());
-//        location_table.setSize(main.getWidth(), main.getHeight());
-
+        jScrollPane2.setSize(main.getWidth(), main.getHeight()-5);
 
         //======== jScrollPane2 ========
         {
@@ -188,16 +195,13 @@ public class ImportData extends JPanel {
     }
 
 
+    private boolean flag = false;
     private List<String[]> data = new ArrayList<>();
-
-    public List<String[]> getData(){
-        return data;
-    }
 
     private void create_btnActionPerformed(ActionEvent evt) {
         Runnable run = () -> {
             int count =1;
-            while(true) {
+            while(flag) {
                 try{
                     for(int j=0; j < createsev.length; j++) {
                         if(predString == null) {
@@ -262,11 +266,12 @@ public class ImportData extends JPanel {
     }
 
     private void server_btnActionPerformed(ActionEvent evt) {
+        statusShow.setIcon(uploadIcon("ok"));
+        flag =true;
 
         try{
             final ServerSocket serverSocket = new ServerSocket(24500);
             System.out.println("Сервер создан ждем подключения");
-            status_msg.setText("Сервер успешно создан");
 
             Runnable runnable = () -> {
                 int i =0;
@@ -281,8 +286,8 @@ public class ImportData extends JPanel {
                         createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg,data);
                         executeIt.execute(createsev[i]);
 
-//                        createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
-//                        executeIt.execute(createsev[i]);
+                        createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
+                        executeIt.execute(createsev[i]);
 
                         i++;
                     } catch (IOException ex) {
@@ -310,14 +315,13 @@ public class ImportData extends JPanel {
 
     }
 
-    private void class_listActionPerformed(java.awt.event.ActionEvent evt) {
+    private void stop_btnActionPerformed(ActionEvent evt) {
+//        System.exit(0);
+        flag = false;
+        statusShow.setIcon(uploadIcon("no"));
     }
 
-    private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exit_btnActionPerformed
-        System.exit(0);
-    }
-
-    private void save_bntActionPerformed(java.awt.event.ActionEvent evt) {
+    private void save_bntActionPerformed(ActionEvent evt) {
 
         ImportDataInXML xmlFile = new ImportDataInXML();
 
@@ -327,75 +331,6 @@ public class ImportData extends JPanel {
 
         xmlFile.save(data);
 
-//        String str = createsev[0].getData();
-//        if (str != predString) {
-//            String[] subStr1, subStr2;
-//            String delimeter = ",";
-//            subStr1 = str.split(delimeter);
-//            modeltab.insertRow(5, new Object[]{Integer.parseInt(subStr1[0]), "Hello", Double.parseDouble(subStr1[2]),
-//                    Double.parseDouble(subStr1[3]), Double.parseDouble(subStr1[4]), Double.parseDouble(subStr1[5]), Double.parseDouble(subStr1[6])});
-//        try{
-//
-//        JFileChooser fileChooser = new JFileChooser();
-//        fileChooser.showSaveDialog(this);
-//         File file =fileChooser.getSelectedFile();
-//
-//         ExportData.exportToCSV(location_table, file);
-//
-//        }
-
-//        JFileChooser fileChooser = new JFileChooser();
-//        fileChooser.setDialogTitle("Specify a file save");
-//        int userSelection = fileChooser.showSaveDialog(this);
-//        if(userSelection == JFileChooser.APPROVE_OPTION){
-//            File fileToSave = fileChooser.getSelectedFile();
-//            //lets write to file
-//
-//            try {
-//                  FileWriter fw = new FileWriter(fileToSave);
-//                BufferedWriter bw = new BufferedWriter(fw);
-//                for (int i = 0; i<location_table.getRowCount(); i++)
-//                {
-//                    for (int j = 0; j<location_table.getColumnCount(); j++) {
-//                        //write
-//                        bw.write(location_table.getValueAt(i, j).toString()+",");
-//                    }
-//                    bw.newLine();//record per line
-//                }
-//                JOptionPane.showMessageDialog(this, "SUCCESSFULLY LOADED","INFORMATION",JOptionPane.INFORMATION_MESSAGE);
-//                bw.close();
-//                fw.close();
-//            } catch (IOException ex) {
-//               JOptionPane.showMessageDialog(this, "ERROR","ERROR MESSAGE",JOptionPane.ERROR_MESSAGE);
-//            }}
-
-//
-//            try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
-//
-//      StringBuilder sb = new StringBuilder();
-//      sb.append("id,");
-//      sb.append(';');
-//      sb.append("Name");
-//      sb.append('\n');
-//
-//      sb.append("1");
-//      sb.append(';');
-//      sb.append("Prashant Ghimire");
-//      sb.append('\n');
-//
-//      writer.write(sb.toString());
-//
-//      System.out.println("done!");
-//
-//    } catch (FileNotFoundException e) {
-//      System.out.println(e.getMessage());
-//    }
-//
-//        }
-//
-//
-
-
-        }
     }
+}
 

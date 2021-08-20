@@ -21,7 +21,6 @@ public class LWJGLDisplay {
     private List<WriteText> HorisontalTexts;
     private HashMap<Integer, List<Objects>> geolines;
 
-    private Layer central_point;
     private WriteText text_center;
 
     public LWJGLDisplay(){
@@ -33,16 +32,21 @@ public class LWJGLDisplay {
 
         parse.loadLinks();
 
-        central_point = new Layer(0,0,1,1);
-        text_center = new WriteText(new StringBuilder(central_point.x + "  "+ central_point.y), 100, 100);
+
 
         list.sort(ReliefItems::compareTo);
         float r = 0.1f, g = 1.0f, b =0.1f;
-        for (ReliefItems item : list) {
-            points.add(new Point((float) (item.getX()), (float) (item.getY()), r,g,b));
-            r+=0.05f;
-            g-=0.01f;
+        for (int i =0; i<list.size(); i++) {
+            points.add(new Point((float) (list.get(i).getX()), (float) (list.get(i).getY()), r,g,b));
+            if(i !=0)
+                if(list.get(i).getZ() != list.get(i-1).getZ()){
+                    r+=0.03f;
+                    g-=0.01f;
+                }
+
         }
+
+        text_center = new WriteText(new StringBuilder(points.get(points.size()-1).x + "  "+ points.get(points.size()-1).y), 100, 100);
 
         ReliefItems temp = null;
         boolean first = true;
@@ -75,11 +79,11 @@ public class LWJGLDisplay {
 
         for (int i = 20; i < org.lwjgl.opengl.Display.getHeight(); i = i + 50) {
             layers.add(new Layer(15,i,10,2));
-            HorisontalTexts.add(new WriteText(new StringBuilder(String.valueOf(Math.round(central_point.y + i))), 26,i/2));
+            HorisontalTexts.add(new WriteText(new StringBuilder(String.valueOf(Math.round(i))), 26,i/2));
         }
         for (int i = 20; i < org.lwjgl.opengl.Display.getWidth(); i = i+50) {
             layers.add(new Layer(i, 15, 2,10));
-            VerticalTexts.add(new WriteText(new StringBuilder(String.valueOf(Math.round(central_point.x + i))), i-5,16));
+            VerticalTexts.add(new WriteText(new StringBuilder(String.valueOf(Math.round(i))), i-5,16));
         }
     }
 
@@ -120,9 +124,6 @@ public class LWJGLDisplay {
             }
         }
 
-        central_point.x += mouseX;
-        central_point.y += mouseY;
-        central_point.resize(zoom);
         text_center.setRenderString(new StringBuilder().append(Math.round(points.get(0).x)).append(" ").append(Math.round(points.get(0).y)));
 
         for(WriteText wr : VerticalTexts){
@@ -162,7 +163,6 @@ public class LWJGLDisplay {
             }
         }
 
-        central_point.render();
         text_center.render();
     }
 

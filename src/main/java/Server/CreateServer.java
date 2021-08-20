@@ -37,40 +37,40 @@ public class CreateServer implements Runnable{
     
     private Socket clientSocket;
     
-//    public CreateServer(Socket socket,List client_list,JTable loc_table,JLabel label, int queue){
-//        this.clientSocket = socket;
-//        name_client = clientSocket.getInetAddress().getCanonicalHostName();
-//        client_list.add(clientSocket.getInetAddress().getCanonicalHostName());
-//        label.setText("Передача данных началась");
-//
-//        modeltab = (DefaultTableModel) loc_table.getModel();
-//
-//        Runnable run = () -> {
-//            try{
-//                while(!clientSocket.isClosed()){
-//                    if(data != null){
-//
-//                             String str = data;
-//                            String[] subStr1, subStr2;
-//                            String delimeter = ",";
-//                            subStr1 = str.split(delimeter);
-//                            System.out.println(Integer.parseInt(subStr1[0]) + subStr1[1] + Double.parseDouble(subStr1[2]) +
-//                                                                                 Double.parseDouble(subStr1[3]) + Double.parseDouble(subStr1[4]) + Double.parseDouble(subStr1[5]) + Double.parseDouble(subStr1[6]));
-//                            modeltab.insertRow(queue, new Object[]{Integer.parseInt(subStr1[0]),subStr1[1],Double.parseDouble(subStr1[2]),
-//                                                                                 Double.parseDouble(subStr1[3]),Double.parseDouble(subStr1[4]),Double.parseDouble(subStr1[5]),Double.parseDouble(subStr1[6])});
-//                             Thread.sleep(2000);
-//                             modeltab.removeRow(queue);
-//                        }
-//                }
-//                }
-//            catch(Exception ex)
-//            {
-//                ex.printStackTrace();
-//            }
-//        };
-//         Thread myThread = new Thread(run);
-//         myThread.start();
-//    }
+    public CreateServer(Socket socket,List client_list,JTable loc_table,JLabel label, int queue){
+        this.clientSocket = socket;
+        name_client = clientSocket.getInetAddress().getCanonicalHostName();
+        client_list.add(clientSocket.getInetAddress().getCanonicalHostName());
+        label.setText("Передача данных началась");
+
+        modeltab = (DefaultTableModel) loc_table.getModel();
+
+        Runnable run = () -> {
+            try{
+                while(!clientSocket.isClosed()){
+                    if(data != null){
+
+                             String str = data;
+                            String[] subStr1, subStr2;
+                            String delimeter = ",";
+                            subStr1 = str.split(delimeter);
+                            System.out.println(Integer.parseInt(subStr1[0]) + subStr1[1] + Double.parseDouble(subStr1[2]) +
+                                                                                 Double.parseDouble(subStr1[3]) + Double.parseDouble(subStr1[4]) + Double.parseDouble(subStr1[5]) + Double.parseDouble(subStr1[6]));
+                            modeltab.insertRow(queue, new Object[]{Integer.parseInt(subStr1[0]),subStr1[1],Double.parseDouble(subStr1[2]),
+                                                                                 Double.parseDouble(subStr1[3]),Double.parseDouble(subStr1[4]),Double.parseDouble(subStr1[5]),Double.parseDouble(subStr1[6])});
+                             Thread.sleep(2000);
+                             modeltab.removeRow(queue);
+                        }
+                }
+                }
+            catch(Exception ex)
+            {
+                ex.printStackTrace();
+            }
+        };
+         Thread myThread = new Thread(run);
+         myThread.start();
+    }
 
     private java.util.List<String[]> datas;
 
