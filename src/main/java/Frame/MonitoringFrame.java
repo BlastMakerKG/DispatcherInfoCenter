@@ -51,8 +51,8 @@ public class MonitoringFrame extends JFrame {
 
         //======== Main ========
         {
-            Main.setBackground(Color.white);
-            Main.setName("Главное");
+//            Main.setBackground(Color.white);
+//            Main.setName("Главное");
 
             ImportData importData = new ImportData(createsev,executeIt);
             Main.addTab("Модуль оцифровки трассы", importData);
@@ -69,7 +69,7 @@ public class MonitoringFrame extends JFrame {
         contentPaneLayout.setHorizontalGroup(
                 contentPaneLayout.createParallelGroup()
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                .addComponent(Main, GroupLayout.PREFERRED_SIZE, 1153, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(Main, GroupLayout.PREFERRED_SIZE, 900, GroupLayout.PREFERRED_SIZE)
                                 .addGap(170, 170, 170))
         );
         contentPaneLayout.setVerticalGroup(
