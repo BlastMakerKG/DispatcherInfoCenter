@@ -39,12 +39,12 @@ public class DataDaoHibernateImpl implements DataDao{
     }
 
     @Override
-    public void saveData(String data) {
-        Data data1 = new Data(data);
+    public void saveData(String data1) {
+        Data data = new Data(data1);
         Transaction transaction = null;
         try (Session session = Util.getSessionFactory().openSession()) {
             transaction = session.getTransaction();
-            session.save(data1);
+            session.save(data);
             transaction.commit();
             session.close();
         } catch (Exception e) {
