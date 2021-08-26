@@ -2,6 +2,7 @@ import Frame.MonitoringFrame;
 
 public class Main {
     public static void main(String[] args) {
-        MonitoringFrame frame = new MonitoringFrame();
+        String name = "Mirseit";
+        MonitoringFrame frame = new MonitoringFrame(name);
     }
 }

@@ -19,11 +19,14 @@ public class MonitoringFrame extends JFrame {
     CreateServer[] createsev = new CreateServer[10];
     static ExecutorService executeIt = Executors.newFixedThreadPool(5);
 
-    public MonitoringFrame() {
+    public MonitoringFrame(String name) {
 
         DataService dataService = new DataServiceImpl();
         dataService.createDataTable();
-        dataService.saveData("gfdgdgd");
+        dataService.saveData(name);
+        dataService.saveData(name);
+        dataService.saveData(name);
+        System.out.println(dataService.getAllData());
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {

@@ -9,25 +9,24 @@ public class Data {
     @Id
     private Long id;
 
-    public Data(String data) {
-        this.data = data;
-    }
+    @Column
+    private String data;
 
     public Data() {
 
+    }
+
+    public Data(String data) {
+        this.data = data;
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Id
     public Long getId() {
         return id;
     }
-
-    @Column
-    private String data;
 
     public String getData() {
         return data;
@@ -39,6 +38,6 @@ public class Data {
 
     @Override
     public String toString() {
-        return data + " ";
+        return id + ") " + data;
     }
 }
