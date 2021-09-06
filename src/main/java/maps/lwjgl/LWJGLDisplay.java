@@ -3,11 +3,15 @@ package maps.lwjgl;
 import XmlFile.ParseXmlPoints;
 import XmlFile.ReliefItems;
 import maps.lwjgl.objects.*;
+import maps.lwjgl.objects.venichles.Excavator;
+import maps.lwjgl.objects.venichles.Tripper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import java.util.*;
+
+import static org.lwjgl.opengl.GL11.glClearColor;
 
 
 public class LWJGLDisplay {
@@ -20,6 +24,9 @@ public class LWJGLDisplay {
     private List<WriteText> VerticalTexts;
     private List<WriteText> HorisontalTexts;
     private HashMap<Integer, List<Objects>> geolines;
+    private List<Objects> venichles;
+    private List<Objects> road;
+    private List<WriteText> places;
 
     private WriteText text_center;
 
@@ -29,6 +36,9 @@ public class LWJGLDisplay {
         VerticalTexts = new ArrayList<>();
         HorisontalTexts = new ArrayList<>();
         geolines = new HashMap<>();
+        venichles = new ArrayList<>();
+        road = new ArrayList<>();
+        places = new ArrayList<>();
 
         parse.loadLinks();
 
@@ -70,7 +80,18 @@ public class LWJGLDisplay {
         points.add(new Point((float)Display.getHeight() /2 - 60, (float)Display.getWidth() / 2 - 60, r,g,b));
         points.add(new Point((float)Display.getHeight() /2 - 80, (float)Display.getWidth() / 2 + 80, r,g,b));
         points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60, r,g,b));
-        points.add(new Venichle((float)Display.getHeight() /2 - Venichle.SIZE / 2, (float)Display.getWidth() / 2 - Venichle.SIZE/2));
+
+        venichles.add(new Tripper((float)Display.getHeight() /2 - Venichle.SIZE / 2, (float)Display.getWidth() / 2 - Venichle.SIZE/2));
+        venichles.add(new Excavator(200,200));
+        venichles.add(new Tripper(1200,800));
+
+        layers.add(new Layer(900,600,2, 100));
+        layers.add(new Layer(900,600,350, 2));
+        layers.add(new Layer(900,700,350, 2));
+        layers.add(new Layer(1250,600,2, 100));
+        places.add(new WriteText(new StringBuilder("The volume of transported cargo = " + 1000000), 910, 680/2));
+        places.add(new WriteText(new StringBuilder("Trippers -" + venichles.size()), 910, 660/2));
+        places.add(new WriteText(new StringBuilder("Excavator -" + venichles.size()), 910, 640/2));
 
         layers.add(new Layer(20,20, 2, Display.getHeight()));
         layers.add(new Layer(20, 20, Display.getWidth(), 2));
@@ -98,6 +119,23 @@ public class LWJGLDisplay {
     }
 
     public void getInput(){
+
+        float x=0,y=0;
+        if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+            x=-1;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+            x=1;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+            y=1;
+        }else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+            y=-1;
+        }
+
+
+
+
+
+
         if(Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
             Display.destroy();
         }
@@ -122,6 +160,24 @@ public class LWJGLDisplay {
                 ob.x += mouseX;
                 ob.y += mouseY;
             }
+        }
+        for (Objects car :
+                venichles) {
+            car.x += x;
+            car.y += y;
+
+            car.x += mouseX;
+            car.y += mouseY;
+            car.resize(zoom);
+            if(x != 0 || y!= 0) {
+                road.add(new Road(car.x, car.y));
+            }
+
+            x =0; y=0;
+        }
+        for (Objects road : road){
+            road.x += mouseX;
+            road.y += mouseY;
         }
 
         text_center.setRenderString(new StringBuilder().append(Math.round(points.get(0).x)).append(" ").append(Math.round(points.get(0).y)));
@@ -161,6 +217,18 @@ public class LWJGLDisplay {
             for(Objects ob : geolines.get(i)){
                 ob.render();
             }
+        }
+        for(Objects ob : venichles){
+            ob.render();
+        }
+        if(road.size() > 0) {
+            for (Objects road : road) {
+                road.render();
+            }
+        }
+
+        for(WriteText text : places){
+            text.render();
         }
 
         text_center.render();

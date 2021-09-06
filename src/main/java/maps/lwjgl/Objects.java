@@ -1,10 +1,9 @@
 package maps.lwjgl;
 
 import lombok.Getter;
-import maps.lwjgl.objects.Layer;
-import maps.lwjgl.objects.Line;
-import maps.lwjgl.objects.Point;
-import maps.lwjgl.objects.Venichle;
+import maps.lwjgl.objects.*;
+
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -14,6 +13,7 @@ public abstract class Objects {
     protected float y;
 
     protected Point.Sprite spr;
+    protected Road.Sprite road;
     protected Line.Sprite line;
     protected Venichle.Sprite car;
     protected Layer.Sprite layer;
@@ -34,6 +34,8 @@ public abstract class Objects {
                 car.render();
             }else if(layer != null){
                 layer.render();
+            }else if(road != null){
+                road.render();
             }
         }
 
@@ -71,6 +73,12 @@ public abstract class Objects {
         this.spr = spr;
     }
 
+    protected void point(float x, float y, Road.Sprite spr){
+        this.x = x;
+        this.y = y;
+        this.road = spr;
+    }
+
     protected void venichle(float x, float y, Venichle.Sprite spr){
         this.x = x;
         this.y = y;
@@ -81,4 +89,5 @@ public abstract class Objects {
         this.y = y;
         this.layer = spr;
     }
+
 }
