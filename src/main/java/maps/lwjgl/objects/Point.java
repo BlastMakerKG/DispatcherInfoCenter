@@ -14,7 +14,6 @@ public class Point extends Objects {
     private Sprite spr;
 
     public Point(float x, float y, float r,float g,float b) {
-//        0.1f,0.1f,0.1f
         this.spr = new Point.Sprite(r,g,b,SIZE,SIZE);
         point(x,y, spr);
     }

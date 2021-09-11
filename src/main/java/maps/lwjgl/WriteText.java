@@ -89,6 +89,7 @@ public class WriteText {
         // Offset all subsequent (at least up until 'glPopMatrix') vertex coordinates.
         glTranslatef(x, y, 0);
         glBegin(GL_QUADS);
+        glColor3f(1,1,1);
         // Iterate over all the characters in the string.
         for (int i = 0; i < string.length(); i++) {
             // Get the ASCII-code of the character by type-casting to integer.

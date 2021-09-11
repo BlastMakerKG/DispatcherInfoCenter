@@ -17,6 +17,14 @@ public class Venichle extends Objects {
         venichle(x,y, spr);
     }
 
+    public Venichle(float x, float y, float r, float g, float b){
+        this.r = r;
+        this.g = g;
+        this.b = b;
+        this.spr = new Venichle.Sprite(r,g,b,SIZE, SIZE);
+        venichle(x,y, spr);
+    }
+
     public class Sprite {
         private float r;
         private float g;
@@ -35,7 +43,6 @@ public class Venichle extends Objects {
 
         public void render() {
             glColor3f(r, g, b);
-
             glBegin(GL_QUADS);
 
             {

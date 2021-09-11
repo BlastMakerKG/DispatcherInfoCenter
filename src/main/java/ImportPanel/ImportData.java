@@ -5,11 +5,12 @@ import XmlFile.ImportDataInXML;
 import maps.lwjgl.CreateLWJGL;
 import Frame.MonitoringFrame;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.*;
@@ -20,14 +21,9 @@ import java.util.logging.Logger;
 
 public class ImportData extends JPanel {
 
-    private Button save_bnt;
-    private JButton exit_btn;
-    private JButton create_btn;
-    private JButton server_btn;
-    private JLabel jLabel1;
     private JLabel status_msg;
     private JLabel excep_msg;
-    private Button maps;
+    private JButton maps;
     private java.awt.List class_list;
     private JScrollPane jScrollPane2;
 
@@ -39,155 +35,154 @@ public class ImportData extends JPanel {
 
 
     public ImportData(CreateServer[] createsev, ExecutorService executeIt ) {
+
+        this.setLayout(null);
+        this.setSize(800,600);
+        menu();
+        pane();
+
         this.createsev = createsev;
         this.executeIt = executeIt;
-
-        save_bnt = new Button();
-        exit_btn = new JButton();
-        create_btn = new JButton();
-        server_btn = new JButton();
-        jLabel1 = new JLabel();
-        status_msg = new JLabel();
         excep_msg = new JLabel();
+
+    }
+
+    private JPanel menu;
+    private JButton start;
+    private JButton stop;
+    private JButton help;
+    private JButton save;
+    private JLabel statusShow;
+    private JComboBox<String> box;
+    private JTable location_table2;
+
+    private void menu(){
+        menu = new JPanel();
+        location_table2 = new JTable();
+        menu.setSize(this.getWidth(), 30);
+        menu.setLayout(null);
+        menu.setLocation(5,5);
+        menu.setVisible(true);
+        menu.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+
+
+        start = new JButton(uploadIcon("start"));
+        stop = new JButton(uploadIcon("stop"));
+        help = new JButton(uploadIcon("help"));
+        save = new JButton(uploadIcon("save"));
+        maps = new JButton(uploadIcon("maps"));
+
+
+
+        start.setLocation(10,5);
+        start.setSize(20,20);
+        start.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        start.addActionListener(e -> server_btnActionPerformed(e));
+        menu.add(start);
+
+        stop.setSize(20,20);
+        stop.setLocation(40,5);
+        stop.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        stop.addActionListener(e -> stop_btnActionPerformed(e));
+        menu.add(stop);
+
+        help.setSize(20,20);
+        help.setLocation(70,5);
+        help.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        help.addActionListener(e -> create_btnActionPerformed(e));
+        menu.add(help);
+        add(menu);
+
+        save.setSize(20,20);
+        save.setLocation(100,5);
+        save.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        save.addActionListener(e -> save_bntActionPerformed(e));
+        menu.add(save);
+
+        status_msg = new JLabel("Status:");
+        status_msg.setSize(70,20);
+        status_msg.setLocation(130,5);
+        status_msg.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        menu.add(status_msg);
+
+        statusShow = new JLabel(uploadIcon("no"));
+        statusShow.setSize(20,20);
+        statusShow.setLocation(175,5);
+        menu.add(statusShow);
+
+        box = new JComboBox<String>();
+        box.setSize(100,20);
+        if(createsev != null)
+            for(CreateServer server : createsev){
+                String[] str = server.getData().split(",");
+                box.addItem(str[1]);
+            }
+        box.setLocation(220,5);
+        menu.add(box);
+
+
+
+        maps.addActionListener(e -> maps());
+        maps.setSize(20,20);
+        maps.setLocation(330,5);
+        maps.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+        menu.add(maps);
+
+
+        add(menu);
+    }
+
+    private ImageIcon uploadIcon(String filename){
+        try {
+            return new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\"+filename+".png")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private JPanel main;
+
+    private void pane(){
+        main = new JPanel();
+        main.setVisible(true);
+        main.setLayout(null);
+        main.setLocation(5, 40);
+        main.setSize(this.getWidth(), this.getHeight()-20);
+//        main.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+
         class_list = new java.awt.List();
         jScrollPane2 = new JScrollPane();
         location_table = new JTable();
         modeltab = (DefaultTableModel) location_table.getModel();
-        maps = new Button("Maps");
 
+        jScrollPane2.setSize(main.getWidth(), main.getHeight()-5);
 
-        //======== jPanel1 ========
+        //======== jScrollPane2 ========
         {
-            setBorder (new CompoundBorder( new TitledBorder (new EmptyBorder(0, 0, 0, 0) , "JFormDesigner Evaluation", TitledBorder.CENTER, TitledBorder.BOTTOM, new Font ("Dialog" ,Font.BOLD ,12), Color.red), getBorder()));
-            addPropertyChangeListener (e -> {
-                        if ("border".equals(e.getPropertyName()))
-                            throw new RuntimeException( );
-            });
 
-            //---- save_bnt ----
-            save_bnt.setActionCommand("Сохранить");
-            save_bnt.setLabel("Сохранить");
-            save_bnt.addActionListener(e -> save_bntActionPerformed(e));
-
-
-            // ---- Maps ---
-            maps.setActionCommand("Create maps");
-            maps.addActionListener(e -> maps());
-            maps.setLabel("Maps");
-            maps.setBackground(Color.gray);
-            maps.setForeground(Color.cyan);
-            maps.setFont(new Font("TimeNewRoman",Font.BOLD, 14));
-
-            //---- exit_btn ----
-            exit_btn.setBackground(new Color(255, 102, 102));
-            exit_btn.setFont(new Font("Verdana", Font.BOLD, 14));
-            exit_btn.setForeground(Color.white);
-            exit_btn.setText("Выйти");
-            exit_btn.addActionListener(e -> exit_btnActionPerformed(e));
-
-            //---- create_btn ----
-            create_btn.setBackground(new Color(0, 204, 0));
-            create_btn.setFont(new Font("Verdana", Font.BOLD, 14));
-            create_btn.setForeground(Color.white);
-            create_btn.setText("Помощь");
-            create_btn.addActionListener(e -> create_btnActionPerformed(e));
-
-            //---- server_btn ----
-            server_btn.setBackground(new Color(255, 102, 0));
-            server_btn.setFont(new Font("Verdana", Font.BOLD, 14));
-            server_btn.setForeground(Color.white);
-            server_btn.setText("Начать передачу данных");
-            server_btn.addActionListener(e -> server_btnActionPerformed(e));
-
-            //---- jLabel1 ----
-            jLabel1.setFont(new Font("Tahoma", Font.BOLD, 14));
-            jLabel1.setText("Подключенные устройства");
-
-            //---- status_msg ----
-            status_msg.setText("Статус:");
-
-            //---- class_list ----
-            class_list.addActionListener(e -> class_listActionPerformed(e));
-
-            //======== jScrollPane2 ========
-            {
-
-                //---- location_table ----
-                location_table.setModel(new DefaultTableModel(
-                        new Object[][] {
-                        },
-                        new String[] {
-                                "ID", "Дата", "Широта", "Долгота", "Абсолютная высота", "Расстояние", "Скорость"
-                        }
-                ) {
-                    Class<?>[] columnTypes = new Class<?>[] {
-                            Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class
-                    };
-                    @Override
-                    public Class<?> getColumnClass(int columnIndex) {
-                        return columnTypes[columnIndex];
+            //---- location_table ----
+            location_table.setModel(new DefaultTableModel(
+                    new Object[][] {
+                    },
+                    new String[] {
+                            "ID", "Дата", "Широта", "Долгота", "Абсолютная высота", "Расстояние", "Скорость"
                     }
-                });
-                jScrollPane2.setViewportView(location_table);
-            }
-
-
-
-            GroupLayout jPanel1Layout = new GroupLayout(this);
-            setLayout(jPanel1Layout);
-            jPanel1Layout.setHorizontalGroup(
-                    jPanel1Layout.createParallelGroup()
-                            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 777, GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(jPanel1Layout.createParallelGroup()
-                                                    .addComponent(class_list, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jLabel1, GroupLayout.Alignment.TRAILING)
-                                                    .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
-                                                            .addComponent(status_msg, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                            .addComponent(excep_msg, GroupLayout.PREFERRED_SIZE, 168, GroupLayout.PREFERRED_SIZE)))
-                                            .addGroup(GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                                    .addComponent(create_btn, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                    .addComponent(exit_btn, GroupLayout.PREFERRED_SIZE, 99, GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(server_btn, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(save_bnt, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                            .addComponent(maps, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGap(79, 79, 79))
-            );
-            jPanel1Layout.setVerticalGroup(
-                    jPanel1Layout.createParallelGroup()
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addContainerGap()
-                                    .addGroup(jPanel1Layout.createParallelGroup()
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addComponent(jScrollPane2)
-                                                    .addGap(24, 24, 24))
-                                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                                    .addComponent(jLabel1)
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(class_list, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(19, 19, 19)
-                                                    .addComponent(status_msg)
-                                                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(excep_msg, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(44, 44, 44)
-                                                    .addComponent(server_btn, GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(26, 26, 26)
-                                                    .addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                                                            .addComponent(create_btn)
-                                                            .addComponent(exit_btn))
-                                                    .addGap(22, 22, 22)
-                                                    .addComponent(maps, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                    .addGap(10,10,10)
-                                                    .addComponent(save_bnt, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                                                    .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-
-//                                                    .addGap(22,22,22)
-            );
+            ) {
+                Class<?>[] columnTypes = new Class<?>[] {
+                        Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class
+                };
+                @Override
+                public Class<?> getColumnClass(int columnIndex) {
+                    return columnTypes[columnIndex];
+                }
+            });
+            jScrollPane2.setViewportView(location_table);
         }
+
+        main.add(jScrollPane2);
+        add(main);
+
     }
 
     private void maps(){
@@ -200,16 +195,13 @@ public class ImportData extends JPanel {
     }
 
 
+    private boolean flag = false;
     private List<String[]> data = new ArrayList<>();
 
-    public List<String[]> getData(){
-        return data;
-    }
-
-    private void create_btnActionPerformed(java.awt.event.ActionEvent evt) {
+    private void create_btnActionPerformed(ActionEvent evt) {
         Runnable run = () -> {
             int count =1;
-            while(true) {
+            while(flag) {
                 try{
                     for(int j=0; j < createsev.length; j++) {
                         if(predString == null) {
@@ -274,11 +266,12 @@ public class ImportData extends JPanel {
     }
 
     private void server_btnActionPerformed(ActionEvent evt) {
+        statusShow.setIcon(uploadIcon("ok"));
+        flag =true;
 
         try{
             final ServerSocket serverSocket = new ServerSocket(24500);
             System.out.println("Сервер создан ждем подключения");
-            status_msg.setText("Сервер успешно создан");
 
             Runnable runnable = () -> {
                 int i =0;
@@ -293,8 +286,8 @@ public class ImportData extends JPanel {
                         createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg,data);
                         executeIt.execute(createsev[i]);
 
-//                        createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
-//                        executeIt.execute(createsev[i]);
+                        createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
+                        executeIt.execute(createsev[i]);
 
                         i++;
                     } catch (IOException ex) {
@@ -322,14 +315,13 @@ public class ImportData extends JPanel {
 
     }
 
-    private void class_listActionPerformed(java.awt.event.ActionEvent evt) {
+    private void stop_btnActionPerformed(ActionEvent evt) {
+//        System.exit(0);
+        flag = false;
+        statusShow.setIcon(uploadIcon("no"));
     }
 
-    private void exit_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exit_btnActionPerformed
-        System.exit(0);
-    }
-
-    private void save_bntActionPerformed(java.awt.event.ActionEvent evt) {
+    private void save_bntActionPerformed(ActionEvent evt) {
 
         ImportDataInXML xmlFile = new ImportDataInXML();
 
@@ -339,75 +331,6 @@ public class ImportData extends JPanel {
 
         xmlFile.save(data);
 
-//        String str = createsev[0].getData();
-//        if (str != predString) {
-//            String[] subStr1, subStr2;
-//            String delimeter = ",";
-//            subStr1 = str.split(delimeter);
-//            modeltab.insertRow(5, new Object[]{Integer.parseInt(subStr1[0]), "Hello", Double.parseDouble(subStr1[2]),
-//                    Double.parseDouble(subStr1[3]), Double.parseDouble(subStr1[4]), Double.parseDouble(subStr1[5]), Double.parseDouble(subStr1[6])});
-//        try{
-//
-//        JFileChooser fileChooser = new JFileChooser();
-//        fileChooser.showSaveDialog(this);
-//         File file =fileChooser.getSelectedFile();
-//
-//         ExportData.exportToCSV(location_table, file);
-//
-//        }
-
-//        JFileChooser fileChooser = new JFileChooser();
-//        fileChooser.setDialogTitle("Specify a file save");
-//        int userSelection = fileChooser.showSaveDialog(this);
-//        if(userSelection == JFileChooser.APPROVE_OPTION){
-//            File fileToSave = fileChooser.getSelectedFile();
-//            //lets write to file
-//
-//            try {
-//                  FileWriter fw = new FileWriter(fileToSave);
-//                BufferedWriter bw = new BufferedWriter(fw);
-//                for (int i = 0; i<location_table.getRowCount(); i++)
-//                {
-//                    for (int j = 0; j<location_table.getColumnCount(); j++) {
-//                        //write
-//                        bw.write(location_table.getValueAt(i, j).toString()+",");
-//                    }
-//                    bw.newLine();//record per line
-//                }
-//                JOptionPane.showMessageDialog(this, "SUCCESSFULLY LOADED","INFORMATION",JOptionPane.INFORMATION_MESSAGE);
-//                bw.close();
-//                fw.close();
-//            } catch (IOException ex) {
-//               JOptionPane.showMessageDialog(this, "ERROR","ERROR MESSAGE",JOptionPane.ERROR_MESSAGE);
-//            }}
-
-//
-//            try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
-//
-//      StringBuilder sb = new StringBuilder();
-//      sb.append("id,");
-//      sb.append(';');
-//      sb.append("Name");
-//      sb.append('\n');
-//
-//      sb.append("1");
-//      sb.append(';');
-//      sb.append("Prashant Ghimire");
-//      sb.append('\n');
-//
-//      writer.write(sb.toString());
-//
-//      System.out.println("done!");
-//
-//    } catch (FileNotFoundException e) {
-//      System.out.println(e.getMessage());
-//    }
-//
-//        }
-//
-//
-
-
-        }
     }
+}
 

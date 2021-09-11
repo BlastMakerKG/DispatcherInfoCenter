@@ -72,8 +72,8 @@ public class MonitoringFrame extends JFrame {
         contentPaneLayout.setHorizontalGroup(
                 contentPaneLayout.createParallelGroup()
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                .addComponent(Main, GroupLayout.PREFERRED_SIZE, 1153, GroupLayout.PREFERRED_SIZE)
-                                .addGap(170, 170, 170))
+                                .addComponent(Main, GroupLayout.PREFERRED_SIZE, 810, GroupLayout.PREFERRED_SIZE)
+                                .addGap(10))
         );
         contentPaneLayout.setVerticalGroup(
                 contentPaneLayout.createParallelGroup()
