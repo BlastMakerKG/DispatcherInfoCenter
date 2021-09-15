@@ -11,14 +11,12 @@ import org.lwjgl.opengl.Display;
 
 import java.util.*;
 
-import static org.lwjgl.opengl.GL11.glClearColor;
-
 
 public class LWJGLDisplay {
 
     private List<Objects> points;
     private List<Layer> layers;
-    private ParseXmlPoints parse = new ParseXmlPoints("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\example.xml");
+    private ParseXmlPoints parse = new ParseXmlPoints("src\\main\\resources\\example.xml");
     private HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
     private List<ReliefItems> list =  parse.getReliefItems();
     private List<WriteText> VerticalTexts;
@@ -50,7 +48,7 @@ public class LWJGLDisplay {
             points.add(new Point((float) (list.get(i).getX()), (float) (list.get(i).getY()), r,g,b));
             if(i !=0)
                 if(list.get(i).getZ() != list.get(i-1).getZ()){
-                    r+=0.03f;
+                    r+=0.02f;
                     g-=0.01f;
                 }
 
@@ -81,17 +79,27 @@ public class LWJGLDisplay {
         points.add(new Point((float)Display.getHeight() /2 - 80, (float)Display.getWidth() / 2 + 80, r,g,b));
         points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60, r,g,b));
 
-        venichles.add(new Tripper((float)Display.getHeight() /2 - Venichle.SIZE / 2, (float)Display.getWidth() / 2 - Venichle.SIZE/2));
+        venichles.add(new Tripper(580,120));
         venichles.add(new Excavator(200,200));
-        venichles.add(new Tripper(1200,800));
+        venichles.add(new Tripper(650,130));
 
-        layers.add(new Layer(900,600,2, 100));
-        layers.add(new Layer(900,600,350, 2));
-        layers.add(new Layer(900,700,350, 2));
-        layers.add(new Layer(1250,600,2, 100));
+        layers.add(new Layer(900,600,350, 100));
+//        layers.add(new Layer(900,600,350, 2));
+//        layers.add(new Layer(900,700,350, 2));
+//        layers.add(new Layer(1250,600,2, 100));
+
+        int trippers = 0, excovators = 0;
+        for (Objects transport : venichles){
+            if(transport instanceof Tripper){
+                trippers++;
+            }if(transport instanceof Excavator){
+                excovators++;
+            }
+        }
+
         places.add(new WriteText(new StringBuilder("The volume of transported cargo = " + 1000000), 910, 680/2));
-        places.add(new WriteText(new StringBuilder("Trippers -" + venichles.size()), 910, 660/2));
-        places.add(new WriteText(new StringBuilder("Excavator -" + venichles.size()), 910, 640/2));
+        places.add(new WriteText(new StringBuilder("Trippers -" + trippers), 910, 660/2));
+        places.add(new WriteText(new StringBuilder("Excavator -" + excovators), 910, 640/2));
 
         layers.add(new Layer(20,20, 2, Display.getHeight()));
         layers.add(new Layer(20, 20, Display.getWidth(), 2));
@@ -118,19 +126,64 @@ public class LWJGLDisplay {
         return temp;
     }
 
+    boolean first = true;
+
     public void getInput(){
 
         float x=0,y=0;
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+                y=1;
+            }else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+                y=-1;
+            }
             x=-1;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_D)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+                y=1;
+            }else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+                y=-1;
+            }
             x=1;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_W)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                x = 1;
+            }if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                x = -1;
+            }
             y=1;
         }else if(Keyboard.isKeyDown(Keyboard.KEY_S)){
+            if(Keyboard.isKeyDown(Keyboard.KEY_A)) {
+                x = -1;
+            }if(Keyboard.isKeyDown(Keyboard.KEY_D)) {
+                x = 1;
+            }
             y=-1;
         }
 
+
+
+        if(Mouse.getX() > 900 && Mouse.getX() < 1250 && Mouse.getY() > 600 && Mouse.getY() < 700 && Mouse.isButtonDown(Mouse.getEventButton()) && first){
+            first = false;
+            for (Objects ob : points) {
+                ob.x -= 12000;
+                ob.y -= 77000;
+            }
+
+            for (int i = 0; i < geolines.size(); i++) {
+                for(Objects ob : geolines.get(i)){
+                    ob.x -= 12000;
+                    ob.y -= 77000;
+                }
+            }
+
+            for(WriteText wr : VerticalTexts){
+                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString())+12000)));
+            }
+            for(WriteText wr : HorisontalTexts) {
+                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) + 77000)));
+            }
+        }
 
 
 
@@ -163,8 +216,10 @@ public class LWJGLDisplay {
         }
         for (Objects car :
                 venichles) {
-            car.x += x;
-            car.y += y;
+            if(car instanceof Tripper) {
+                car.x += x;
+                car.y += y;
+            }
 
             car.x += mouseX;
             car.y += mouseY;
@@ -176,6 +231,7 @@ public class LWJGLDisplay {
             x =0; y=0;
         }
         for (Objects road : road){
+            road.resize(zoom);
             road.x += mouseX;
             road.y += mouseY;
         }
@@ -234,23 +290,23 @@ public class LWJGLDisplay {
         text_center.render();
     }
 
-    public void update(){
-        for (Objects go : points) {
-            go.update();
-        }
-        for(Objects wall : layers){
-            wall.update();
-        }
-        for(WriteText wr : VerticalTexts){
-            wr.update();
-        }
-        for (WriteText wr : HorisontalTexts){
-            wr.update();
-        }
-        for (int i = 0; i < geolines.size(); i++) {
-            for(Objects ob : geolines.get(i)){
-                ob.update();
-            }
-        }
-    }
+//    public void update(){
+//        for (Objects go : points) {
+//            go.update();
+//        }
+//        for(Objects wall : layers){
+//            wall.update();
+//        }
+//        for(WriteText wr : VerticalTexts){
+//            wr.update();
+//        }
+//        for (WriteText wr : HorisontalTexts){
+//            wr.update();
+//        }
+//        for (int i = 0; i < geolines.size(); i++) {
+//            for(Objects ob : geolines.get(i)){
+//                ob.update();
+//            }
+//        }
+//    }
 }

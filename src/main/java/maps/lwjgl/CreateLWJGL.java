@@ -45,7 +45,7 @@ public class CreateLWJGL {
 
 
             render();
-            update();
+//            update();
         }
     }
 
@@ -53,9 +53,9 @@ public class CreateLWJGL {
         game.getInput();
     }
 
-    private static void update(){
-        game.update();
-    }
+//    private static void update(){
+//        game.update();
+//    }
 
     private static void render(){
         glClear(GL_COLOR_BUFFER_BIT);

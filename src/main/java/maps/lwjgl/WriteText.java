@@ -45,7 +45,7 @@ public class WriteText {
         // Bind the texture object to the GL_TEXTURE_2D target, specifying that it will be a 2D texture.
         glBindTexture(GL_TEXTURE_2D, fontTexture);
         // Use TWL's utility classes to load the png file.
-        PNGDecoder decoder = new PNGDecoder(new FileInputStream("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\myfont.png"));
+        PNGDecoder decoder = new PNGDecoder(new FileInputStream("src\\main\\resources\\myfont.png"));
         ByteBuffer buffer = BufferUtils.createByteBuffer(4 * decoder.getWidth() * decoder.getHeight());
         decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
         buffer.flip();

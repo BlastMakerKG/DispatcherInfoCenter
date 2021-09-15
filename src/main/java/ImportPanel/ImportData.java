@@ -134,7 +134,7 @@ public class ImportData extends JPanel {
 
     private ImageIcon uploadIcon(String filename){
         try {
-            return new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\"+filename+".png")));
+            return new ImageIcon(ImageIO.read(new File("src\\main\\resources\\"+filename+".png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
