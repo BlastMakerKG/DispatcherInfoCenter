@@ -5,8 +5,11 @@ import ImportPanel.ImportData;
 import Server.CreateServer;
 import Server.DB.service.DataService;
 import Server.DB.service.DataServiceImpl;
+import maps.lwjgl.CreateLWJGL;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -16,8 +19,12 @@ import javax.swing.GroupLayout;
 
 public class MonitoringFrame extends JFrame {
 
-    CreateServer[] createsev = new CreateServer[10];
-    static ExecutorService executeIt = Executors.newFixedThreadPool(5);
+    private final JTabbedPane main = new JTabbedPane();
+    private static ExecutorService executeIt = Executors.newFixedThreadPool(1);
+    private static List<CreateServer> createsev = new ArrayList<>();
+    private static CreateLWJGL lwjgl = new CreateLWJGL();
+    private static CurrentlyData currentlyData = new CurrentlyData();
+    private static ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData);
 
     public MonitoringFrame(String name) {
 
@@ -46,7 +53,8 @@ public class MonitoringFrame extends JFrame {
     }
 
     private void initComponents() {
-        Main = new JTabbedPane();
+        CurrentlyData currentlyData = new CurrentlyData();
+        ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData);
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -54,14 +62,14 @@ public class MonitoringFrame extends JFrame {
 
         //======== Main ========
         {
-            Main.setBackground(Color.white);
-            Main.setName("Главное");
+            main.setBackground(Color.white);
+            main.setName("Главное");
 
-            ImportData importData = new ImportData(createsev,executeIt);
-            Main.addTab("Модуль оцифровки трассы", importData);
+            main.addTab("Модуль оцифровки трассы", importData);
+            main.addTab("Положение транспортов", currentlyData);
 
-            CurrentlyData currentlyData = new CurrentlyData();
-            Main.addTab("Положение транспортов", currentlyData);
+
+
 
 //            Maps maps = new Maps();
 //            Main.addTab("\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", maps);
@@ -72,17 +80,17 @@ public class MonitoringFrame extends JFrame {
         contentPaneLayout.setHorizontalGroup(
                 contentPaneLayout.createParallelGroup()
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                .addComponent(Main, GroupLayout.PREFERRED_SIZE, 810, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(main, GroupLayout.PREFERRED_SIZE, 810, GroupLayout.PREFERRED_SIZE)
                                 .addGap(10))
         );
         contentPaneLayout.setVerticalGroup(
                 contentPaneLayout.createParallelGroup()
-                        .addComponent(Main)
+                        .addComponent(main)
         );
         pack();
         setLocationRelativeTo(getOwner());
     }
 
-    private JTabbedPane Main;
+
 }
 
