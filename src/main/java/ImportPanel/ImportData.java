@@ -123,7 +123,7 @@ public class ImportData extends JPanel {
         statusShow.setLocation(175,5);
         menu.add(statusShow);
 
-        box = new JComboBox<String>();
+        box = new JComboBox<>();
         box.setSize(100,20);
         if(createsev != null)
             for(CreateServer server : createsev){
@@ -198,9 +198,7 @@ public class ImportData extends JPanel {
 
     private void maps(){
         lwjgl= new CreateLWJGL();
-        Runnable run = () -> {
-            lwjgl.start();
-        };
+        Runnable run = () -> lwjgl.start();
 
         Thread thread = new Thread(run);
         thread.start();
@@ -211,16 +209,16 @@ public class ImportData extends JPanel {
             int count =1;
             while(flag) {
                 try{
-                    for(int j=0; j < createsev.size(); j++) {
-                        String str = createsev.get(j).getData();
+                    for (CreateServer createServer : createsev) {
+                        String str = createServer.getData();
                         String[] splitStr;
                         String delimeter = ",";
                         splitStr = str.split(delimeter);
 
-                        lwjgl.game.converterToXY(new double[]{Double.parseDouble(splitStr[2]), Double.parseDouble(splitStr[3])});
+                        CreateLWJGL.game.converterToXY(splitStr[0], new double[]{Double.parseDouble(splitStr[2]), Double.parseDouble(splitStr[3])}, 2);
                         currentlyData.setLocation_table2(modeltab.getRowCount(),
                                 new Object[]{Integer.parseInt(
-                                        splitStr[0])+" "+count++,
+                                        splitStr[0]) + " " + count++,
                                         splitStr[1],
                                         Double.parseDouble(splitStr[2]),
                                         Double.parseDouble(splitStr[3]),
@@ -282,7 +280,7 @@ public class ImportData extends JPanel {
 //                            }
 //                        }
 
-                       // currentlyData.setLocation_table2(modeltab);
+                        // currentlyData.setLocation_table2(modeltab);
                     }
                 }
                 catch(Exception ex) {

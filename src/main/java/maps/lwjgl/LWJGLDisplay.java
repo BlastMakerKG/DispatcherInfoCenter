@@ -130,10 +130,11 @@ public class LWJGLDisplay {
     }
 
     boolean firstCoordinate = true;
-    int x=0,y=0;
-    public void converterToXY(double[] coordinates){
+    int x=0,y=0, id = 0;
+    public void converterToXY(String id, double[] coordinates, int height){
 
         Runnable run = () -> {
+            this.id = Integer.parseInt(id);
             if(firstCoordinate){
                 firstCoordinates = coordinates;
                 first=false;
@@ -155,9 +156,6 @@ public class LWJGLDisplay {
 
         Thread thread = new Thread(run);
         thread.start();
-
-
-
     }
 
 
@@ -224,11 +222,17 @@ public class LWJGLDisplay {
         for (int i = 0; i < geolines.size(); i++) {
             foreach( (ArrayList<Objects>)geolines.get(i), mouseX,mouseY,zoom);
         }
+
+
+
+
         for (Objects car :
                 venichles) {
             if(car instanceof Tripper) {
-                car.x += x;
-                car.y += y;
+                if(id == venichles.indexOf(car)) {
+                    car.x += x;
+                    car.y += y;
+                }
             }
 
             car.x += mouseX;
@@ -236,7 +240,7 @@ public class LWJGLDisplay {
             car.resize(zoom);
             if(x != 0 || y!= 0) {
                 roads.get(venichles.indexOf(car)).add(new Road(car.x,car.y));
-                road.add(new Road(car.x, car.y));
+                //road.add(new Road(car.x, car.y));
             }
 
 
@@ -338,11 +342,17 @@ public class LWJGLDisplay {
         for(Objects ob : venichles){
             ob.render();
         }
-        if(road.size() > 0) {
-            for (Objects road : road) {
-                road.render();
+
+        for (int i = 0; i < roads.size(); i++) {
+            for(Objects ob : roads.get(i)){
+                ob.render();
             }
         }
+//        if(road.size() > 0) {
+//            for (Objects road : road) {
+//                road.render();
+//            }
+//        }
 
         for(WriteText text : places){
             text.render();
