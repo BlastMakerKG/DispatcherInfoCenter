@@ -130,10 +130,11 @@ public class LWJGLDisplay {
     }
 
     boolean firstCoordinate = true;
-    int x=0,y=0, id = 0;
+    int x=0,y=0, id = 0, height;
     public void converterToXY(String id, double[] coordinates, int height){
 
         Runnable run = () -> {
+            this.height = height;
             this.id = Integer.parseInt(id);
             if(firstCoordinate){
                 firstCoordinates = coordinates;
@@ -187,11 +188,11 @@ public class LWJGLDisplay {
                     }
                 }
 
-                for (WriteText wr : VerticalTexts) {
-                    wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) + 12000)));
+                for (Objects wr : VerticalTexts) {
+                    wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) + 12000)));
                 }
-                for (WriteText wr : HorisontalTexts) {
-                    wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) + 77000)));
+                for (Objects wr : HorisontalTexts) {
+                    wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) + 77000)));
                 }
             }
         };
@@ -239,7 +240,10 @@ public class LWJGLDisplay {
             car.y += mouseY;
             car.resize(zoom);
             if(x != 0 || y!= 0) {
-                roads.get(venichles.indexOf(car)).add(new Road(car.x,car.y));
+                if(height > 750){
+                    r+=0.01;g-=0.01;
+                }
+                roads.get(venichles.indexOf(car)).add(new Road(car.x,car.y, r,g,b));
                 //road.add(new Road(car.x, car.y));
             }
 
@@ -249,9 +253,9 @@ public class LWJGLDisplay {
         }
 
         foreach((ArrayList<Objects>) road, mouseX,mouseY,zoom);
-
-
     }
+
+    float r=0.3f,g=0.7f,b=0.8f;
 
     private void foreach(ArrayList<Objects> listObject, float mouseX, float mouseY, float zoom){
         for (Objects ob : listObject){
@@ -267,19 +271,19 @@ public class LWJGLDisplay {
         updateText(zoom, mouseX, VerticalTexts);
         updateText(zoom, mouseY, HorisontalTexts);
 
-        for(WriteText text : nameTrippers){
-            text.setX(Math.round(text.getX() + mouseX));
-            text.setY(Math.round(text.getY() + mouseY));
+        for(Objects text : nameTrippers){
+            text.x += Math.round(text.getX() + mouseX);
+            text.y += Math.round(text.getY() + mouseY);
         }
     }
 
-    private void updateText(float zoom, float mouseY, List<WriteText> horisontalTexts) {
-        for(WriteText wr : horisontalTexts) {
-            wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) - mouseY)));
+    private void updateText(float zoom, float mouseY, List<Objects> horisontalTexts) {
+        for(Objects wr : horisontalTexts) {
+            wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) - mouseY)));
             if (zoom < 0) {
-                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) / 2)));
+                wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) / 2)));
             } else if (zoom > 0) {
-                wr.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.getRenderString().toString()) * 2)));
+                wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) * 2)));
             }
         }
     }
@@ -322,31 +326,39 @@ public class LWJGLDisplay {
     }
 
     public void render(){
-        for (Objects go : points) {
-            go.render();
-        }
-        for(Objects wall : layers){
-            wall.render();
-        }
-        for (WriteText wr : VerticalTexts){
-            wr.render();
-        }
-        for (WriteText wr : HorisontalTexts){
-            wr.render();
-        }
+        renderForeach(points);
+        renderForeach( layers);
+
+//        for (Objects go : points) {
+//            go.render();
+//        }
+//        for(Objects wall : layers){
+//            wall.render();
+//        }
+        renderForeach(VerticalTexts);
+        renderForeach(HorisontalTexts);
+//        for (WriteText wr : VerticalTexts){
+//            wr.render();
+//        }
+//        for (WriteText wr : HorisontalTexts){
+//            wr.render();
+//        }
         for (int i = 0; i < geolines.size(); i++) {
-            for(Objects ob : geolines.get(i)){
-                ob.render();
-            }
+            renderForeach(geolines.get(i));
+//            for(Objects ob : geolines.get(i)){
+//                ob.render();
+//            }
         }
-        for(Objects ob : venichles){
-            ob.render();
-        }
+        renderForeach(venichles);
+//        for(Objects ob : venichles){
+//            ob.render();
+//        }
 
         for (int i = 0; i < roads.size(); i++) {
-            for(Objects ob : roads.get(i)){
-                ob.render();
-            }
+            renderForeach(roads.get(i));
+//            for(Objects ob : roads.get(i)){
+//                ob.render();
+//            }
         }
 //        if(road.size() > 0) {
 //            for (Objects road : road) {
@@ -354,15 +366,24 @@ public class LWJGLDisplay {
 //            }
 //        }
 
-        for(WriteText text : places){
-            text.render();
-        }
-
-        for(WriteText text : nameTrippers){
-            text.render();
-        }
+        renderForeach(places);
+        renderForeach(nameTrippers);
+//        for(WriteText text : places){
+//            text.render();
+//        }
+//
+//        for(WriteText text : nameTrippers){
+//            text.render();
+//        }
 
         text_center.render();
+    }
+
+
+    private void renderForeach(List<Objects> objects){
+        for(Objects ob : objects){
+            ob.render();
+        }
     }
 
 //    public void update(){
@@ -388,18 +409,18 @@ public class LWJGLDisplay {
 
 
     private List<Objects> points;
-    private List<Layer> layers;
+    private List<Objects> layers;
     private ParseXmlPoints parse = new ParseXmlPoints("src\\main\\resources\\example.xml");
     private HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
     private List<ReliefItems> list =  parse.getReliefItems();
-    private List<WriteText> VerticalTexts;
-    private List<WriteText> HorisontalTexts;
+    private List<Objects> VerticalTexts;
+    private List<Objects> HorisontalTexts;
     private HashMap<Integer, List<Objects>> geolines;
     private List<Objects> venichles;
     private HashMap<Integer, List<Objects>> roads;
     private List<Objects> road;
-    private List<WriteText> places;
-    private List<WriteText> nameTrippers;
+    private List<Objects> places;
+    private List<Objects> nameTrippers;
 
     private double[] firstCoordinates = new double[2];
 

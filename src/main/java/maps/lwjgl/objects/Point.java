@@ -1,32 +1,50 @@
 package maps.lwjgl.objects;
 
-import XmlFile.ReliefItems;
 import maps.lwjgl.Objects;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public class Point extends Objects {
 
     public static final float SIZE = 4;
-    private Sprite spr;
+    private SpritePoint spr;
 
     public Point(float x, float y, float r,float g,float b) {
-        this.spr = new Point.Sprite(r,g,b,SIZE,SIZE);
+        this.spr = new SpritePoint(r,g,b,SIZE,SIZE);
         point(x,y, spr);
     }
 
-    public class Sprite {
+    public class SpritePoint implements Sprite {
         private float r;
         private float g;
         private float b;
-
         private float sx;
         private float sy;
 
-        public Sprite(float r, float g, float b, float sx, float sy) {
+
+        @Override
+        public float getSx() {
+            return sx;
+        }
+
+        @Override
+        public void setSx(float sx) {
+            this.sx = sx;
+        }
+
+        @Override
+        public float getSy() {
+            return sy;
+        }
+
+        @Override
+        public void setSy(float sy) {
+            this.sy = sy;
+        }
+
+
+
+        public SpritePoint(float r, float g, float b, float sx, float sy) {
             this.r = r;
             this.g = g;
             this.b = b;

@@ -1,7 +1,5 @@
 package maps.lwjgl.objects.venichles;
 
-import maps.lwjgl.objects.Venichle;
-
 public class Excavator extends Venichle {
 
     private String model;

@@ -1,7 +1,5 @@
 package maps.lwjgl.objects.venichles;
 
-import maps.lwjgl.objects.Venichle;
-
 public class Tripper extends Venichle {
     private String model;
     private float x, y;

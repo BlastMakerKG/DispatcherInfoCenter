@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WriteText {
+public class WriteText extends Objects{
 
     /** The string that is rendered on-screen. */
     private StringBuilder renderString;
@@ -23,20 +23,20 @@ public class WriteText {
     private int fontTexture;
 
 
-    private int x;
-    private int y;
+//    private float x;
+//    private float y;
 
     public WriteText(StringBuilder text, int x, int y){
         this.renderString = text;
-        this.x = x;
-        this.y = y;
-
-
+//        this.x = x;
+//        this.y = y;
         try {
             setUpTextures();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.text(x,y,this);
     }
 
     private void setUpTextures() throws IOException {

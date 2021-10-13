@@ -2,8 +2,7 @@ package maps.lwjgl;
 
 import lombok.Getter;
 import maps.lwjgl.objects.*;
-
-import java.util.List;
+import maps.lwjgl.objects.venichles.Venichle;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -12,11 +11,13 @@ public abstract class Objects {
     protected float x;
     protected float y;
 
-    protected Point.Sprite spr;
-    protected Road.Sprite road;
-    protected Line.Sprite line;
-    protected Venichle.Sprite car;
-    protected Layer.Sprite layer;
+    protected Sprite spr;
+    protected Sprite road;
+    protected Sprite line;
+    protected Sprite car;
+    protected Sprite layer;
+
+    protected WriteText text;
 
     public void update(){
 
@@ -36,6 +37,8 @@ public abstract class Objects {
                 layer.render();
             }else if(road != null){
                 road.render();
+            }else if(text !=null) {
+                text.render();
             }
         }
 
@@ -61,33 +64,39 @@ public abstract class Objects {
         }
     }
 
-    protected void line(float x1,float y1, Line.Sprite spr){
+    protected void line(float x1,float y1, Line.SpriteLine spr){
         this.x = x1;
         this.y = y1;
         this.line = spr;
     }
 
-    protected void point(float x, float y, Point.Sprite spr){
+    protected void point(float x, float y, Point.SpritePoint spr){
         this.x = x;
         this.y = y;
         this.spr = spr;
     }
 
-    protected void point(float x, float y, Road.Sprite spr){
+    protected void point(float x, float y, Road.SpriteRoad spr){
         this.x = x;
         this.y = y;
         this.road = spr;
     }
 
-    protected void venichle(float x, float y, Venichle.Sprite spr){
+    protected void venichle(float x, float y, Venichle.SpriteVenichle spr){
         this.x = x;
         this.y = y;
         this.car = spr;
     }
-    protected void layer(float x, float y, Layer.Sprite spr){
+    protected void layer(float x, float y, Layer.SpriteLayer spr){
         this.x = x;
         this.y = y;
         this.layer = spr;
+    }
+
+    protected void text(float x, float y, WriteText text){
+        this.x = x;
+        this.y = y;
+        this.text = text;
     }
 
 }
