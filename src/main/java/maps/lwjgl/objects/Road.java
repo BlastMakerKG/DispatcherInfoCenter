@@ -6,21 +6,43 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Road extends Objects {
 
-    private Road.Sprite spr;
+    private SpriteRoad spr;
 
-   public Road(float x, float y){
-       this.spr = new Sprite(0.5f,0.6f,0.7f);
+   public Road(float x, float y, float r, float g, float b){
+       this.spr = new SpriteRoad(r,g,b);
        point(x,y, spr);
     }
 
 
-    public class Sprite{
+    public class SpriteRoad implements Sprite{
         private float r,g,b;
         private float sx = 4;
         private float sy = 4;
 
+        @Override
+        public float getSx() {
+            return sx;
+        }
 
-        public Sprite(float r, float g, float b) {
+        @Override
+        public void setSx(float sx) {
+            this.sx = sx;
+        }
+
+        @Override
+        public float getSy() {
+            return sy;
+        }
+
+        @Override
+        public void setSy(float sy) {
+            this.sy = sy;
+        }
+
+
+
+
+        public SpriteRoad(float r, float g, float b) {
             this.r = r;
             this.g = g;
             this.b = b;
@@ -40,5 +62,7 @@ public class Road extends Objects {
 
             glEnd();
         }
+
+
     }
 }

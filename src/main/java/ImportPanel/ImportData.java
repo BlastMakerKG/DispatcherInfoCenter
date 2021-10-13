@@ -1,9 +1,9 @@
 package ImportPanel;
 
+import Frame.MonitoringFrame;
 import Server.CreateServer;
 import XmlFile.ImportDataInXML;
 import maps.lwjgl.CreateLWJGL;
-import Frame.MonitoringFrame;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -12,8 +12,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.*;
-import java.util.*;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.logging.Level;
@@ -27,14 +28,15 @@ public class ImportData extends JPanel {
     private java.awt.List class_list;
     private JScrollPane jScrollPane2;
 
-    private CreateServer[] createsev;
+    private List<CreateServer> createsev;
     private ExecutorService executeIt;
     private String predString;
     private DefaultTableModel modeltab;
     private JTable location_table;
+    private CurrentlyData currentlyData;
 
 
-    public ImportData(CreateServer[] createsev, ExecutorService executeIt ) {
+    public ImportData(List<CreateServer> createsev, ExecutorService executeIt, CreateLWJGL lwjgl, CurrentlyData currentlyData) {
 
         this.setLayout(null);
         this.setSize(800,600);
@@ -44,6 +46,9 @@ public class ImportData extends JPanel {
         this.createsev = createsev;
         this.executeIt = executeIt;
         excep_msg = new JLabel();
+        this.lwjgl = lwjgl;
+        this.currentlyData = currentlyData;
+
 
     }
 
@@ -55,6 +60,14 @@ public class ImportData extends JPanel {
     private JLabel statusShow;
     private JComboBox<String> box;
     private JTable location_table2;
+    private JPanel main;
+    private CreateLWJGL lwjgl;
+
+    private boolean flag = false;
+    private List<String[]> data = new ArrayList<>();
+
+    private Thread positionThread;
+    private Thread connectionThread;
 
     private void menu(){
         menu = new JPanel();
@@ -77,26 +90,26 @@ public class ImportData extends JPanel {
         start.setLocation(10,5);
         start.setSize(20,20);
         start.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
-        start.addActionListener(e -> server_btnActionPerformed(e));
+        start.addActionListener(this::server_btnActionPerformed);
         menu.add(start);
 
         stop.setSize(20,20);
         stop.setLocation(40,5);
         stop.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
-        stop.addActionListener(e -> stop_btnActionPerformed(e));
+        stop.addActionListener(this::stop_btnActionPerformed);
         menu.add(stop);
 
         help.setSize(20,20);
         help.setLocation(70,5);
         help.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
-        help.addActionListener(e -> create_btnActionPerformed(e));
+        //help.addActionListener(this::create_btnActionPerformed);
         menu.add(help);
         add(menu);
 
         save.setSize(20,20);
         save.setLocation(100,5);
         save.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
-        save.addActionListener(e -> save_bntActionPerformed(e));
+        save.addActionListener(this::save_bntActionPerformed);
         menu.add(save);
 
         status_msg = new JLabel("Status:");
@@ -110,7 +123,7 @@ public class ImportData extends JPanel {
         statusShow.setLocation(175,5);
         menu.add(statusShow);
 
-        box = new JComboBox<String>();
+        box = new JComboBox<>();
         box.setSize(100,20);
         if(createsev != null)
             for(CreateServer server : createsev){
@@ -134,14 +147,12 @@ public class ImportData extends JPanel {
 
     private ImageIcon uploadIcon(String filename){
         try {
-            return new ImageIcon(ImageIO.read(new File("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\"+filename+".png")));
+            return new ImageIcon(ImageIO.read(new File("src\\main\\resources\\"+filename+".png")));
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-    private JPanel main;
 
     private void pane(){
         main = new JPanel();
@@ -186,69 +197,93 @@ public class ImportData extends JPanel {
     }
 
     private void maps(){
-        Runnable run = () -> {
-            CreateLWJGL maps = new CreateLWJGL();
-        };
+        lwjgl= new CreateLWJGL();
+        Runnable run = () -> lwjgl.start();
 
         Thread thread = new Thread(run);
         thread.start();
     }
-
-
-    private boolean flag = false;
-    private List<String[]> data = new ArrayList<>();
 
     private void create_btnActionPerformed(ActionEvent evt) {
         Runnable run = () -> {
             int count =1;
             while(flag) {
                 try{
-                    for(int j=0; j < createsev.length; j++) {
-                        if(predString == null) {
-                            String str = createsev[j].getData();
-                            String[] subStr1;
-                            String delimeter = ",";
-                            subStr1 = str.split(delimeter);
-                            modeltab.insertRow(modeltab.getRowCount(),
-                                    new Object[]{Integer.parseInt(
-                                            subStr1[0])+" "+count++,
-                                            subStr1[1],
-                                            Double.parseDouble(subStr1[2]),
-                                            Double.parseDouble(subStr1[3]),
-                                            Double.parseDouble(subStr1[4]),
-                                            Double.parseDouble(subStr1[5]),
-                                            Double.parseDouble(subStr1[6])
-                                    }
-                            );
+                    for (CreateServer createServer : createsev) {
+                        String str = createServer.getData();
+                        String[] splitStr;
+                        String delimeter = ",";
+                        splitStr = str.split(delimeter);
 
-                            predString = str;
-                        }
-                        else{
-                            String str = createsev[j].getData();
-                            if(str != predString){
-                                String[] splitStr;
-                                String delimeter = ",";
-                                splitStr = str.split(delimeter);
-                                modeltab.insertRow(modeltab.getRowCount(),
-                                        new Object[]{
-                                                Integer.parseInt(splitStr[0])+" "+
-                                                        count++,
-                                                splitStr[1],
-                                                Double.parseDouble(splitStr[2]),
-                                                Double.parseDouble(splitStr[3]),
-                                                Double.parseDouble(splitStr[4]),
-                                                Double.parseDouble(splitStr[5]),
-                                                Double.parseDouble(splitStr[6])
-                                        }
-                                );
-                                predString = str;
+                        CreateLWJGL.game.converterToXY(splitStr[0], new double[]{Double.parseDouble(splitStr[2]), Double.parseDouble(splitStr[3])}, 2);
+                        currentlyData.setLocation_table2(modeltab.getRowCount(),
+                                new Object[]{Integer.parseInt(
+                                        splitStr[0]) + " " + count++,
+                                        splitStr[1],
+                                        Double.parseDouble(splitStr[2]),
+                                        Double.parseDouble(splitStr[3]),
+                                        Double.parseDouble(splitStr[4]),
+                                        Double.parseDouble(splitStr[5]),
+                                        Double.parseDouble(splitStr[6])
+                                }, str);
+//                        if(predString == null) {
+//                            currentlyData.setLocation_table2(modeltab.getRowCount(),
+//                                    new Object[]{Integer.parseInt(
+//                                            splitStr[0])+" "+count++,
+//                                            splitStr[1],
+//                                            Double.parseDouble(splitStr[2]),
+//                                            Double.parseDouble(splitStr[3]),
+//                                            Double.parseDouble(splitStr[4]),
+//                                            Double.parseDouble(splitStr[5]),
+//                                            Double.parseDouble(splitStr[6])
+//                                    });
+//                            modeltab.insertRow(modeltab.getRowCount(),
+//                                    new Object[]{Integer.parseInt(
+//                                            splitStr[0])+" "+count++,
+//                                            splitStr[1],
+//                                            Double.parseDouble(splitStr[2]),
+//                                            Double.parseDouble(splitStr[3]),
+//                                            Double.parseDouble(splitStr[4]),
+//                                            Double.parseDouble(splitStr[5]),
+//                                            Double.parseDouble(splitStr[6])
+//                                    }
+//                            );
+//
+//                            predString = str;
+//                        }
+//                        else{
+//                            if(str != predString){
+//                                currentlyData.setLocation_table2(modeltab.getRowCount(),
+//                                        new Object[]{
+//                                                Integer.parseInt(splitStr[0])+" "+
+//                                                        count++,
+//                                                splitStr[1],
+//                                                Double.parseDouble(splitStr[2]),
+//                                                Double.parseDouble(splitStr[3]),
+//                                                Double.parseDouble(splitStr[4]),
+//                                                Double.parseDouble(splitStr[5]),
+//                                                Double.parseDouble(splitStr[6])
+//                                        });
+//                                modeltab.insertRow(modeltab.getRowCount(),
+//                                        new Object[]{
+//                                                Integer.parseInt(splitStr[0])+" "+
+//                                                        count++,
+//                                                splitStr[1],
+//                                                Double.parseDouble(splitStr[2]),
+//                                                Double.parseDouble(splitStr[3]),
+//                                                Double.parseDouble(splitStr[4]),
+//                                                Double.parseDouble(splitStr[5]),
+//                                                Double.parseDouble(splitStr[6])
+//                                        }
+//                                );
+//                                predString = str;
+//                            }
+//                        }
 
-                            }
-                        }
+                        // currentlyData.setLocation_table2(modeltab);
                     }
                 }
-                catch(Exception ex)
-                {
+                catch(Exception ex) {
                     ex.printStackTrace();
                 }
 
@@ -260,8 +295,8 @@ public class ImportData extends JPanel {
             }
 
         };
-        Thread thread = new Thread(run);
-        thread.start();
+        positionThread = new Thread(run);
+        positionThread.start();
 
     }
 
@@ -283,27 +318,29 @@ public class ImportData extends JPanel {
 
 //                            TrafficPlan trafficPlan = new TrafficPlan(clientSocket);
 //
-                        createsev[i] = new CreateServer(clientSocket,class_list, location_table,excep_msg,data);
-                        executeIt.execute(createsev[i]);
+                        createsev.add(new CreateServer(clientSocket,class_list, location_table,excep_msg,data));
+                        executeIt.execute(createsev.get(i));
 
-                        createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
-                        executeIt.execute(createsev[i]);
+                        create_btnActionPerformed(evt);
+
+//                        createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
+//                        executeIt.execute(createsev[i]);
 
                         i++;
                     } catch (IOException ex) {
                         Logger.getLogger(MonitoringFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
-//                   JOptionPane.showMessageDialog(null,
-//                              "Клиент подключился",
-//                              "Клиент",
-//                              JOptionPane.WARNING_MESSAGE);
+                   JOptionPane.showMessageDialog(null,
+                              "Клиент подключился",
+                              "Клиент",
+                              JOptionPane.WARNING_MESSAGE);
 
                 }
             };
 
-            Thread myThread = new Thread(runnable);
-            myThread.start();
+            connectionThread = new Thread(runnable);
+            connectionThread.start();
 
 
         }
@@ -319,14 +356,18 @@ public class ImportData extends JPanel {
 //        System.exit(0);
         flag = false;
         statusShow.setIcon(uploadIcon("no"));
+        if(connectionThread != null){
+            connectionThread.stop();
+            positionThread.stop();
+        }
     }
 
     private void save_bntActionPerformed(ActionEvent evt) {
 
         ImportDataInXML xmlFile = new ImportDataInXML();
 
-        for (int i = 0; i < createsev.length; i++) {
-            data = createsev[i].getDatas();
+        for (CreateServer server : createsev) {
+            data = server.getDatas();
         }
 
         xmlFile.save(data);

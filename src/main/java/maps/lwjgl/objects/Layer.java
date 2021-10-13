@@ -6,14 +6,14 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Layer extends Objects {
 
-    private Layer.Sprite spr;
+    private SpriteLayer spr;
 
     public Layer(float x , float y, float sizeX, float sizeY){
-        this.spr = new Layer.Sprite(1f,0.8f,0.1f,sizeX,sizeY);
+        this.spr = new SpriteLayer(1f,0.8f,0.1f,sizeX,sizeY);
         layer(x, y, spr);
     }
 
-    public class Sprite {
+    public class SpriteLayer implements Sprite {
         private float r;
         private float g;
         private float b;
@@ -21,7 +21,7 @@ public class Layer extends Objects {
         private float sx;
         private float sy;
 
-        public Sprite(float r, float g, float b, float sx, float sy) {
+        public SpriteLayer(float r, float g, float b, float sx, float sy) {
             this.r = r;
             this.g = g;
             this.b = b;
@@ -42,6 +42,26 @@ public class Layer extends Objects {
             }
 
             glEnd();
+        }
+
+        @Override
+        public float getSx() {
+            return sx;
+        }
+
+        @Override
+        public void setSx(float sx) {
+            this.sx = sx;
+        }
+
+        @Override
+        public float getSy() {
+            return sy;
+        }
+
+        @Override
+        public void setSy(float sy) {
+            this.sy = sy;
         }
     }
 }

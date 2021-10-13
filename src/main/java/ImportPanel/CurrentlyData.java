@@ -2,27 +2,17 @@ package ImportPanel;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
 
 public class CurrentlyData extends JPanel {
 
     private JScrollPane jScrollPane4;
     private JTable location_table2;
-    private JLabel jLabel2;
-    private JScrollPane jScrollPane1;
-    private JList<String> connect_avto_list;
-    private JLabel status_msg1;
-    private JLabel excep_msg1;
 
     public CurrentlyData() {
         this.setSize(800,600);
         jScrollPane4 = new JScrollPane();
         location_table2 = new JTable();
-        jLabel2 = new JLabel();
-        jScrollPane1 = new JScrollPane();
-        connect_avto_list = new JList<>();
-        status_msg1 = new JLabel();
-        excep_msg1 = new JLabel();
+        modeltab = (DefaultTableModel) location_table2.getModel();
 
         //======== jPanel2 ========
         {
@@ -60,6 +50,26 @@ public class CurrentlyData extends JPanel {
                                     .addComponent(jScrollPane4, GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
                                     .addGap(30,30,30))
             );
+        }
+    }
+
+    private DefaultTableModel modeltab;
+    private boolean flag1 = true;
+
+    public void setLocation_table2(int rowCount, Object[] object, String str){
+        this.modeltab = (DefaultTableModel) location_table2.getModel();
+
+        if(flag1) {
+            modeltab.insertRow(rowCount, object);
+            flag1 = false;
+        }else{
+            if(object[0].equals( modeltab.getValueAt(rowCount, 0))){
+                for (int i = 0; i < object.length; i++) {
+                modeltab.setValueAt(object[i], rowCount, i);
+                }
+            }else{
+                modeltab.insertRow(rowCount, object);
+            }
         }
     }
 }

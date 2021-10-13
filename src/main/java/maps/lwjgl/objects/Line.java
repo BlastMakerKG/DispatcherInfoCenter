@@ -9,17 +9,17 @@ public class Line extends Objects {
     private float sx;
     private float sy;
 
-    private Line.Sprite spr;
+    private SpriteLine spr;
 
     public Line(float x, float y, float x2, float y2) {
         this.sx = x2 -x;
         this.sy = y2 - y;
-        this.spr = new Line.Sprite(1,1,1,sx, sy);
+        this.spr = new SpriteLine(1,1,1,sx, sy);
         line(x,y, spr);
     }
 
 
-    public class Sprite {
+    public class SpriteLine implements Sprite {
         private float r;
         private float g;
         private float b;
@@ -43,7 +43,7 @@ public class Line extends Objects {
             this.sy = sy;
         }
 
-        public Sprite(float r, float g, float b, float sx, float sy) {
+        public SpriteLine(float r, float g, float b, float sx, float sy) {
             this.r = r;
             this.g = g;
             this.b = b;

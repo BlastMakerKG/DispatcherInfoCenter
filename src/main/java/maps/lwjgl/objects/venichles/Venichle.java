@@ -1,19 +1,21 @@
-package maps.lwjgl.objects;
+package maps.lwjgl.objects.venichles;
 
 import maps.lwjgl.Objects;
 import lombok.Setter;
+import maps.lwjgl.objects.Sprite;
+
 import static org.lwjgl.opengl.GL11.*;
 
 @Setter
-public class Venichle extends Objects {
+public abstract class Venichle extends Objects {
 
     public static float SIZE = 8;
     private float r = 0.1f,g=1.0f,b=0.1f;
 
-    private Venichle.Sprite spr;
+    private SpriteVenichle spr;
 
     public Venichle(float x, float y){
-        this.spr = new Venichle.Sprite(r,g,b,SIZE,SIZE);
+        this.spr = new SpriteVenichle(r,g,b,SIZE,SIZE);
         venichle(x,y, spr);
     }
 
@@ -21,11 +23,11 @@ public class Venichle extends Objects {
         this.r = r;
         this.g = g;
         this.b = b;
-        this.spr = new Venichle.Sprite(r,g,b,SIZE, SIZE);
+        this.spr = new SpriteVenichle(r,g,b,SIZE, SIZE);
         venichle(x,y, spr);
     }
 
-    public class Sprite {
+    public class SpriteVenichle implements Sprite {
         private float r;
         private float g;
         private float b;
@@ -33,7 +35,29 @@ public class Venichle extends Objects {
         private float sx;
         private float sy;
 
-        public Sprite(float r, float g, float b, float sx, float sy) {
+        @Override
+        public float getSx() {
+            return sx;
+        }
+
+        @Override
+        public void setSx(float sx) {
+            this.sx = sx;
+        }
+
+        @Override
+        public float getSy() {
+            return sy;
+        }
+
+        @Override
+        public void setSy(float sy) {
+            this.sy = sy;
+        }
+
+
+
+        public SpriteVenichle(float r, float g, float b, float sx, float sy) {
             this.r = r;
             this.g = g;
             this.b = b;

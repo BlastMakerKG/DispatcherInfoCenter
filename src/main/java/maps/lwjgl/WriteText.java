@@ -15,7 +15,7 @@ import static org.lwjgl.opengl.GL11.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class WriteText {
+public class WriteText extends Objects{
 
     /** The string that is rendered on-screen. */
     private StringBuilder renderString;
@@ -23,20 +23,20 @@ public class WriteText {
     private int fontTexture;
 
 
-    private int x;
-    private int y;
+//    private float x;
+//    private float y;
 
     public WriteText(StringBuilder text, int x, int y){
         this.renderString = text;
-        this.x = x;
-        this.y = y;
-
-
+//        this.x = x;
+//        this.y = y;
         try {
             setUpTextures();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.text(x,y,this);
     }
 
     private void setUpTextures() throws IOException {
@@ -45,7 +45,7 @@ public class WriteText {
         // Bind the texture object to the GL_TEXTURE_2D target, specifying that it will be a 2D texture.
         glBindTexture(GL_TEXTURE_2D, fontTexture);
         // Use TWL's utility classes to load the png file.
-        PNGDecoder decoder = new PNGDecoder(new FileInputStream("F:\\Krsu\\DispatcherInfoCenter\\src\\main\\resources\\myfont.png"));
+        PNGDecoder decoder = new PNGDecoder(new FileInputStream("src\\main\\resources\\myfont.png"));
         ByteBuffer buffer = BufferUtils.createByteBuffer(4 * decoder.getWidth() * decoder.getHeight());
         decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
         buffer.flip();
@@ -137,5 +137,4 @@ public class WriteText {
         }
     }
 
-    public void update() { }
 }
