@@ -75,7 +75,6 @@ public class CreateLWJGL {
         glLoadIdentity();
         glOrtho(0, Display.getWidth(),0, Display.getHeight(), -1,10);
         glMatrixMode(GL_MODELVIEW);
-
         glDisable(GL_DEPTH_TEST);
         glClearColor(0,0,0,0);
     }
@@ -84,16 +83,8 @@ public class CreateLWJGL {
         try {
             Display.setResizable(true);
             Display.setVSyncEnabled(true);
-//            Display.setFullscreen(true);
             DisplayMode[] modes = Display.getAvailableDisplayModes();
             resolutions.addAll(Arrays.asList(modes));
-//            for (int i = 1; i < resolutions.size(); i++) {
-//                if(resolutions.get(i-1).getWidth() > resolutions.get(i).getWidth() && resolutions.get(i-1).getHeight() > resolutions.get(i).getHeight()){
-//                    DisplayMode temp = resolutions.get(i-1);
-//                    resolutions.set(i-1, resolutions.get(i));
-//                    resolutions.set(i, temp);
-//                }
-//            }
         } catch (LWJGLException e) {
             e.printStackTrace();
         }

@@ -18,9 +18,9 @@ public class LWJGLDisplay {
         parse.loadLinks();
         createItems();
 
-        venichles.add(new Tripper(580,120));
-        venichles.add(new Excavator(200,200));
-        venichles.add(new Tripper(650,130));
+        venichles.add(new Tripper(400.0f, 150.0f, "tripper.png"));
+        venichles.add(new Tripper( (float)((Math.random()- 300)+ 100), (float) ((Math.random()- 300)+ 100), "tripper.png"));
+        venichles.add(new Excavator(200,200, "ETK-120", "excavator.png"));
 
         int countTripper = 0;
         for(Objects ob : venichles){
@@ -94,14 +94,6 @@ public class LWJGLDisplay {
                 temp = item;
             }
         }
-
-//        points.add(new Point((float) Display.getHeight() /2 - 20, (float)Display.getWidth() / 2 - 20, r,g,b));
-//        points.add(new Point((float)Display.getHeight() /2 +20, (float)Display.getWidth() / 2 + 20, r,g,b));
-//        points.add(new Point((float)Display.getHeight() - 40, (float)Display.getWidth() - 40, r,g,b));
-//        points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60, r,g,b));
-//        points.add(new Point((float)Display.getHeight() /2 - 60, (float)Display.getWidth() / 2 - 60, r,g,b));
-//        points.add(new Point((float)Display.getHeight() /2 - 80, (float)Display.getWidth() / 2 + 80, r,g,b));
-//        points.add(new Point((float)Display.getHeight() /2 + 40, (float)Display.getWidth() / 2 - 60, r,g,b));
     }
 
 
@@ -130,7 +122,7 @@ public class LWJGLDisplay {
     }
 
     boolean firstCoordinate = true;
-    int x=0,y=0, id = 0, height;
+    int x=0,y=0, id = 1, height;
     public void converterToXY(String id, double[] coordinates, int height){
 
         Runnable run = () -> {
@@ -138,9 +130,9 @@ public class LWJGLDisplay {
             this.id = Integer.parseInt(id);
             if(firstCoordinate){
                 firstCoordinates = coordinates;
-                first=false;
+                venichles.add(new Tripper((float)coordinates[0],(float) coordinates[1], "tripper.jpg"));
+                firstCoordinate=false;
             }
-
 
             if(firstCoordinates[0] - coordinates[0]  >0.001){
                 x--;
@@ -173,33 +165,27 @@ public class LWJGLDisplay {
 
 
     private void buttonReturnPoints(){
-        Runnable run = () -> {
-            if (Mouse.getX() > 900 && Mouse.getX() < 1250 && Mouse.getY() > 600 && Mouse.getY() < 700 && Mouse.isButtonDown(Mouse.getEventButton()) && first) {
-                first = false;
-                for (Objects ob : points) {
+        if (Mouse.getX() > 900 && Mouse.getX() < 1250 && Mouse.getY() > 600 && Mouse.getY() < 700 && Mouse.isButtonDown(Mouse.getEventButton()) && first) {
+            first = false;
+            for (Objects ob : points) {
+                ob.x -= 12000;
+                ob.y -= 77000;
+            }
+
+            for (int i = 0; i < geolines.size(); i++) {
+                for (Objects ob : geolines.get(i)) {
                     ob.x -= 12000;
                     ob.y -= 77000;
                 }
-
-                for (int i = 0; i < geolines.size(); i++) {
-                    for (Objects ob : geolines.get(i)) {
-                        ob.x -= 12000;
-                        ob.y -= 77000;
-                    }
-                }
-
-                for (Objects wr : VerticalTexts) {
-                    wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) + 12000)));
-                }
-                for (Objects wr : HorisontalTexts) {
-                    wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) + 77000)));
-                }
             }
-        };
 
-        Thread thread = new Thread(run);
-        thread.start();
-
+            for (Objects wr : VerticalTexts) {
+                wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) + 12000)));
+            }
+            for (Objects wr : HorisontalTexts) {
+                wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) + 77000)));
+            }
+        }
     }
 
     public void getInput(){
@@ -217,47 +203,45 @@ public class LWJGLDisplay {
 
 
         writing(zoom,mouseX,mouseY);
-        foreach((ArrayList<Objects>) points, mouseX,mouseY,zoom);
+        foreachListToRender(points, mouseX,mouseY,zoom);
 
 
         for (int i = 0; i < geolines.size(); i++) {
-            foreach( (ArrayList<Objects>)geolines.get(i), mouseX,mouseY,zoom);
+            foreachListToRender( geolines.get(i), mouseX,mouseY,zoom);
         }
 
 
 
 
-        for (Objects car :
-                venichles) {
-            if(car instanceof Tripper) {
-                if(id == venichles.indexOf(car)) {
-                    car.x += x;
-                    car.y += y;
-                }
-            }
-
+        for (Objects car : venichles) {
             car.x += mouseX;
             car.y += mouseY;
             car.resize(zoom);
             if(x != 0 || y!= 0) {
+                if(car instanceof Tripper) {
+
+                    venichles.get(id-1).x += x;
+                    venichles.get(id-1).y += y;
+                }
                 if(height > 750){
                     r+=0.01;g-=0.01;
                 }
                 roads.get(venichles.indexOf(car)).add(new Road(car.x,car.y, r,g,b));
-                //road.add(new Road(car.x, car.y));
             }
-
-
 
             x =0; y=0;
         }
 
-        foreach((ArrayList<Objects>) road, mouseX,mouseY,zoom);
+        for(int index : roads.keySet()){
+            foreachListToRender(roads.get(index), mouseX, mouseY, zoom);
+        }
+
+        foreachListToRender(road, mouseX,mouseY,zoom);
     }
 
     float r=0.3f,g=0.7f,b=0.8f;
 
-    private void foreach(ArrayList<Objects> listObject, float mouseX, float mouseY, float zoom){
+    private void foreachListToRender(List<Objects> listObject, float mouseX, float mouseY, float zoom){
         for (Objects ob : listObject){
             ob.resize(zoom);
             ob.x += mouseX;
@@ -328,53 +312,20 @@ public class LWJGLDisplay {
     public void render(){
         renderForeach(points);
         renderForeach( layers);
-
-//        for (Objects go : points) {
-//            go.render();
-//        }
-//        for(Objects wall : layers){
-//            wall.render();
-//        }
         renderForeach(VerticalTexts);
         renderForeach(HorisontalTexts);
-//        for (WriteText wr : VerticalTexts){
-//            wr.render();
-//        }
-//        for (WriteText wr : HorisontalTexts){
-//            wr.render();
-//        }
         for (int i = 0; i < geolines.size(); i++) {
             renderForeach(geolines.get(i));
-//            for(Objects ob : geolines.get(i)){
-//                ob.render();
-//            }
         }
         renderForeach(venichles);
-//        for(Objects ob : venichles){
-//            ob.render();
-//        }
 
         for (int i = 0; i < roads.size(); i++) {
             renderForeach(roads.get(i));
-//            for(Objects ob : roads.get(i)){
-//                ob.render();
 //            }
         }
-//        if(road.size() > 0) {
-//            for (Objects road : road) {
-//                road.render();
-//            }
-//        }
 
         renderForeach(places);
         renderForeach(nameTrippers);
-//        for(WriteText text : places){
-//            text.render();
-//        }
-//
-//        for(WriteText text : nameTrippers){
-//            text.render();
-//        }
 
         text_center.render();
     }
@@ -384,6 +335,10 @@ public class LWJGLDisplay {
         for(Objects ob : objects){
             ob.render();
         }
+    }
+
+    public void setVenichles(List<Objects> cars){
+        this.venichles = cars;
     }
 
 //    public void update(){

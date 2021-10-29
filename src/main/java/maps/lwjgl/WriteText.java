@@ -57,7 +57,7 @@ public class WriteText extends Objects{
     }
 
     public void render() {
-        renderString(renderString.toString(), fontTexture, 16, (float)x, (float) y, 20, 15f);
+        renderString(renderString.toString(), fontTexture, 16, x, y, 20, 15f);
     }
 
     /**

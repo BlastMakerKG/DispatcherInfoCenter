@@ -77,13 +77,12 @@ public class CreateServer implements Runnable{
 
     private java.util.List<String[]> datas;
 
-    public java.util.List<String[]> getDatas() {
-        return datas;
-    }
+    private DataService dataService;
 
-    public CreateServer(Socket socket, List client_list, JTable loc_table, JLabel label, java.util.List<String[]> datas){
+    public CreateServer(Socket socket, List client_list, JTable loc_table, JLabel label, java.util.List<String[]> datas, DataService dataService){
         this.datas = datas;
         this.clientSocket = socket;
+        this.dataService = dataService;
         name_client = clientSocket.getInetAddress().getCanonicalHostName();
         client_list.add(clientSocket.getInetAddress().getCanonicalHostName());
         label.setText("Передача данных началась");
@@ -128,8 +127,6 @@ public class CreateServer implements Runnable{
                 BufferedReader reader = new BufferedReader(new InputStreamReader(getClientSocket().getInputStream()));
                 data = reader.readLine();
 
-                DataService dataService = new DataServiceImpl();
-                dataService.createDataTable();
                 dataService.saveData(data);
 
                 if(data != null)
