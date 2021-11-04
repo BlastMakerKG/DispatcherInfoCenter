@@ -39,9 +39,6 @@ public class Road extends Objects {
             this.sy = sy;
         }
 
-
-
-
         public SpriteRoad(float r, float g, float b) {
             this.r = r;
             this.g = g;

@@ -1,7 +1,6 @@
 package maps.lwjgl.objects.venichles;
 
 import maps.lwjgl.Objects;
-import lombok.Setter;
 import maps.lwjgl.objects.Sprite;
 import maps.lwjgl.objects.UploadIcons;
 
@@ -10,14 +9,10 @@ import static org.lwjgl.opengl.GL11.*;
 public abstract class Venichle extends Objects {
 
     public static float SIZE = 8;
-    private float r = 0.1f,g=1.0f,b=0.1f;
 
     private SpriteVenichle spr;
 
     public Venichle(float x, float y, float r, float g, float b, String filename){
-        this.r = r;
-        this.g = g;
-        this.b = b;
         this.spr = new SpriteVenichle(r,g,b,SIZE, SIZE, filename);
         venichle(x,y, spr);
     }

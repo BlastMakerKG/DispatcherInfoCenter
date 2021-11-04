@@ -1,14 +1,7 @@
 package maps.lwjgl.objects;
-import de.matthiasmann.twl.utils.PNGDecoder;
-import org.lwjgl.BufferUtils;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
+import org.newdawn.slick.opengl.*;
 
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.ByteBuffer;
+import java.io.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -24,18 +17,6 @@ public class UploadIcons {
             System.out.println("src\\main\\resources\\Venichles\\"+ path);
             wood = TextureLoader.getTexture("PNG", new FileInputStream(new File("src\\main\\resources\\Venichles\\"+ path)));
 
-//            idTexture = glGenTextures();
-//            glBindTexture(GL_TEXTURE_2D, idTexture);
-//            // Use TWL's utility classes to load the png file.
-//            PNGDecoder decoder = new PNGDecoder(new FileInputStream("src\\main\\resources\\Venichles\\"+ path));
-//            ByteBuffer buffer = BufferUtils.createByteBuffer(4 * decoder.getWidth() * decoder.getHeight());
-//            decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
-//            buffer.flip();
-//            // Load the previously loaded texture data into the texture object.
-//            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, decoder.getWidth(), decoder.getHeight(), 0, GL_RGBA, GL_UNSIGNED_BYTE,
-//                    buffer);
-//            // Unbind the texture.
-//            glBindTexture(GL_TEXTURE_2D, 0);
         } catch (IOException e) {
             e.printStackTrace();
         }

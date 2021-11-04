@@ -20,7 +20,7 @@ public class LWJGLDisplay {
 
         venichles.add(new Tripper(400.0f, 150.0f, "tripper.png"));
         venichles.add(new Tripper( (float)((Math.random()- 300)+ 100), (float) ((Math.random()- 300)+ 100), "tripper.png"));
-        venichles.add(new Excavator(200,200, "ETK-120", "excavator.png"));
+        venichles.add(new Excavator(200,200, "excavator.png"));
 
         int countTripper = 0;
         for(Objects ob : venichles){
@@ -261,9 +261,9 @@ public class LWJGLDisplay {
         }
     }
 
-    private void updateText(float zoom, float mouseY, List<Objects> horisontalTexts) {
+    private void updateText(float zoom, float mouse, List<Objects> horisontalTexts) {
         for(Objects wr : horisontalTexts) {
-            wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) - mouseY)));
+            wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) - mouse)));
             if (zoom < 0) {
                 wr.text.setRenderString(new StringBuilder().append(Math.round(Float.parseFloat(wr.text.getRenderString().toString()) / 2)));
             } else if (zoom > 0) {
@@ -321,7 +321,6 @@ public class LWJGLDisplay {
 
         for (int i = 0; i < roads.size(); i++) {
             renderForeach(roads.get(i));
-//            }
         }
 
         renderForeach(places);
@@ -365,9 +364,9 @@ public class LWJGLDisplay {
 
     private List<Objects> points;
     private List<Objects> layers;
-    private ParseXmlPoints parse = new ParseXmlPoints("src\\main\\resources\\example.xml");
-    private HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
-    private List<ReliefItems> list =  parse.getReliefItems();
+    private final ParseXmlPoints parse = new ParseXmlPoints("src\\main\\resources\\example.xml");
+    private final HashMap<Integer,LinkedList<ReliefItems>> geoLines = parse.getGeoLines();
+    private final List<ReliefItems> list =  parse.getReliefItems();
     private List<Objects> VerticalTexts;
     private List<Objects> HorisontalTexts;
     private HashMap<Integer, List<Objects>> geolines;
