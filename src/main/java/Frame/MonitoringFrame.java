@@ -20,20 +20,15 @@ import javax.swing.GroupLayout;
 public class MonitoringFrame extends JFrame {
 
     private final JTabbedPane main = new JTabbedPane();
-    private static ExecutorService executeIt = Executors.newFixedThreadPool(1);
+    private static ExecutorService executeIt = Executors.newFixedThreadPool(2);
     private static List<CreateServer> createsev = new ArrayList<>();
     private static CreateLWJGL lwjgl = new CreateLWJGL();
-    private static CurrentlyData currentlyData = new CurrentlyData();
-    private static ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData);
+    private static DataService dataService = new DataServiceImpl();
 
-    public MonitoringFrame(String name) {
 
-        DataService dataService = new DataServiceImpl();
+    public MonitoringFrame() {
+
         dataService.createDataTable();
-        dataService.saveData(name);
-        dataService.saveData(name);
-        dataService.saveData(name);
-        System.out.println(dataService.getAllData());
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -54,8 +49,7 @@ public class MonitoringFrame extends JFrame {
 
     private void initComponents() {
         CurrentlyData currentlyData = new CurrentlyData();
-        ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData);
-
+        ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData, dataService);
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container contentPane = getContentPane();
@@ -68,11 +62,6 @@ public class MonitoringFrame extends JFrame {
             main.addTab("Модуль оцифровки трассы", importData);
             main.addTab("Положение транспортов", currentlyData);
 
-
-
-
-//            Maps maps = new Maps();
-//            Main.addTab("\u041e\u0442\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", maps);
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);

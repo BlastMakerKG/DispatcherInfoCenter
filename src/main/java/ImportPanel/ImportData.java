@@ -2,8 +2,11 @@ package ImportPanel;
 
 import Frame.MonitoringFrame;
 import Server.CreateServer;
+import Server.DB.service.DataService;
 import XmlFile.ImportDataInXML;
 import maps.lwjgl.CreateLWJGL;
+import maps.lwjgl.Objects;
+import maps.lwjgl.objects.venichles.Tripper;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,14 +37,18 @@ public class ImportData extends JPanel {
     private DefaultTableModel modeltab;
     private JTable location_table;
     private CurrentlyData currentlyData;
+    private DataService dataService;
+    private List<Objects> venichles;
 
 
-    public ImportData(List<CreateServer> createsev, ExecutorService executeIt, CreateLWJGL lwjgl, CurrentlyData currentlyData) {
+    public ImportData(List<CreateServer> createsev, ExecutorService executeIt, CreateLWJGL lwjgl, CurrentlyData currentlyData, DataService dataService) {
 
         this.setLayout(null);
         this.setSize(800,600);
         menu();
         pane();
+
+        this.dataService = dataService;
 
         this.createsev = createsev;
         this.executeIt = executeIt;
@@ -49,6 +56,7 @@ public class ImportData extends JPanel {
         this.lwjgl = lwjgl;
         this.currentlyData = currentlyData;
 
+        venichles = new ArrayList<>();
 
     }
 
@@ -215,7 +223,8 @@ public class ImportData extends JPanel {
                         String delimeter = ",";
                         splitStr = str.split(delimeter);
 
-                        CreateLWJGL.game.converterToXY(splitStr[0], new double[]{Double.parseDouble(splitStr[2]), Double.parseDouble(splitStr[3])}, 2);
+                        CreateLWJGL.game.converterToXY(splitStr[0], new double[]{Double.parseDouble(splitStr[2]), Double.parseDouble(splitStr[3])}, Math.round(Float.parseFloat(splitStr[4])));
+                        CreateLWJGL.game.setVenichles(venichles);
                         currentlyData.setLocation_table2(modeltab.getRowCount(),
                                 new Object[]{Integer.parseInt(
                                         splitStr[0]) + " " + count++,
@@ -318,8 +327,9 @@ public class ImportData extends JPanel {
 
 //                            TrafficPlan trafficPlan = new TrafficPlan(clientSocket);
 //
-                        createsev.add(new CreateServer(clientSocket,class_list, location_table,excep_msg,data));
+                        createsev.add(new CreateServer(clientSocket,class_list, location_table,excep_msg,data, dataService));
                         executeIt.execute(createsev.get(i));
+                        venichles.add(new Tripper( (float)((Math.random()- 300)+ 100), (float) ((Math.random()- 300)+ 100), "tripper.png"));
 
                         create_btnActionPerformed(evt);
 

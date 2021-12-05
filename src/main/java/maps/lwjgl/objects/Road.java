@@ -16,8 +16,8 @@ public class Road extends Objects {
 
     public class SpriteRoad implements Sprite{
         private float r,g,b;
-        private float sx = 4;
-        private float sy = 4;
+        private float sx = 2;
+        private float sy = 2;
 
         @Override
         public float getSx() {
@@ -39,9 +39,6 @@ public class Road extends Objects {
             this.sy = sy;
         }
 
-
-
-
         public SpriteRoad(float r, float g, float b) {
             this.r = r;
             this.g = g;
@@ -52,14 +49,12 @@ public class Road extends Objects {
             glColor3f(r, g, b);
 
             glBegin(GL_QUADS);
-
             {
                 glVertex2f(0, 0);
                 glVertex2f(0, sy);
                 glVertex2f(sx, sy);
                 glVertex2f(sx, 0);
             }
-
             glEnd();
         }
 

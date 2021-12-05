@@ -24,6 +24,7 @@ public abstract class Objects {
     }
 
     public  void render(){
+        glPushAttrib(GL_TEXTURE_BIT | GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT);
         glPushMatrix();
         {
             glTranslated(x, y,0);
@@ -37,12 +38,14 @@ public abstract class Objects {
                 layer.render();
             }else if(road != null){
                 road.render();
-            }else if(text !=null) {
-                text.render();
             }
         }
 
         glPopMatrix();
+        glPopAttrib();
+        if(text !=null) {
+            text.render();
+        }
     }
 
     public void resize(float zoom){

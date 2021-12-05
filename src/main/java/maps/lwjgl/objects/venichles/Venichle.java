@@ -1,29 +1,19 @@
 package maps.lwjgl.objects.venichles;
 
 import maps.lwjgl.Objects;
-import lombok.Setter;
 import maps.lwjgl.objects.Sprite;
+import maps.lwjgl.objects.UploadIcons;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@Setter
 public abstract class Venichle extends Objects {
 
     public static float SIZE = 8;
-    private float r = 0.1f,g=1.0f,b=0.1f;
 
     private SpriteVenichle spr;
 
-    public Venichle(float x, float y){
-        this.spr = new SpriteVenichle(r,g,b,SIZE,SIZE);
-        venichle(x,y, spr);
-    }
-
-    public Venichle(float x, float y, float r, float g, float b){
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.spr = new SpriteVenichle(r,g,b,SIZE, SIZE);
+    public Venichle(float x, float y, float r, float g, float b, String filename){
+        this.spr = new SpriteVenichle(r,g,b,SIZE, SIZE, filename);
         venichle(x,y, spr);
     }
 
@@ -34,6 +24,8 @@ public abstract class Venichle extends Objects {
 
         private float sx;
         private float sy;
+
+        private UploadIcons icon;
 
         @Override
         public float getSx() {
@@ -55,28 +47,30 @@ public abstract class Venichle extends Objects {
             this.sy = sy;
         }
 
-
-
-        public SpriteVenichle(float r, float g, float b, float sx, float sy) {
+        public SpriteVenichle(float r, float g, float b, float sx, float sy, String filename) {
             this.r = r;
             this.g = g;
             this.b = b;
             this.sx = sx;
             this.sy = sy;
+
+            icon = new UploadIcons(filename);
         }
 
         public void render() {
+
             glColor3f(r, g, b);
-            glBegin(GL_QUADS);
+            glBegin(GL_TRIANGLES);
 
             {
-                glVertex2f(0, 0);
-                glVertex2f(0, sy);
-                glVertex2f(sx, sy);
-                glVertex2f(sx, 0);
-            }
 
+                glVertex2f(0, 0);
+                glVertex2f(-10, 10);
+                glVertex2f(10,10);
+            }
             glEnd();
+            icon.render();
+
         }
     }
 
