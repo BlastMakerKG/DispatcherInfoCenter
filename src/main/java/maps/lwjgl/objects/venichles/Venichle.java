@@ -3,10 +3,29 @@ package maps.lwjgl.objects.venichles;
 import maps.lwjgl.Objects;
 import maps.lwjgl.objects.Sprite;
 import maps.lwjgl.objects.UploadIcons;
+import Objects.Person;
+
+import java.sql.Timestamp;
 
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class Venichle extends Objects {
+
+    protected Person person;
+
+    protected String model;
+//    protected Timestamp timeCome;
+//    protected Timestamp timeGo;
+//    protected String typeWork;
+//    protected int weightFact;
+//    protected String placeForPut;
+//    protected Timestamp timePut;
+//    protected Timestamp timeTake;
+//    protected int gasForBegin;
+//    protected int gasForEnd;
+//    protected int trip;
+//    protected float speed;
+
 
     public static float SIZE = 8;
 

@@ -10,21 +10,21 @@ import org.hibernate.cfg.Configuration;
 import java.util.Properties;
 
 public class Util {
-    static final String URL = "jdbc:mysql://localhost:3306/dispatcherInfoCenter";
-    static final String USER = "root";
-    static final String PSW = "28365599iliaN";
+    static final String URL = "jdbc:postgresql://localhost:5432/dispatcherInfoCenter";
+    static final String USER = "postgres";
+    static final String PSW = "12345678";
 
     static SessionFactory sessionFactory;
 
     static {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.connection.driver_class", "com.mysql.jdbc.Driver");
+        properties.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
         properties.setProperty("hibernate.connection.url", URL);
         properties.setProperty("hibernate.connection.username", USER);
         properties.setProperty("hibernate.connection.password", PSW);
         properties.setProperty("show_sql", "true");
         properties.setProperty("hibernate.hbm2ddl.auto", "update");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         properties.setProperty("hibernate.pool_size", "1");
 
         Configuration configuration = new Configuration().addAnnotatedClass(Data.class).setProperties(properties);
