@@ -1,7 +1,7 @@
-package Server.DB.dao;
+package DB.dao;
 
-import Server.DB.model.Data;
-import Server.DB.util.Util;
+import DB.model.Data;
+import DB.util.Util;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -18,7 +18,7 @@ public class DataDaoHibernateImpl implements DataDao{
     public void createDataTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS Data(id INT PRIMARY KEY AUTO_INCREMENT NOT NULL, data nvarchar(200) NOT NULL)").executeUpdate();
+            session.createSQLQuery("CREATE TABLE IF NOT EXISTS Data(id SERIAL PRIMARY KEY NOT NULL, data TEXT NOT NULL)").executeUpdate();
             transaction.commit();
             session.close();
         } catch(Exception e) {

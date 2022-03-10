@@ -1,8 +1,8 @@
-package Server.DB.service;
+package DB.service;
 
-import Server.DB.dao.DataDao;
-import Server.DB.dao.DataDaoHibernateImpl;
-import Server.DB.model.Data;
+import DB.dao.DataDao;
+import DB.dao.DataDaoHibernateImpl;
+import DB.model.Data;
 
 import java.util.List;
 

@@ -9,7 +9,6 @@ public class UploadIcons {
 
     private String filepath;
     private Texture wood;
-    int idTexture;
 
     public UploadIcons(String path){
         filepath = path;
