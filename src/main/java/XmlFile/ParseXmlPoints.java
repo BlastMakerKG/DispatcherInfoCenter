@@ -7,6 +7,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.*;
 import java.io.IOException;
 import java.util.*;
+import XmlFile.model.*;
 
 
 @Getter

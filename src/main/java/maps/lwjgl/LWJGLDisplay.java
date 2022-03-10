@@ -1,16 +1,19 @@
 package maps.lwjgl;
 
-import XmlFile.ParseXmlPoints;
-import XmlFile.ReliefItems;
+import XmlFile.*;
+import XmlFile.model.*;
+import lombok.Getter;
+import lombok.Setter;
+import maps.lwjgl.objects.venichles.*;
 import maps.lwjgl.objects.*;
-import maps.lwjgl.objects.venichles.Excavator;
-import maps.lwjgl.objects.venichles.Tripper;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 
 import java.util.*;
 
+@Setter
+@Getter
 public class LWJGLDisplay {
 
 

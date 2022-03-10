@@ -3,8 +3,9 @@ package Frame;
 import ImportPanel.CurrentlyData;
 import ImportPanel.ImportData;
 import Server.CreateServer;
-import Server.DB.service.DataService;
-import Server.DB.service.DataServiceImpl;
+import DB.service.DataService;
+import DB.service.DataServiceImpl;
+import Server.UDPServer;
 import maps.lwjgl.CreateLWJGL;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class MonitoringFrame extends JFrame {
 
     private final JTabbedPane main = new JTabbedPane();
     private static ExecutorService executeIt = Executors.newFixedThreadPool(2);
-    private static List<CreateServer> createsev = new ArrayList<>();
+    private static List<UDPServer> createsev = new ArrayList<>();
     private static CreateLWJGL lwjgl = new CreateLWJGL();
     private static DataService dataService = new DataServiceImpl();
 

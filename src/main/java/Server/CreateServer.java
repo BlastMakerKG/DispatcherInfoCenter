@@ -1,8 +1,7 @@
 package Server;
 
-import Server.DB.dao.DataDaoHibernateImpl;
-import Server.DB.service.DataService;
-import Server.DB.service.DataServiceImpl;
+import ImportPanel.CurrentlyData;
+import DB.service.DataService;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,7 +35,7 @@ public class CreateServer implements Runnable{
         return flag;
     }
 
-    private boolean flag = true,flag_msg = true;
+    private boolean flag = true, flag_msg = true;
     
     private Socket clientSocket;
     
@@ -79,7 +78,7 @@ public class CreateServer implements Runnable{
 
     private DataService dataService;
 
-    public CreateServer(Socket socket, List client_list, JTable loc_table, JLabel label, java.util.List<String[]> datas, DataService dataService){
+    public CreateServer(Socket socket, List client_list, JTable loc_table, JLabel label, java.util.List<String[]> datas, DataService dataService, CurrentlyData currentlyData){
         this.datas = datas;
         this.clientSocket = socket;
         this.dataService = dataService;
@@ -93,19 +92,19 @@ public class CreateServer implements Runnable{
             try{
                 while(!clientSocket.isClosed()){
                     if(data != null){
-
-                             String str = data;
-                            String[] splitStr;
-                            String delimeter = ",";
-                            splitStr = str.split(delimeter);
-                            datas.add(splitStr);
-                            System.out.println(Integer.parseInt(splitStr[0]) + splitStr[1] + Double.parseDouble(splitStr[2]) +
-                                                                                 Double.parseDouble(splitStr[3]) + Double.parseDouble(splitStr[4]) + Double.parseDouble(splitStr[5]) + Double.parseDouble(splitStr[6]));
+                        String str = data;
+                        String delimeter = ",";
+                        String[] splitStr = str.split(delimeter);
+                        datas.add(splitStr);
+//                        System.out.println(Integer.parseInt(splitStr[0]) + splitStr[1] + Double.parseDouble(splitStr[2]) +
+//                                                                                 Double.parseDouble(splitStr[3]) + Double.parseDouble(splitStr[4]) + Double.parseDouble(splitStr[5]) + Double.parseDouble(splitStr[6]));
                         synchronized(modeltab)
                         {
                             modeltab.insertRow(modeltab.getRowCount(), new Object[]{Integer.parseInt(splitStr[0]),splitStr[1],Double.parseDouble(splitStr[2]),
                                                                                  Double.parseDouble(splitStr[3]),Double.parseDouble(splitStr[4]),Double.parseDouble(splitStr[5]),Double.parseDouble(splitStr[6])});
                             }
+                            currentlyData.setLocation_table2(modeltab.getRowCount(), new Object[]{Integer.parseInt(splitStr[0]),splitStr[1],Double.parseDouble(splitStr[2]),
+                                    Double.parseDouble(splitStr[3]),Double.parseDouble(splitStr[4]),Double.parseDouble(splitStr[5]),Double.parseDouble(splitStr[6])}, str);
                              Thread.sleep(2000);
                         }
                     }
@@ -122,10 +121,10 @@ public class CreateServer implements Runnable{
     @Override
     public void run() {
         while (flag) {          
-            try
-            {
+            try {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(getClientSocket().getInputStream()));
                 data = reader.readLine();
+                System.out.println(data.getBytes("UTF-8").length);
 
                 dataService.saveData(data);
 

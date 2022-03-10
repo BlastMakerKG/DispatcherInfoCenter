@@ -1,7 +1,6 @@
-package Server.DB.util;
+package DB.util;
 
-import Server.DB.model.Data;
-import org.hibernate.Session;
+import DB.model.Data;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;

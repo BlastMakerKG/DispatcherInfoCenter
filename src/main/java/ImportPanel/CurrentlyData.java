@@ -16,15 +16,12 @@ public class CurrentlyData extends JPanel {
 
         //======== jPanel2 ========
         {
-
             //======== jScrollPane4 ========
             {
-
                 //---- location_table2 ----
                 location_table2.setModel(new DefaultTableModel(
                         new Object[][] {},
-                        new String[] {"ID", "Дата", "Широта", "Долгота", "Абсолютная высота", "Расстояние", "Скорость"}
-                ) {
+                        new String[] {"ID", "Дата", "Широта", "Долгота", "Абсолютная высота", "Расстояние", "Скорость"}) {
                     Class<?>[] columnTypes = new Class<?>[] {Integer.class, String.class, Double.class, Double.class, Double.class, Double.class, Double.class};
                     @Override
                     public Class<?> getColumnClass(int columnIndex) {
@@ -60,16 +57,17 @@ public class CurrentlyData extends JPanel {
         this.modeltab = (DefaultTableModel) location_table2.getModel();
 
         if(flag1) {
-            modeltab.insertRow(rowCount, object);
+            modeltab.insertRow(rowCount-1, object);
             flag1 = false;
         }else{
-            if(object[0].equals( modeltab.getValueAt(rowCount, 0))){
+            if(object[0].equals( modeltab.getValueAt((Integer) object[0]-1, 0))){
                 for (int i = 0; i < object.length; i++) {
-                modeltab.setValueAt(object[i], rowCount, i);
+                modeltab.setValueAt(object[i], (Integer) object[0]-1, i);
                 }
             }else{
-                modeltab.insertRow(rowCount, object);
+                modeltab.insertRow((Integer) object[0]-1, object);
             }
         }
+        location_table2.updateUI();
     }
 }

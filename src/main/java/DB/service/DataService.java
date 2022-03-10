@@ -1,10 +1,9 @@
-package Server.DB.dao;
+package DB.service;
 
-import Server.DB.model.Data;
-
+import DB.model.*;
 import java.util.List;
 
-public interface DataDao {
+public interface DataService {
     void createDataTable();
 
     void dropDataTable();

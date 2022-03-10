@@ -1,4 +1,4 @@
-package Server.DB.model;
+package DB.model;
 
 import javax.persistence.*;
 
@@ -12,9 +12,7 @@ public class Data {
     @Column
     private String data;
 
-    public Data() {
-
-    }
+    public Data() {}
 
     public Data(String data) {
         this.data = data;

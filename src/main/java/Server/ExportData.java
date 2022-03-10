@@ -1,6 +1,10 @@
 package Server;
 
+import com.opencsv.CSVWriter;
+
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -31,6 +35,7 @@ public class ExportData {
                         buffer.append(defaultTableModel.getValueAt(i,j));
 //                        if (j!=Col)
                             buffer.append(";");
+
                     }
                     writer.write(buffer.toString() + "\r\n");
                 }
@@ -38,6 +43,27 @@ public class ExportData {
                   writer.close();
             }
         }
+
+    public static void expoertEithAnotherWay(JTable table, String path){
+        DefaultTableModel defaultTableModel = (DefaultTableModel) table.getModel();
+        int Row = defaultTableModel.getRowCount();
+        int Col = defaultTableModel.getColumnCount();
+        List<String[]> csvData = new ArrayList<>();
+        String[] strs = new String[Row];
+
+        for (int j = 0 ; j < Col ; j++){
+            for (int i = 0 ; i < Row ; i++){
+                strs[i] = String.valueOf(defaultTableModel.getValueAt(i,j));
+            }
+            csvData.add(strs);
+        }
+
+        try (CSVWriter writer = new CSVWriter(new FileWriter(path))) {
+            writer.writeAll(csvData);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     
     
     public static boolean exportToCSV(JTable tableToExport, File pathToExportTo) {
