@@ -2,6 +2,7 @@ package Frame;
 
 import ImportPanel.CurrentlyData;
 import ImportPanel.ImportData;
+import ImportPanel.externalMaps.Panel;
 import Server.CreateServer;
 import DB.service.DataService;
 import DB.service.DataServiceImpl;
@@ -51,6 +52,9 @@ public class MonitoringFrame extends JFrame {
     private void initComponents() {
         CurrentlyData currentlyData = new CurrentlyData();
         ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData, dataService);
+
+
+        Panel panel = new Panel(); // todo
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container contentPane = getContentPane();
@@ -63,6 +67,7 @@ public class MonitoringFrame extends JFrame {
             main.addTab("Модуль оцифровки трассы", importData);
             main.addTab("Положение транспортов", currentlyData);
 
+            main.addTab("External maps", panel);
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);

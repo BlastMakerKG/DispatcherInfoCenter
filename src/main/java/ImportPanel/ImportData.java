@@ -383,7 +383,7 @@ public class ImportData extends JPanel {
 
         ExportData.expoertEithAnotherWay(location_table, "src\\main\\resources\\exportfile\\file.csv");
 
-        xmlFile.save(data);
+//        xmlFile.save(data);
 
     }
 }
