@@ -2,8 +2,7 @@ package Frame;
 
 import ImportPanel.CurrentlyData;
 import ImportPanel.ImportData;
-import ImportPanel.externalMaps.Panel;
-import Server.CreateServer;
+import ImportPanel.externalMaps.*;
 import DB.service.DataService;
 import DB.service.DataServiceImpl;
 import Server.UDPServer;
@@ -54,7 +53,7 @@ public class MonitoringFrame extends JFrame {
         ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData, dataService);
 
 
-        Panel panel = new Panel(); // todo
+        Maps panel = new Maps(); // todo
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         Container contentPane = getContentPane();
