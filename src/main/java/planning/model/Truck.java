@@ -46,10 +46,6 @@ public class Truck {
         return temp.type_truck.equals(type_truck);
     }
 
-//    public boolean contains(Truck o){
-//        return type_truck.equals(o.getType_truck());
-//    }
-
     private class PerReice {
 
         private int reise;

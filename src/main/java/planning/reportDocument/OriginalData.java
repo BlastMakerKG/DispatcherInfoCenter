@@ -18,9 +18,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Service
-public class OriginalData {
 
+public class OriginalData {
     @Autowired
     TruckTripsRespository truckTripsRespository;
 
@@ -44,8 +43,6 @@ public class OriginalData {
 
     @Autowired
     UnloadPointRepository unloadPointRepository;
-
-
 
     /**
      * Функция для расчета выходного месячного документа, также выбока по типам работ

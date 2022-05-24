@@ -1,6 +1,6 @@
-package Server;
+package server;
 
-import ImportPanel.CurrentlyData;
+import panels.CurrentlyData;
 import DB.service.DataService;
 import lombok.Getter;
 import lombok.Setter;

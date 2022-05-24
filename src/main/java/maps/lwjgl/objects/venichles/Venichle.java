@@ -3,9 +3,7 @@ package maps.lwjgl.objects.venichles;
 import maps.lwjgl.Objects;
 import maps.lwjgl.objects.Sprite;
 import maps.lwjgl.objects.UploadIcons;
-import Objects.Person;
-
-import java.sql.Timestamp;
+import objects.Person;
 
 import static org.lwjgl.opengl.GL11.*;
 

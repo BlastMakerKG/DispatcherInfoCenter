@@ -1,4 +1,4 @@
-package XmlFile.model;
+package xmlFile.model;
 
 import lombok.*;
 

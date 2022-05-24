@@ -1,10 +1,9 @@
 package DB.dao;
 
-import DB.model.Data;
-import DB.util.Util;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
+import DB.util.Util;
+import DB.model.Data;
 import java.util.ArrayList;
 import java.util.List;
 
