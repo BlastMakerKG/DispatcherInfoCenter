@@ -1,4 +1,4 @@
-package ImportPanel.externalMaps;
+package panels.externalMaps;
 
 import javax.swing.*;
 import java.awt.*;

@@ -1,16 +1,13 @@
 package planning.functions;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
 
 /**
  * Рптимальные решения планирования смено-суточных параметров ЭТК
  */
-@Service
 public class Solution {
 
-    @Autowired
     Equation equation;
 
     private double min_value = 0;

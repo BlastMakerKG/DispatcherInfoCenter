@@ -1,7 +1,6 @@
 package planning.reportDocument;
 
 import planning.functions.Constants;
-import org.springframework.stereotype.Service;
 import planning.model.Truck;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
  * 4.   Рассчитаем среднюю, суточную себестоимость грузоперевозки по видам работ: ζ_сдj=Z_сдj/M_сдj  , ζ_свj=Z_свj/M_свj
  */
 
-@Service
 public class Excersice6 {
 
 

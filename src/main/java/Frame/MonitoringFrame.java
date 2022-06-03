@@ -1,12 +1,13 @@
 package Frame;
 
-import ImportPanel.CurrentlyData;
-import ImportPanel.ImportData;
-import ImportPanel.externalMaps.*;
+import panels.CurrentlyData;
+import panels.ImportData;
+import panels.PlanningPanel;
+import panels.externalMaps.*;
 import DB.service.DataService;
 import DB.service.DataServiceImpl;
-import Server.UDPServer;
-import maps.lwjgl.CreateLWJGL;
+import server.*;
+import maps.lwjgl.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ public class MonitoringFrame extends JFrame {
     private void initComponents() {
         CurrentlyData currentlyData = new CurrentlyData();
         ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData, dataService);
+        PlanningPanel planning = new PlanningPanel();
 
 
         Maps panel = new Maps(); // todo
@@ -67,6 +69,8 @@ public class MonitoringFrame extends JFrame {
             main.addTab("Положение транспортов", currentlyData);
 
             main.addTab("External maps", panel);
+
+            main.addTab("Planning", planning);
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);

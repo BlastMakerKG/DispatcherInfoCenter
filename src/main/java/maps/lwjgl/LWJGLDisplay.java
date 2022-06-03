@@ -1,7 +1,5 @@
 package maps.lwjgl;
 
-import XmlFile.*;
-import XmlFile.model.*;
 import lombok.Getter;
 import lombok.Setter;
 import maps.lwjgl.objects.venichles.*;
@@ -9,6 +7,8 @@ import maps.lwjgl.objects.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
+import xmlFile.model.ReliefItems;
+import xmlFile.ParseXmlPoints;
 
 import java.util.*;
 

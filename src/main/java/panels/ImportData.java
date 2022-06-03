@@ -1,14 +1,8 @@
-package ImportPanel;
+package panels;
 
-import Frame.MonitoringFrame;
-import Server.CreateServer;
 import DB.service.DataService;
-import Server.ExportData;
-import Server.UDPServer;
-import XmlFile.ImportDataInXML;
-import maps.lwjgl.CreateLWJGL;
-import maps.lwjgl.Objects;
-import maps.lwjgl.objects.venichles.Tripper;
+import server.*;
+import maps.lwjgl.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -17,15 +11,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ImportData extends JPanel {
 

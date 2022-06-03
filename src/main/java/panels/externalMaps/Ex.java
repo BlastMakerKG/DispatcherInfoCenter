@@ -1,8 +1,7 @@
-package ImportPanel.externalMaps;
+package panels.externalMaps;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Ex extends JPanel{
 

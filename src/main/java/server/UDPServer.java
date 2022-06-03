@@ -1,19 +1,16 @@
-package Server;
+package server;
 
 import DB.service.*;
-import ImportPanel.CurrentlyData;
+import panels.CurrentlyData;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 
 @Setter
 @Getter

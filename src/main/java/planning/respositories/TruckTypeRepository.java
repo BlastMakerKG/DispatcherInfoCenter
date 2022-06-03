@@ -1,13 +1,28 @@
 package planning.respositories;
 
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import planning.DTO.TruckTypeDTO;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
+import DB.util.*;
 
 import java.util.List;
 
-public interface TruckTypeRepository extends JpaRepository<TruckTypeDTO, Long>, JpaSpecificationExecutor<TruckTypeDTO> {
-    @Query(value = "select * from trucktype where name = ?1", nativeQuery = true)
-    List<TruckTypeDTO> getByName(String name);
+public class TruckTypeRepository {
+
+    public List<TruckTypeDTO> getByName(String name){
+        List<TruckTypeDTO> dates = null;
+
+        Transaction transaction = null;
+        try (Session session = Util.getSessionFactory().openSession()) {
+            transaction = session.getTransaction();
+            dates = session.createQuery("select * from trucktype where name = "+name).list();
+            transaction.commit();
+            session.close();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+        }
+        return dates;
+    }
 }

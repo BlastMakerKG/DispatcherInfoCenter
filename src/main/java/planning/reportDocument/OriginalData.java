@@ -1,14 +1,12 @@
 package planning.reportDocument;
 
 import planning.model.Excavator;
-import planning.DTO.TruckTripsDTO;
+import planning.DTO.*;
 import planning.model.Month;
 import planning.model.PerReice;
 import planning.model.Truck;
 import planning.respositories.*;
 import org.apache.commons.math3.util.Precision;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.sql.Date;
 import java.sql.Time;
@@ -18,34 +16,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Service
+
 public class OriginalData {
 
-    @Autowired
-    TruckTripsRespository truckTripsRespository;
+    TruckTripsRespository truckTripsRespository = new TruckTripsRespository();
 
-    @Autowired
+
     ExcavatorDriverRepository excavatorDriverRepository;
 
-    @Autowired
+
     ExcavatorRepository excavatorRepository;
 
-    @Autowired
+
     TruckDriverRepository truckDriverRepository;
 
-    @Autowired
+
     TruckTypeRepository truckTypeRepository;
 
-    @Autowired
+
     TruckRepository truckRepository;
 
-    @Autowired
+
     TypeOfWorkRepository typeOfWorkRepository;
 
-    @Autowired
+
     UnloadPointRepository unloadPointRepository;
-
-
 
     /**
      * Функция для расчета выходного месячного документа, также выбока по типам работ

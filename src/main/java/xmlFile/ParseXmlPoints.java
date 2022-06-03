@@ -1,13 +1,13 @@
-package XmlFile;
+package xmlFile;
 
 import lombok.Getter;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
+import xmlFile.model.ReliefItems;
 
 import javax.xml.parsers.*;
 import java.io.IOException;
 import java.util.*;
-import XmlFile.model.*;
 
 
 @Getter

@@ -5,38 +5,35 @@ import planning.functions.*;
 import planning.respositories.*;
 import planning.DTO.*;
 import org.apache.commons.math3.util.Precision;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.time.Duration;
 import java.util.*;
 
-@Service
+
 public class Output {
 
-    @Autowired
+//    @Autowired
     OriginalData calculation;
 
-    @Autowired
+//    @Autowired
     Equation equation;
 
-    @Autowired
+//    @Autowired
     Optimal optimal;
 
-    @Autowired
+//    @Autowired
     Solution solution;
 
-    @Autowired
-    ExcavatorRepository excavatorService;
+//    @Autowired
+    ExcavatorRepository excavatorService = new ExcavatorRepository();
 
-    @Autowired
+//    @Autowired
     TruckTripsRespository truckTripsRespository;
 
-    @Autowired
-    TruckTypeRepository truckService;
+//    @Autowired
+    TruckTypeRepository truckService = new TruckTypeRepository();
 
 
     /**
@@ -53,7 +50,7 @@ public class Output {
         List<Excavator> temp = new ArrayList<>();
         boolean checked = false;
         for (Excavator perDayExcavator : objects) {
-            ExcavatorDTO ex = excavatorService.getByName(perDayExcavator.getType());
+            ExcavatorDTO ex = excavatorService.getByName(perDayExcavator.getType()).get(0);
 
             for (Truck str : perDayExcavator.getTrucks()) {
                 TruckTypeDTO truckTypeDTO = truckService.getByName(str.getType_truck()).get(0);

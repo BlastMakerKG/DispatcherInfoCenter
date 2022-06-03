@@ -1,12 +1,10 @@
 package planning.functions;
 
 import org.apache.commons.math3.util.Precision;
-import org.springframework.stereotype.Service;
 
 /**
     Вычисление затрат
  */
-@Service
 public class Equation {
 
     /**

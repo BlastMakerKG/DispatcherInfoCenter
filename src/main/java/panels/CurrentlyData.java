@@ -1,4 +1,4 @@
-package ImportPanel;
+package panels;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
