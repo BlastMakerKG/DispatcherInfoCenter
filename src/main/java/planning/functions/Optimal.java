@@ -1,16 +1,11 @@
 package planning.functions;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 /**
  * Рассчет оптимальных плановых значений смено-суточных параметров ЭТК
  */
-@Service
 public class Optimal {
 
-    @Autowired
     Equation equation;
     /**
      * оптимальная скорость дивжения самосвалов i-го типа при j-ом типе эксковатора

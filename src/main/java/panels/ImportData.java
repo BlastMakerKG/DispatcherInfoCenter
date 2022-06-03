@@ -1,10 +1,8 @@
 package panels;
 
 import DB.service.DataService;
-import server.ExportData;
-import server.UDPServer;
-import maps.lwjgl.CreateLWJGL;
-import maps.lwjgl.Objects;
+import server.*;
+import maps.lwjgl.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

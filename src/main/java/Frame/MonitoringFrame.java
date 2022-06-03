@@ -6,8 +6,8 @@ import panels.PlanningPanel;
 import panels.externalMaps.*;
 import DB.service.DataService;
 import DB.service.DataServiceImpl;
-import server.UDPServer;
-import maps.lwjgl.CreateLWJGL;
+import server.*;
+import maps.lwjgl.*;
 
 import java.awt.*;
 import java.util.ArrayList;

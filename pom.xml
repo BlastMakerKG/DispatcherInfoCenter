@@ -20,41 +20,17 @@
         </plugins>
     </build>
 
-    <properties>
-        <lwjgl.version>3.2.3</lwjgl.version>
-        <joml.version>1.10.1</joml.version>
-        <lwjgl3-awt.version>0.1.8</lwjgl3-awt.version>
-        <steamworks4j.version>1.8.0</steamworks4j.version>
-        <steamworks4j-server.version>1.8.0</steamworks4j-server.version>
-        <lwjgl.natives>natives-windows</lwjgl.natives>
-    </properties>
-
-
-    <dependencyManagement>
-<!--        <dependencies>-->
-<!--            <dependency>-->
-<!--                <groupId>org.lwjgl</groupId>-->
-<!--                <artifactId>lwjgl-bom</artifactId>-->
-<!--                <version>${lwjgl.version}</version>-->
-<!--                <scope>import</scope>-->
-<!--                <type>pom</type>-->
-<!--            </dependency>-->
-<!--        </dependencies>-->
-    </dependencyManagement>
-
-
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.20</version>
+            <version>1.18.24</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-math3</artifactId>
-            <version>3.5</version>
+            <version>3.6.1</version>
         </dependency>
 
         <dependency>
@@ -66,25 +42,25 @@
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
-            <version>5.5.6.Final</version>
+            <version>6.0.1.Final</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
-            <version>42.3.3</version>
+            <version>42.3.4</version>
         </dependency>
 
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>5.3</version>
+            <version>5.6</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>2.6.0</version>
+            <groupId>org.dispatcher.info</groupId>
+            <artifactId>DispatcherInfoCenter</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>

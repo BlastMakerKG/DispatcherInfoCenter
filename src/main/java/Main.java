@@ -1,4 +1,4 @@
-import Frame.MonitoringFrame;
+import Frame.*;
 
 public class Main {
     public static void main(String[] args) {

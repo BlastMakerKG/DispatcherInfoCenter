@@ -31,6 +31,7 @@ public class PlanningPanel extends JPanel {
         panelDataWithPrice.setLayout(null);
         panelDataWithPrice.setSize(800,550);
         panelDataWithPrice.setLocation(0,50);
+        panelDataWithPrice.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         tableDataWithPrice = new JTable();
         tableDataWithPrice.setSize(800,500);
@@ -46,6 +47,20 @@ public class PlanningPanel extends JPanel {
 
 
         JScrollPane pane = new JScrollPane(tableDataWithPrice);
+        GroupLayout contentPaneLayoutForPanelDateWithPrice = new GroupLayout(panelDataWithPrice);
+        panelDataWithPrice.setLayout(contentPaneLayoutForPanelDateWithPrice);
+        contentPaneLayoutForPanelDateWithPrice.setHorizontalGroup(
+                contentPaneLayoutForPanelDateWithPrice.createParallelGroup()
+                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayoutForPanelDateWithPrice.createSequentialGroup()
+                                .addComponent(pane, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
+                                .addGap(10)));
+        contentPaneLayoutForPanelDateWithPrice.setVerticalGroup(
+                contentPaneLayoutForPanelDateWithPrice.createParallelGroup()
+                        .addComponent(pane)
+        );
+
+
+        pane.setSize(800,500);
 
 
         panelOriginalData = new JPanel();
@@ -63,11 +78,21 @@ public class PlanningPanel extends JPanel {
                 return columnTypes[columnIndex];
             }
         });
-//        originalData();
+        originalData();
         JScrollPane pane2 = new JScrollPane(tableOriginalData);
 
-        panelDataWithPrice.add(pane);
-        panelOriginalData.add(pane2);
+        GroupLayout contentPaneLayoutForPanelOriginalData = new GroupLayout(panelOriginalData);
+        panelOriginalData.setLayout(contentPaneLayoutForPanelOriginalData);
+        contentPaneLayoutForPanelOriginalData.setHorizontalGroup(
+                contentPaneLayoutForPanelOriginalData.createParallelGroup()
+                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayoutForPanelOriginalData.createSequentialGroup()
+                                .addComponent(pane2, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
+                                .addGap(10)));
+        contentPaneLayoutForPanelOriginalData.setVerticalGroup(
+                contentPaneLayoutForPanelOriginalData.createParallelGroup()
+                        .addComponent(pane2)
+        );
+
 
         tabbedPane.addTab("DataWithPrice",panelDataWithPrice);
         tabbedPane.addTab("OriginalData", panelOriginalData);
@@ -77,7 +102,7 @@ public class PlanningPanel extends JPanel {
         contentPaneLayout.setHorizontalGroup(
                 contentPaneLayout.createParallelGroup()
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                .addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 810, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tabbedPane, GroupLayout.PREFERRED_SIZE, 800, GroupLayout.PREFERRED_SIZE)
                                 .addGap(10))
         );
         contentPaneLayout.setVerticalGroup(
@@ -91,7 +116,7 @@ public class PlanningPanel extends JPanel {
 
         currentData = new OriginalData();
 
-        HashMap<Integer, planning.model.Month> month = currentData.month("");
+        HashMap<Integer, Month> month = currentData.month("");
 
         DefaultTableModel tableModel = (DefaultTableModel) tableOriginalData.getModel();
 
