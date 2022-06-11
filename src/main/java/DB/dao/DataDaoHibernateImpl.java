@@ -17,7 +17,7 @@ public class DataDaoHibernateImpl implements DataDao{
     public void createDataTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("CREATE TABLE IF NOT EXISTS Data(id SERIAL PRIMARY KEY NOT NULL, data TEXT NOT NULL)").executeUpdate();
+            session.createQuery("CREATE TABLE IF NOT EXISTS Data(id SERIAL PRIMARY KEY NOT NULL, data varchar NOT NULL)").executeUpdate();
             transaction.commit();
             session.close();
         } catch(Exception e) {
@@ -29,7 +29,7 @@ public class DataDaoHibernateImpl implements DataDao{
     public void dropDataTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("DROP TABLE IF EXISTS Data").executeUpdate();
+            session.createQuery("DROP TABLE IF EXISTS Data").executeUpdate();
             transaction.commit();
             session.close();
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class DataDaoHibernateImpl implements DataDao{
     public void cleanDataTable() {
         try (Session session = Util.getSessionFactory().openSession()) {
             Transaction transaction = session.beginTransaction();
-            session.createSQLQuery("TRUNCATE table Data").executeUpdate();
+            session.createQuery("TRUNCATE table Data").executeUpdate();
             transaction.commit();
             session.close();
         } catch (Exception e) {

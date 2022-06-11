@@ -1,11 +1,17 @@
 package Frame;
 
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.transform.Transformers;
 import panels.CurrentlyData;
 import panels.ImportData;
 import panels.PlanningPanel;
 import panels.externalMaps.*;
 import DB.service.DataService;
 import DB.service.DataServiceImpl;
+import DB.model.Data;
+import DB.util.*;
 import server.*;
 import maps.lwjgl.*;
 
@@ -29,8 +35,6 @@ public class MonitoringFrame extends JFrame {
 
 
     public MonitoringFrame() {
-
-        dataService.createDataTable();
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
