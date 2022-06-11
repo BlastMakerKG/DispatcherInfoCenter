@@ -107,10 +107,11 @@ public class TruckTripsRespository {
   Transaction transaction = null;
   try (Session session = Util.getSessionFactory().openSession()) {
    transaction = session.getTransaction();
-   dates = session.createQuery("select date(arrival_time) as d from trucktrip group by d order by d").list();
+   dates = session.createQuery("select date(arrival_time) as d from trucktrip group by d order by d").getResultList();
    transaction.commit();
    session.close();
   } catch (Exception e) {
+   System.out.println(e.getMessage());
    if (transaction != null) {
     transaction.rollback();
    }

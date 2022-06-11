@@ -2,6 +2,7 @@ package DB.util;
 
 import DB.model.*;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -9,28 +10,29 @@ import org.hibernate.cfg.Configuration;
 import java.util.Properties;
 
 public class Util {
-    static final String URL = "jdbc:postgresql://localhost:5432/dispatcherInfoCenter";
-    static final String USER = "postgres";
-    static final String PSW = "12345678";
+    static SessionFactory sessionFactory = buildSessionFactory();
 
-    static SessionFactory sessionFactory;
+    protected static SessionFactory buildSessionFactory() {
+        // A SessionFactory is set up once for an application!
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
+                .configure()
+                .build();
+        try {
+            sessionFactory = new Configuration().buildSessionFactory( registry );
+        }
+        catch (Exception e) {
+            // The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory
+            // so destroy it manually.
+            StandardServiceRegistryBuilder.destroy( registry );
 
-    static {
-        Properties properties = new Properties();
-        properties.setProperty("hibernate.connection.driver_class", "org.postgresql.Driver");
-        properties.setProperty("hibernate.connection.url", URL);
-        properties.setProperty("hibernate.connection.username", USER);
-        properties.setProperty("hibernate.connection.password", PSW);
-        properties.setProperty("show_sql", "true");
-        properties.setProperty("hibernate.hbm2ddl.auto", "update");
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
-        properties.setProperty("hibernate.pool_size", "1");
+            throw new ExceptionInInitializerError("Initial SessionFactory failed" + e);
+        }
+        return sessionFactory;
+    }
 
-        Configuration configuration = new Configuration().addAnnotatedClass(Data.class).setProperties(properties);
-
-        StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
-
-        sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    public static void shutdown() {
+        // Close caches and connection pools
+        getSessionFactory().close();
     }
 
     public static SessionFactory getSessionFactory() {
