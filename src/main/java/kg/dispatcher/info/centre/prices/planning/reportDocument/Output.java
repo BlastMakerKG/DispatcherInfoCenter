@@ -322,6 +322,7 @@ public class Output {
                 excavators.add(
                         Excavator.builder()
                                 .type(excavator.getType())
+                                .driver_name(excavator.getDriver_name())
                                 .distance(Precision.round(distance, 3))
                                 .weight_fact(weightFact_inEx)
                                 .weight_norm(Precision.round(weightNorm_InEx,3))

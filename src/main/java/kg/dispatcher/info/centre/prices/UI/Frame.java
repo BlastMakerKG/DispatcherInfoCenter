@@ -4,8 +4,8 @@ import kg.dispatcher.info.centre.prices.DB.service.DataService;
 import kg.dispatcher.info.centre.prices.maps.lwjgl.CreateLWJGL;
 import kg.dispatcher.info.centre.prices.UI.externalMaps.Maps;
 import kg.dispatcher.info.centre.prices.planning.reportDocument.OriginalData;
+import kg.dispatcher.info.centre.prices.planning.reportDocument.Output;
 import kg.dispatcher.info.centre.prices.server.CreateServer;
-import kg.dispatcher.info.centre.prices.server.UDPServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +31,9 @@ public class Frame extends JFrame {
     @Autowired
     OriginalData currentlyData;
 
+    @Autowired
+    Output outputData;
+
 
     public void start() {
 
@@ -54,7 +57,7 @@ public class Frame extends JFrame {
     private void initComponents() {
         CurrentlyData currentlyData = new CurrentlyData();
         ImportData importData = new ImportData(createsev,executeIt, lwjgl, currentlyData, dataService);
-        PlanningPanel planning = new PlanningPanel(this.currentlyData);
+        Document planning = new Document(this.currentlyData, outputData);
 
 
         Maps panel = new Maps(); // todo
