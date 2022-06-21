@@ -1,4 +1,4 @@
-package kg.dispatcher.info.centre.prices.panels.externalMaps;
+package kg.dispatcher.info.centre.prices.UI.externalMaps;
 
 import javax.swing.*;
 import java.awt.*;

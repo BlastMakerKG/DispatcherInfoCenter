@@ -1,5 +1,17 @@
-package kg.dispatcher.info.centre.prices.panels;
+package kg.dispatcher.info.centre.prices.UI;
 
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.engine.RenderingMode;
+import com.teamdev.jxbrowser.frame.Frame;
+import com.teamdev.jxbrowser.js.JsArray;
+import com.teamdev.jxbrowser.js.JsFunction;
+import com.teamdev.jxbrowser.js.JsObject;
+import com.teamdev.jxbrowser.js.internal.JsArrayBufferImpl;
+import com.teamdev.jxbrowser.js.internal.JsArrayImpl;
+import com.teamdev.jxbrowser.js.internal.JsContext;
+import com.teamdev.jxbrowser.view.swing.BrowserView;
 import kg.dispatcher.info.centre.prices.DB.service.DataService;
 import kg.dispatcher.info.centre.prices.server.*;
 import kg.dispatcher.info.centre.prices.maps.lwjgl.*;
@@ -9,12 +21,21 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.DatagramSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
+import static com.teamdev.jxbrowser.engine.RenderingMode.OFF_SCREEN;
 
 public class ImportData extends JPanel {
 
@@ -24,7 +45,7 @@ public class ImportData extends JPanel {
     private java.awt.List class_list;
     private JScrollPane jScrollPane2;
 
-    private List<UDPServer> createsev;
+    private List<CreateServer> createsev;
     private ExecutorService executeIt;
     private String predString;
     private DefaultTableModel modeltab;
@@ -36,7 +57,7 @@ public class ImportData extends JPanel {
     public ImportData(){}
 
 
-    public ImportData(List<UDPServer> createsev, ExecutorService executeIt, CreateLWJGL lwjgl, CurrentlyData currentlyData, DataService dataService) {
+    public ImportData(List<CreateServer> createsev, ExecutorService executeIt, CreateLWJGL lwjgl, CurrentlyData currentlyData, DataService dataService) {
 
         this.setLayout(null);
         this.setSize(800,600);
@@ -129,7 +150,7 @@ public class ImportData extends JPanel {
         box = new JComboBox<>();
         box.setSize(100,20);
         if(createsev != null)
-            for(UDPServer server : createsev){
+            for(CreateServer server : createsev){
                 String[] str = server.getData().split(",");
                 box.addItem(str[1]);
             }
@@ -200,11 +221,43 @@ public class ImportData extends JPanel {
     }
 
     private void maps(){
-        lwjgl= new CreateLWJGL();
-        Runnable run = () -> lwjgl.start();
+//        lwjgl= new CreateLWJGL();
+//        Runnable run = () -> lwjgl.start();
+//
+//        Thread thread = new Thread(run);
+//        thread.start();
 
-        Thread thread = new Thread(run);
-        thread.start();
+
+
+        // Initialize Chromium.
+        Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED)
+                .licenseKey("1BNDHFSC1G31O3C3IGXF949Z05HCSJ4MZELSDQ7IEQ19I348MUU7TUVJTOHP2LVFVVZJMA")
+                .build());
+
+// Create a Browser instance.
+        Browser browser = engine.newBrowser();
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame frame = new JFrame("JxBrowser AWT/Swing");
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    // Shutdown Chromium and release allocated resources.
+                    engine.close();
+                }
+            });
+            // Create and embed Swing BrowserView component to display web content.
+            frame.add(BrowserView.newInstance(browser));
+            frame.setSize(1280, 800);
+            frame.setLocationRelativeTo(null);
+            frame.setVisible(true);
+
+            // Load the required web page.
+            browser.navigation().loadUrl(new File("F:\\prices\\prices\\src\\main\\resources\\map\\map.html").getAbsolutePath());
+//            browser.settings().enableJavaScript();
+        });
+
+
     }
 
 //    private void create_btnActionPerformed(ActionEvent evt) {
@@ -303,27 +356,28 @@ public class ImportData extends JPanel {
 //        positionThread.start();
 //
 //    }
-
+    private ServerSocket serverSocket;
     private void server_btnActionPerformed(ActionEvent evt) {
         statusShow.setIcon(uploadIcon("ok"));
         flag =true;
 
         try{
-            final DatagramSocket serverSocket = new DatagramSocket(24500);
+            serverSocket = new ServerSocket(24500);
             System.out.println("Сервер создан ждем подключения");
+            JOptionPane.showMessageDialog(null,
+                    "Сервер создан ждем подключения",
+                    "Server",
+                    JOptionPane.WARNING_MESSAGE);
 
             Runnable runnable = () -> {
 //                int i =0;
-//                while(!serverSocket.isClosed())
-//                {
-//                    DatagramSocket clientSocket;
-//                    try {
-//                        clientSocket = serverSocket.accept();
-//                        if(serverSocket.isConnected()) {
-//                            TrafficPlan trafficPlan = new TrafficPlan(clientSocket);
-//
-                            createsev.add(new UDPServer(serverSocket, class_list, location_table, excep_msg, data, dataService, currentlyData));
-                            createsev.add(new UDPServer(serverSocket, class_list, location_table, excep_msg, data, dataService, currentlyData));
+                while(!serverSocket.isClosed()) {
+                    Socket clientSocket;
+                    try {
+                        clientSocket = serverSocket.accept();
+                        if (clientSocket.isConnected()) {
+                            createsev.add(new CreateServer(clientSocket, class_list, location_table, excep_msg, data, dataService, currentlyData));
+                            createsev.add(new CreateServer(clientSocket, class_list, location_table, excep_msg, data, dataService, currentlyData));
                             executeIt.execute(createsev.get(0));
                             executeIt.execute(createsev.get(1));
 //                        venichles.add(new Tripper( (float)((Math.random()- 300)+ 100), (float) ((Math.random()- 300)+ 100), "tripper.png"));
@@ -334,40 +388,46 @@ public class ImportData extends JPanel {
 //                        executeIt.execute(createsev[i]);
 
 //                            i++;
-//                        }
-//                    } catch (Exception ex) {
-//                        Logger.getLogger(MonitoringFrame.class.getName()).log(Level.SEVERE, null, ex);
-//                    }
+                        }
+                    } catch (Exception ex) {
+                        Logger.getLogger(ImportData.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
-//                   JOptionPane.showMessageDialog(null,
-//                              "Клиент подключился",
-//                              "Клиент",
-//                              JOptionPane.WARNING_MESSAGE);
+                   JOptionPane.showMessageDialog(null,
+                              "Клиент подключился",
+                              "Клиент",
+                              JOptionPane.WARNING_MESSAGE);
 
-//                }
+                }
             };
 
             connectionThread = new Thread(runnable);
             connectionThread.start();
 
 
-        }
-
-        catch(Exception ex)
-        {
+        } catch(Exception ex) {
             excep_msg.setText(ex.getMessage());
         }
 
     }
 
     private void stop_btnActionPerformed(ActionEvent evt) {
-//        System.exit(0);
         flag = false;
         statusShow.setIcon(uploadIcon("no"));
+
+        try {
+            serverSocket.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         if(connectionThread != null){
             connectionThread.interrupt();
-            positionThread.interrupt();
         }
+
+        JOptionPane.showMessageDialog(null,
+                "Сервер остановлен",
+                "Server",
+                JOptionPane.WARNING_MESSAGE);
     }
 
     private void save_bntActionPerformed(ActionEvent evt) {

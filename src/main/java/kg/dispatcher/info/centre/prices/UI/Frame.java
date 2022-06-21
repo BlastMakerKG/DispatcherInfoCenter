@@ -2,11 +2,9 @@ package kg.dispatcher.info.centre.prices.UI;
 
 import kg.dispatcher.info.centre.prices.DB.service.DataService;
 import kg.dispatcher.info.centre.prices.maps.lwjgl.CreateLWJGL;
-import kg.dispatcher.info.centre.prices.panels.CurrentlyData;
-import kg.dispatcher.info.centre.prices.panels.ImportData;
-import kg.dispatcher.info.centre.prices.panels.PlanningPanel;
-import kg.dispatcher.info.centre.prices.panels.externalMaps.Maps;
+import kg.dispatcher.info.centre.prices.UI.externalMaps.Maps;
 import kg.dispatcher.info.centre.prices.planning.reportDocument.OriginalData;
+import kg.dispatcher.info.centre.prices.server.CreateServer;
 import kg.dispatcher.info.centre.prices.server.UDPServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,7 +23,7 @@ public class Frame extends JFrame {
 
     private final JTabbedPane main = new JTabbedPane();
     private static ExecutorService executeIt = Executors.newFixedThreadPool(2);
-    private static List<UDPServer> createsev = new ArrayList<>();
+    private static List<CreateServer> createsev = new ArrayList<>();
     private static CreateLWJGL lwjgl = new CreateLWJGL();
     @Autowired
     private DataService dataService;
@@ -72,9 +70,9 @@ public class Frame extends JFrame {
             main.addTab("Модуль оцифровки трассы", importData);
             main.addTab("Положение транспортов", currentlyData);
 
-            main.addTab("External maps", panel);
+            main.addTab("Анимация работы", panel);
 
-            main.addTab("Planning", planning);
+            main.addTab("Отчеты", planning);
         }
 
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);

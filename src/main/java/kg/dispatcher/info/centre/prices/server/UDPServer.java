@@ -2,7 +2,7 @@ package kg.dispatcher.info.centre.prices.server;
 
 import kg.dispatcher.info.centre.prices.DB.model.Data;
 import kg.dispatcher.info.centre.prices.DB.service.*;
-import kg.dispatcher.info.centre.prices.panels.CurrentlyData;
+import kg.dispatcher.info.centre.prices.UI.CurrentlyData;
 import lombok.Getter;
 import lombok.Setter;
 

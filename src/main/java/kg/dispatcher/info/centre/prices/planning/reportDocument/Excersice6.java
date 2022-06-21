@@ -1,6 +1,6 @@
 package kg.dispatcher.info.centre.prices.planning.reportDocument;
 
-import kg.dispatcher.info.centre.prices.panels.ChartPanel;
+import kg.dispatcher.info.centre.prices.UI.ChartPanel;
 import kg.dispatcher.info.centre.prices.planning.functions.Constants;
 import kg.dispatcher.info.centre.prices.planning.model.Truck;
 

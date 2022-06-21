@@ -1,4 +1,4 @@
-package kg.dispatcher.info.centre.prices.panels;
+package kg.dispatcher.info.centre.prices.UI;
 
 import kg.dispatcher.info.centre.prices.planning.reportDocument.OriginalData;
 import kg.dispatcher.info.centre.prices.planning.reportDocument.Output;
@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-
 public class PlanningPanel extends JPanel {
 
     private OriginalData currentData;
@@ -39,17 +42,18 @@ public class PlanningPanel extends JPanel {
         panelDataWithPrice.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
         tableDataWithPrice = new JTable();
-        tableDataWithPrice.setSize(800,500);
         tableDataWithPrice.setModel(new DefaultTableModel(
                 new Object[][] {},
-                new String[] {"Дни", "Вес факт", "Вес норм", "Затртаты", "Себестоимость", "TC"}) {
-            Class<?>[] columnTypes = new Class<?>[] {Integer.class, Double.class, Double.class, Double.class, Double.class, JButton.class};
+                new String[] {"Дни", "Растояние", "Топливо", "Вес факт", "Вес норм", "Процент", "ТС"}) {
+            Class<?>[] columnTypes = new Class<?>[] {Integer.class, Double.class, Integer.class,  Double.class, Double.class,Double.class, JButton.class};
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
             }
         });
-
+        tableDataWithPrice.setSize(800,500);
+        tableDataWithPrice.getColumn("ТС").setCellRenderer(new ButtonRenderer());
+        tableDataWithPrice.getColumn("ТС").setCellEditor(new ButtonEditor(new JCheckBox()));
 
         JScrollPane pane = new JScrollPane(tableDataWithPrice);
         GroupLayout contentPaneLayoutForPanelDateWithPrice = new GroupLayout(panelDataWithPrice);
@@ -65,8 +69,6 @@ public class PlanningPanel extends JPanel {
         );
 
 
-        pane.setSize(800,500);
-
 
         panelOriginalData = new JPanel();
         panelOriginalData.setLayout(null);
@@ -77,14 +79,19 @@ public class PlanningPanel extends JPanel {
         tableOriginalData.setModel(new DefaultTableModel(
                 new Object[][] {},
                 new String[] {"Дни", "Растояние", "Топливо", "Вес факт", "Вес норм", "Процент", "ТС"}) {
-            Class<?>[] columnTypes = new Class<?>[] {Integer.class, Double.class, Integer.class,  Double.class, Double.class, Double.class, JButton.class};
+            Class<?>[] columnTypes = new Class<?>[] {Integer.class, Double.class, Integer.class,  Double.class, Double.class,Double.class, JButton.class};
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
             }
         });
+        tableOriginalData.getColumn("ТС").setCellRenderer(new ButtonRenderer());
+        tableOriginalData.getColumn("ТС").setCellEditor(new ButtonEditor(new JCheckBox()));
+
         originalData();
         JScrollPane pane2 = new JScrollPane(tableOriginalData);
+
+
 
         GroupLayout contentPaneLayoutForPanelOriginalData = new GroupLayout(panelOriginalData);
         panelOriginalData.setLayout(contentPaneLayoutForPanelOriginalData);
@@ -99,8 +106,8 @@ public class PlanningPanel extends JPanel {
         );
 
 
-        tabbedPane.addTab("DataWithPrice",panelDataWithPrice);
-        tabbedPane.addTab("OriginalData", panelOriginalData);
+        tabbedPane.addTab("Себестоимость",panelDataWithPrice);
+        tabbedPane.addTab("Затраты", panelOriginalData);
 
         GroupLayout contentPaneLayout = new GroupLayout(this);
         setLayout(contentPaneLayout);
@@ -117,27 +124,61 @@ public class PlanningPanel extends JPanel {
     }
 
 
+    class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
+        public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                                                       boolean isSelected, boolean hasFocus, int row, int column) {
+            setText((value == null) ? "Modify" : value.toString());
+            return this;
+        }
+    }
+    class ButtonEditor extends DefaultCellEditor {
+        private String label;
+
+        public ButtonEditor(JCheckBox checkBox)
+        {
+            super(checkBox);
+        }
+
+        private JButton button;
+        public java.awt.Component getTableCellEditorComponent(JTable table, Object value,
+                                                     boolean isSelected, int row, int column)
+        {
+            label = (value == null) ? "Modify" : value.toString();
+            table.getModel().getValueAt(0, 6);
+            button = new JButton();
+            button.setText(table.getValueAt(table.getSelectedRowCount(), 0).toString());
+            button.addActionListener(e -> newFrame((Integer) table.getValueAt(table.getSelectedRowCount(), 0), month.get(table.getValueAt(table.getSelectedRowCount(), 0)).getExs()));
+//            button.setText(label);
+            return button;
+        }
+        public Object getCellEditorValue()
+        {
+            return new String(label);
+        }
+    }
+
+    HashMap<Integer, Month> month;
     private void originalData(){
 
-//        currentData = new OriginalData();
-
-        HashMap<Integer, Month> month = currentData.month("");
+        month = currentData.month("");
 
         DefaultTableModel tableModel = (DefaultTableModel) tableOriginalData.getModel();
 
         for(Integer i : month.keySet()){
-            JButton button = new JButton();
-            button.setText(i.toString());
-            button.addActionListener(e -> newFrame(i, month.get(i).getExs()));
-            Object[] row = {i, month.get(i).getDistance(), month.get(i).getGas(),month.get(i).getQuantityReise(), month.get(i).getWeightFact(), month.get(i).getWeightNorm(), (month.get(i).getWeightFact() - month.get(i).getWeightNorm())/month.get(i).getWeightNorm() * 100, button};
 
+            Object[] row = {i, month.get(i).getDistance(), month.get(i).getGas(),month.get(i).getQuantityReise(), month.get(i).getWeightFact(), month.get(i).getWeightNorm(), (month.get(i).getWeightFact() - month.get(i).getWeightNorm())/month.get(i).getWeightNorm() * 100, "1"};
+//            JButton button = (JButton) row[row.length-1];
+//            button.setText(i.toString());
+//            button.addActionListener(e -> newFrame(i, month.get(i).getExs()));
 
 
             tableModel.addRow(row);
         }
 
     }
-
 
     private void newFrame(int i, List<String> exs){
         JFrame frame = new JFrame();
@@ -156,7 +197,7 @@ public class PlanningPanel extends JPanel {
         tableTrash.setSize(600,500);
         tableTrash.setModel(new DefaultTableModel(
                 new Object[][] {},
-                new String[] {"нахвание", }) {
+                new String[] {"название", }) {
             Class<?>[] columnTypes = new Class<?>[] {Integer.class, Double.class, Double.class, Double.class, Double.class, JButton.class};
             @Override
             public Class<?> getColumnClass(int columnIndex) {

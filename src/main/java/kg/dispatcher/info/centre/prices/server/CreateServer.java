@@ -1,12 +1,11 @@
 package kg.dispatcher.info.centre.prices.server;
 
 import kg.dispatcher.info.centre.prices.DB.model.Data;
-import kg.dispatcher.info.centre.prices.panels.CurrentlyData;
+import kg.dispatcher.info.centre.prices.UI.CurrentlyData;
 import kg.dispatcher.info.centre.prices.DB.service.DataService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.awt.List;
 import java.io.BufferedReader;

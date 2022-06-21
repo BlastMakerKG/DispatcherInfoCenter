@@ -1,4 +1,4 @@
-package kg.dispatcher.info.centre.prices.panels;
+package kg.dispatcher.info.centre.prices.UI;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
