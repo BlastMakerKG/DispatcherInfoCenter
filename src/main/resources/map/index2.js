@@ -40,8 +40,8 @@ function animationPath(dept_lat, dept_lng, arr_lat, arr_lng){
         map: map,
     });
     var step = 0;
-    var numSteps = 250; //Change this to set animation resolution
-    var timePerStep = 100; //Change this to alter animation speed
+    var numSteps = 25; //Change this to set animation resolution
+    var timePerStep = 1; //Change this to alter animation speed
     var interval = setInterval(function() {
         step += 1;
         if (step > numSteps) {
@@ -53,6 +53,6 @@ function animationPath(dept_lat, dept_lng, arr_lat, arr_lng){
     }, timePerStep);
 }
 
-setTimeout(() => animationPath(42.888117,74.635481,42.885633, 74.678353), 5000)
+// setTimeout(() => animationPath(42.888117,74.635481,42.885633, 74.678353), 5000)
 
 window.initMap = init;

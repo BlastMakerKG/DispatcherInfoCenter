@@ -1,5 +1,6 @@
 package kg.dispatcher.info.centre.prices.server;
 
+import com.teamdev.jxbrowser.browser.Browser;
 import kg.dispatcher.info.centre.prices.DB.model.Data;
 import kg.dispatcher.info.centre.prices.UI.CurrentlyData;
 import kg.dispatcher.info.centre.prices.DB.service.DataService;
@@ -81,7 +82,7 @@ public class CreateServer implements Runnable{
     @Autowired
     private DataService dataService;
 
-    public CreateServer(Socket socket, List client_list, JTable loc_table, JLabel label, java.util.List<String[]> datas, DataService dataService, CurrentlyData currentlyData){
+    public CreateServer(Socket socket, List client_list, JTable loc_table, JLabel label, java.util.List<String[]> datas, DataService dataService, CurrentlyData currentlyData, Browser browser){
         this.datas = datas;
         this.clientSocket = socket;
         this.dataService = dataService;
@@ -93,6 +94,7 @@ public class CreateServer implements Runnable{
         
         Runnable run = () -> {
             try{
+                String lat = "", lng = "";
                 while(!clientSocket.isClosed()){
                     if(data != null){
                         String str = data;
@@ -101,13 +103,25 @@ public class CreateServer implements Runnable{
                         datas.add(splitStr);
 //                        System.out.println(Integer.parseInt(splitStr[0]) + splitStr[1] + Double.parseDouble(splitStr[2]) +
 //                                                                                 Double.parseDouble(splitStr[3]) + Double.parseDouble(splitStr[4]) + Double.parseDouble(splitStr[5]) + Double.parseDouble(splitStr[6]));
-                        synchronized(modeltab)
-                        {
+                        synchronized(modeltab) {
                             modeltab.insertRow(modeltab.getRowCount(), new Object[]{Integer.parseInt(splitStr[0]),splitStr[1],Double.parseDouble(splitStr[2]),
                                                                                  Double.parseDouble(splitStr[3]),Double.parseDouble(splitStr[4]),Double.parseDouble(splitStr[5]),Double.parseDouble(splitStr[6])});
                             }
+
+                            if(lat.isEmpty() && lng.isEmpty()){
+                                lat = splitStr[2];
+                                lng = splitStr[3];
+                            }
+
+                            browser.frames().get(0).executeJavaScript("animationPath("+lat+","+lng+","+splitStr[2]+","+splitStr[3]+")");
+                            browser.frames().get(0).executeJavaScript("marker.setPosition(new google.maps.LatLng("+splitStr[2]+","+splitStr[3]+"))");
+                            browser.frames().get(0).executeJavaScript("map.setCenter(new google.maps.LatLng("+splitStr[2]+","+splitStr[3]+"))");
                             currentlyData.setLocation_table2(modeltab.getRowCount(), new Object[]{Integer.parseInt(splitStr[0]),splitStr[1],Double.parseDouble(splitStr[2]),
                                     Double.parseDouble(splitStr[3]),Double.parseDouble(splitStr[4]),Double.parseDouble(splitStr[5]),Double.parseDouble(splitStr[6])}, str);
+
+                        lat = splitStr[2];
+                        lng = splitStr[3];
+
                              Thread.sleep(2000);
                         }
                     }

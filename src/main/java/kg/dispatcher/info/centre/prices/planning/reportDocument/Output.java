@@ -155,7 +155,6 @@ public class Output {
 
                     double waste_gas = ob.getFuel_at_loading() - ob.getFuel_at_unloading();
 
-
                     truck.setWeight_norm(ob.getTruck().getTruckTypeDTO().getRated_load()+truck.getWeight_norm());
                     truck.setSpeed(speed+truck.getSpeed());
                     truck.setType_of_work(ob.getTypeOfWork().getWork_name());
@@ -207,7 +206,6 @@ public class Output {
                 if(!trucks_temp.contains(truck)){
                     trucks_temp.add(truck);
                 }else {
-
                     trucks_temp.forEach( e -> {
                         if(e.getType_truck().equals(truck.getType_truck())){
                             e.setWaste_truck(truck.getWaste_truck()+e.getWaste_truck());
@@ -238,6 +236,7 @@ public class Output {
                 truck.setWaste_truck(Precision.round(truck.getWaste_truck()/truck.getCount_truck(),5));
                 truck.setCost_price(Precision.round(truck.getCost_price()/truck.getCount_truck(), 5));
                 truck.setSpeed(Precision.round(truck.getSpeed()/truck.getCount_truck(),5));
+
 
             }
 
@@ -335,7 +334,7 @@ public class Output {
             month.add(
                     Waste.builder()
                             .excavators(excavators)
-                            .day(i+1)
+                            .day(i)
                             .waste(Precision.round(waste/ perByExcavators.size(),3))
                             .weight_fact(weight_fact)
                             .weight_norm(Precision.round(weight_norm,3))

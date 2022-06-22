@@ -26,6 +26,6 @@ public class TruckDriverDTO {
     private String login;
 
     @Column(unique = true)
-    private String unique;
+    private String password;
 
 }

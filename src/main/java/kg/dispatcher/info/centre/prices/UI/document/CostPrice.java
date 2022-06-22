@@ -29,8 +29,8 @@ public class CostPrice extends JPanel {
 
         tableDataWithPrice.setModel(new DefaultTableModel(
                 getData(),
-                new String[] {"Дни", "Растояние", "Топливо", "Вес факт", "Вес норм", "ТС"}) {
-            Class<?>[] columnTypes = new Class<?>[] {Integer.class, Double.class, Integer.class,  Double.class, Double.class, JButton.class};
+                new String[] {"Дни", "Вес факт", "Вес норм", "Затраты","Себестоимость","ТС"}) {
+            Class<?>[] columnTypes = new Class<?>[] {Integer.class, String.class, String.class,  String.class, Double.class, JButton.class};
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
@@ -83,7 +83,7 @@ public class CostPrice extends JPanel {
     }
 
     private Object[][] getData(){
-        java.util.List<Waste> month =  output.wasteMonth();
+        java.util.List<Waste> month =  output.month();
 
         Object[][] data = new Object[month.size()][6];
 
@@ -94,7 +94,7 @@ public class CostPrice extends JPanel {
             button.setText(String.valueOf(s.getDay()));
             button.addActionListener(e -> listExs(s.getExcavators()));
 
-            Object[] row = {s.getDay(), s.getWeight_fact(), s.getWeight_norm(), s.getWaste(), s.getWastePerMKM(), button};
+            Object[] row = {s.getDay()+1, s.getWeight_fact(), s.getWeight_norm(), s.getWaste(), s.getWastePerMKM(), button};
 
             data[index] = row;
             index++;
@@ -107,25 +107,25 @@ public class CostPrice extends JPanel {
     private void listExs(List<Excavator> excavators) {
         JFrame frame = new JFrame();
 
-        frame.setSize(800,600);
+        frame.setSize(800,300);
         frame.setLocation(1980/3, 1080/3);
         frame.setVisible(true);
 
         JPanel panel = new JPanel();
-        panel.setSize(800,600);
+        panel.setSize(800,300);
 
         JTable tableTrash = new JTable();
         tableTrash.setModel(new DefaultTableModel(
                 new Object[][] {},
-                new String[] {"название", "Имя водителя", "тип работы", "Вес факт", "Вес норм", "затраты", "себестоимость", "Самосвалы"}) {
-            Class<?>[] columnTypes = new Class<?>[] {String.class, String.class, String.class, Double.class, Double.class, Double.class, Double.class, JButton.class};
+                new String[] {"название", "тип работы", "Вес факт", "Вес норм", "затраты", "себестоимость", "Самосвалы"}) {
+            Class<?>[] columnTypes = new Class<?>[] {String.class, String.class, Double.class, Double.class, Double.class, Double.class, JButton.class};
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
             }
         });
         ButtonEditor be1 = new ButtonEditor();
-        TableColumn col3 = tableTrash.getColumnModel().getColumn(7);
+        TableColumn col3 = tableTrash.getColumnModel().getColumn(6);
         col3.setCellEditor(be1);
         col3.setCellRenderer(new ButtonRenderer());
 
@@ -135,7 +135,7 @@ public class CostPrice extends JPanel {
             JButton button = new JButton();
             button.setName("list");
             button.addActionListener(e -> listtrucks(s.getTrucks()));
-            tableModel.addRow(new Object[]{s.getType(), s.getDriver_name(), s.getTypeofWork(), s.getWeight_fact(), s.getWeight_norm(), s.getWaste(), s.getWastePerKM(), button});
+            tableModel.addRow(new Object[]{s.getType(),  s.getTypeofWork(), s.getWeight_fact(), s.getWeight_norm(), s.getWaste(), s.getWastePerKM(), button});
         }
 
         JScrollPane pane = new JScrollPane(tableTrash);
@@ -160,7 +160,7 @@ public class CostPrice extends JPanel {
         JFrame frame = new JFrame();
 
         frame.setSize(1200,300);
-        frame.setLocation(1980/3, 1080/3);
+        frame.setLocation(1980/3, 1080/3 + 50);
         frame.setVisible(true);
 
         JPanel panel = new JPanel();
@@ -169,10 +169,10 @@ public class CostPrice extends JPanel {
         JTable tableTrash = new JTable();
         tableTrash.setModel(new DefaultTableModel(
                 new Object[][] {},
-                new String[] {"название", "номер сам", "ФИО водителя","тип работы", "Сред скорость","Удельный расх","Порожний расх","Вес авто",
+                new String[] {"название", "тип работы", "Сред скорость","Удельный расх","Порожний расх","Вес авто",
                         "Вес факт", "Вес норм", "затраты", "себестоимость"}) {
-            Class<?>[] columnTypes = new Class<?>[] {String.class, Integer.class, String.class, String.class, Double.class, Double.class,
-                    Double.class, Double.class, Double.class, Double.class, Double.class,Double.class};
+            Class<?>[] columnTypes = new Class<?>[] {String.class, String.class, Double.class, String.class,
+                    String.class, String.class, String.class, String.class, String.class,String.class};
             @Override
             public Class<?> getColumnClass(int columnIndex) {
                 return columnTypes[columnIndex];
@@ -182,8 +182,8 @@ public class CostPrice extends JPanel {
         DefaultTableModel tableModel = (DefaultTableModel) tableTrash.getModel();
 
         for (Truck s: trucks) {
-            tableModel.addRow(new Object[]{s.getType_truck(), s.getNum_truck(), s.getDriver_name_truck(), s.getType_of_work(),
-                    s.getAvg_speed_truck_for_reice(),s.getSpecific_waste_with_mass(), s.getSpecific_waste_without_mass(), s.getWeight(),
+            tableModel.addRow(new Object[]{s.getType_truck(), s.getType_of_work(),
+                    s.getSpeed(),s.getSpecific_waste_with_mass(), s.getSpecific_waste_without_mass(), s.getWeight(),
                     s.getWeight_fact(), s.getWeight_norm(), s.getWaste_truck(), s.getCost_price()});
         }
 

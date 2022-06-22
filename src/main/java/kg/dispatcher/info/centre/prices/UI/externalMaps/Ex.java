@@ -2,6 +2,8 @@ package kg.dispatcher.info.centre.prices.UI.externalMaps;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ex extends JPanel{
 
@@ -24,7 +26,16 @@ public class Ex extends JPanel{
 //    private java.util.List<Truck> roads = new ArrayList<>();
 
 
-    public Ex(){
+    private int id;
+    private String driver_name;
+    private String unload_point;
+    private String type;
+
+    public Ex(int id, String driver_name, String unload_point, String type){
+        this.id = id;
+        this.driver_name = driver_name;
+        this.unload_point = unload_point;
+        this.type = type;
         setLayout(null);
         setVisible(true);
         setSize(800,150);
@@ -47,41 +58,48 @@ public class Ex extends JPanel{
         pUnloadingPlace.setBorder(BorderFactory.createLineBorder(Color.GREEN, 7, true));
 
         lblIdExcavator= new JLabel();
-        lblIdExcavator.setText("id ex");
+        lblIdExcavator.setText(String.valueOf(id));
         lblIdExcavator.setLocation(20,20);
         lblIdExcavator.setSize(60, 40);
         pEx.add(lblIdExcavator);
 
 
         lblNameDriveExavator= new JLabel();
-        lblNameDriveExavator.setText("name of driver ex");
+        lblNameDriveExavator.setText(driver_name);
         lblNameDriveExavator.setLocation(20, 40);
-        lblNameDriveExavator.setSize(60,40);
+        lblNameDriveExavator.setSize(200,40);
         pEx.add(lblNameDriveExavator);
 
         lblNameOfUnloadingPlace= new JLabel();
-        lblNameOfUnloadingPlace.setText("name of unloading place");
+        lblNameOfUnloadingPlace.setText(unload_point);
         lblNameOfUnloadingPlace.setLocation(20, 40);
         lblNameOfUnloadingPlace.setSize(60,80);
         pUnloadingPlace.add(lblNameOfUnloadingPlace);
 
         lblTypeExcavator= new JLabel();
-        lblTypeExcavator.setText("type ex");
+        lblTypeExcavator.setText(type);
         lblTypeExcavator.setLocation(20, 60);
         lblTypeExcavator.setSize(60,40);
         pEx.add(lblTypeExcavator);
 
-        lblTypeOfdeliveredItem= new JLabel();
-        lblTypeOfdeliveredItem.setText("type of delivered item");
-        lblTypeOfdeliveredItem.setLocation(20,80);
-        lblTypeOfdeliveredItem.setSize(60,40);
-        pEx.add(lblTypeOfdeliveredItem);
+//        lblTypeOfdeliveredItem= new JLabel();
+//        lblTypeOfdeliveredItem.setText("Gold");
+//        lblTypeOfdeliveredItem.setLocation(20,80);
+//        lblTypeOfdeliveredItem.setSize(60,40);
+//        pEx.add(lblTypeOfdeliveredItem);
 
         pUnloadingPlace.updateUI();
 
         add(pEx);
 
-        add(new Road());
+
+        List<Truck> trucks = new ArrayList<>();
+
+        trucks.add(new Truck(14124,124, 14.2));
+        trucks.add(new Truck(214,114, 14.2));
+        trucks.add(new Truck(12521,154, 14.2));
+
+        add(new Road(trucks));
 
 
         add(pUnloadingPlace);

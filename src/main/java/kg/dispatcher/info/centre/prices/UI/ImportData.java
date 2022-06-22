@@ -66,6 +66,10 @@ public class ImportData extends JPanel {
 
         venichles = new ArrayList<>();
 
+
+        browser.navigation().loadUrl(new File("F:\\prices\\prices\\src\\main\\resources\\map\\map.html").getAbsolutePath());
+        browser.settings().enableJavaScript();
+
     }
 
     private JPanel menu;
@@ -212,6 +216,13 @@ public class ImportData extends JPanel {
 
     }
 
+
+    Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED)
+            .licenseKey("1BNDHFSC1G31O3C3IGXF949Z05HCSJ4MZELSDQ7IEQ19I348MUU7TUVJTOHP2LVFVVZJMA")
+            .build());
+
+    Browser browser = engine.newBrowser();
+
     private void maps(){
 //        lwjgl= new CreateLWJGL();
 //        Runnable run = () -> lwjgl.start();
@@ -221,13 +232,7 @@ public class ImportData extends JPanel {
 
 
 
-        // Initialize Chromium.
-        Engine engine = Engine.newInstance(EngineOptions.newBuilder(HARDWARE_ACCELERATED)
-                .licenseKey("1BNDHFSC1G31O3C3IGXF949Z05HCSJ4MZELSDQ7IEQ19I348MUU7TUVJTOHP2LVFVVZJMA")
-                .build());
 
-// Create a Browser instance.
-        Browser browser = engine.newBrowser();
 
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("JxBrowser AWT/Swing");
@@ -244,21 +249,32 @@ public class ImportData extends JPanel {
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);
 
-            // Load the required web page.
-            browser.navigation().loadUrl(new File("F:\\prices\\prices\\src\\main\\resources\\map\\map.html").getAbsolutePath());
-            browser.settings().enableJavaScript();
+
 
         });
 
-//        new Thread(() -> {
+        new Thread(() -> {
 //            if(connectionThread.isAlive()){
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
 
-//                browser.frames().get(0).executeJavaScript("animationPath("+currentlyData.getModeltab().getValueAt(0,2)+")");
+            double lat = 42.888117;
+            double latPast = 42.888117;
+            double lng = 74.635481;
+            double lngpast = 74.635381;
 
 
 
-//            }
-//        }).start();
+            for (int i = 0; i < 100; i++) {
+                browser.frames().get(0).executeJavaScript("animationPath("+latPast+","+lngpast+","+lat+","+lng+")");
+                lng += 0.0001;
+                lngpast += 0.0001;
+            }
+
+        }).start();
 
     }
 
@@ -284,8 +300,8 @@ public class ImportData extends JPanel {
                     try {
                         clientSocket = serverSocket.accept();
                         if (clientSocket.isConnected()) {
-                            createsev.add(new CreateServer(clientSocket, class_list, location_table, excep_msg, data, dataService, currentlyData));
-                            createsev.add(new CreateServer(clientSocket, class_list, location_table, excep_msg, data, dataService, currentlyData));
+                            createsev.add(new CreateServer(clientSocket, class_list, location_table, excep_msg, data, dataService, currentlyData, browser));
+                            createsev.add(new CreateServer(clientSocket, class_list, location_table, excep_msg, data, dataService, currentlyData, browser));
                             executeIt.execute(createsev.get(0));
                             executeIt.execute(createsev.get(1));
 //                        venichles.add(new Tripper( (float)((Math.random()- 300)+ 100), (float) ((Math.random()- 300)+ 100), "tripper.png"));

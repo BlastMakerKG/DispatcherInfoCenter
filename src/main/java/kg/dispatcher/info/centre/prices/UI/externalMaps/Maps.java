@@ -28,10 +28,10 @@ public class Maps extends JPanel {
 
 //         scrollPane.updateUI();
 //         add(scrollPane);
-         Ex ex1 = new Ex();
+         Ex ex1 = new Ex(264, "Варфоломеев А.В", "Уг.склад №2-2", "PC1250_№1");
          ex1.setLocation(0, 0);
 
-         Ex ex2 = new Ex();
+         Ex ex2 = new Ex(155, "Матвеев М.А", "Котельная", "06292№4");
          ex2.setLocation(0, ex1.getHeight());
 
 //         ex2.addTruck(new Truck());
