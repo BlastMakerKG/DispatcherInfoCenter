@@ -55,33 +55,9 @@ public class Equation {
         double the_rest_multiplications = 0.5*Constants.cost_gas*mass_truck_norm;
 
         return the_rest_multiplications* multiplication_speed_and_inBrakes;
-
-
-
-
-//        return 0.5*Constants.cost_gas*mass_truck_norm *
-//                Precision.round(Math.pow(speed_go,2),2) *(specific_gas(waste_gas_with_mass, mass_truck_max, timeInHours_go, speed_go)*1 +
-//                Precision.round(0.73*(specific_gas(waste_gas_with_mass, mass_truck_max, timeInHours_go, speed_go)+
-//                        specific_gas(waste_gas_without_mass, mass_truck_norm, timeInhours_come, speed_come)),4));
     }
 
     public double cost_gas(double mass_truck_norm, double speed, double specific_waste_with_mass, double specific_waste_without_mass){
-
-//        double sum_specific_waste = specific_waste_with_mass + specific_waste_without_mass;
-//
-//        double plus_k_to_sum = 0.73*sum_specific_waste;
-//
-//        double plus_k_to_a_specific_waste = 1 * specific_waste_with_mass;
-//
-//        double plus_2_multiplications = plus_k_to_a_specific_waste+plus_k_to_sum;
-//
-//        double pow_the_speed = speed*speed;
-//
-//        double speed_Multi_to_brakes = pow_the_speed * plus_2_multiplications;
-//
-//        double multiplication_the_rest_k = 0.5*Constants.cost_gas*mass_truck_norm;
-//
-//        return multiplication_the_rest_k*speed_Multi_to_brakes;
 
         return 0.5*Constants.cost_gas*mass_truck_norm * Math.pow(speed,2) *(specific_waste_with_mass*1 + 0.73*(specific_waste_with_mass + specific_waste_without_mass));
     }
@@ -113,13 +89,6 @@ public class Equation {
      * @return
      */
     public double waste_for_ex(double mass_ex_max){
-
-//        double sum_into_brakes = mass_ex_max + 1;
-//
-//        double logorifming = Math.log(sum_into_brakes);
-//
-//        return 4500*logorifming*Constants.plan_time_day_cycle;
-
         return (4500 * Math.log(mass_ex_max + 1))*Constants.plan_time_day_cycle;
     }
 
@@ -138,11 +107,6 @@ public class Equation {
      * @param timeInHours
      * */
     public double specific_gas(double waste_gas, double mass_truck_max, double timeInHours, double speed){
-
-//        double multiplication_down_the_eqution = mass_truck_max*Math.pow(speed, 2)*timeInHours;
-//
-//        return waste_gas/multiplication_down_the_eqution;
-
         return waste_gas/ (mass_truck_max*Math.pow(speed, 2)*timeInHours);
     }
 
@@ -173,22 +137,6 @@ public class Equation {
 
 
     public double model_day_waste(double speed, double mass_truck_norm, double mass_ex_max, double distance,double specific_waste_with_mass, double specific_waste_without_mass){
-
-//        double cost_gas = cost_gas(mass_truck_norm, speed, specific_waste_with_mass,specific_waste_without_mass);
-//
-//        double ready_the_venihel = waste_for_ready_venicle(mass_truck_norm);
-//
-//        double cost_gas_plus_ready_the_venihel = cost_gas + ready_the_venihel;
-//
-//        double quantity_trucks = quality_trucks(distance, mass_ex_max, mass_truck_norm, speed);
-//
-//        double multiplication_the_first_part = cost_gas_plus_ready_the_venihel * Constants.plan_time_day_cycle * quantity_trucks;
-//
-//        double waste_ex = waste_for_ex(mass_ex_max);
-//
-//
-//        return multiplication_the_first_part + waste_ex;
-
         return (cost_gas(mass_truck_norm, speed, specific_waste_with_mass,specific_waste_without_mass) +
                 waste_for_ready_venicle(mass_truck_norm)) *
                 Constants.plan_time_day_cycle *

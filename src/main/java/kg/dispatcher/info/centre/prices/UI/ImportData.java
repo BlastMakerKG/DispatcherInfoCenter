@@ -3,18 +3,11 @@ package kg.dispatcher.info.centre.prices.UI;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.engine.RenderingMode;
-import com.teamdev.jxbrowser.frame.Frame;
-import com.teamdev.jxbrowser.js.JsArray;
-import com.teamdev.jxbrowser.js.JsFunction;
-import com.teamdev.jxbrowser.js.JsObject;
-import com.teamdev.jxbrowser.js.internal.JsArrayBufferImpl;
-import com.teamdev.jxbrowser.js.internal.JsArrayImpl;
-import com.teamdev.jxbrowser.js.internal.JsContext;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import kg.dispatcher.info.centre.prices.DB.service.DataService;
 import kg.dispatcher.info.centre.prices.server.*;
 import kg.dispatcher.info.centre.prices.maps.lwjgl.*;
+import org.apache.commons.collections.ArrayStack;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,7 +18,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -254,108 +246,24 @@ public class ImportData extends JPanel {
 
             // Load the required web page.
             browser.navigation().loadUrl(new File("F:\\prices\\prices\\src\\main\\resources\\map\\map.html").getAbsolutePath());
-//            browser.settings().enableJavaScript();
+            browser.settings().enableJavaScript();
+
         });
 
+//        new Thread(() -> {
+//            if(connectionThread.isAlive()){
+
+//                browser.frames().get(0).executeJavaScript("animationPath("+currentlyData.getModeltab().getValueAt(0,2)+")");
+
+
+
+//            }
+//        }).start();
 
     }
 
-//    private void create_btnActionPerformed(ActionEvent evt) {
-//        Runnable run = () -> {
-//            int count =1;
-//            while(flag) {
-//                try{
-//                    for (CreateServer createServer : createsev) {
-//                        String str = createServer.getData();
-//                        String delimeter = ",";
-//                        String[] splitStr = str.split(delimeter);
-//                        CreateLWJGL.game.converterToXY(splitStr[0], new double[]{Double.parseDouble(splitStr[2]), Double.parseDouble(splitStr[3])}, Math.round(Float.parseFloat(splitStr[4])));
-//                        CreateLWJGL.game.setVenichles(venichles);
-//                        currentlyData.setLocation_table2(modeltab.getRowCount(),
-//                                new Object[]{Integer.parseInt(
-//                                        splitStr[0]) + " " + count++,
-//                                        splitStr[1],
-//                                        Double.parseDouble(splitStr[2]),
-//                                        Double.parseDouble(splitStr[3]),
-//                                        Double.parseDouble(splitStr[4]),
-//                                        Double.parseDouble(splitStr[5]),
-//                                        Double.parseDouble(splitStr[6])
-//                                }, str);
+    private double[] firstPosition;
 
-//                        if(predString == null) {
-//                            currentlyData.setLocation_table2(modeltab.getRowCount(),
-//                                    new Object[]{Integer.parseInt(
-//                                            splitStr[0])+" "+count++,
-//                                            splitStr[1],
-//                                            Double.parseDouble(splitStr[2]),
-//                                            Double.parseDouble(splitStr[3]),
-//                                            Double.parseDouble(splitStr[4]),
-//                                            Double.parseDouble(splitStr[5]),
-//                                            Double.parseDouble(splitStr[6])
-//                                    });
-//                            modeltab.insertRow(modeltab.getRowCount(),
-//                                    new Object[]{Integer.parseInt(
-//                                            splitStr[0])+" "+count++,
-//                                            splitStr[1],
-//                                            Double.parseDouble(splitStr[2]),
-//                                            Double.parseDouble(splitStr[3]),
-//                                            Double.parseDouble(splitStr[4]),
-//                                            Double.parseDouble(splitStr[5]),
-//                                            Double.parseDouble(splitStr[6])
-//                                    }
-//                            );
-//
-//                            predString = str;
-//                        }
-//                        else{
-//                            if(str != predString){
-//                                currentlyData.setLocation_table2(modeltab.getRowCount(),
-//                                        new Object[]{
-//                                                Integer.parseInt(splitStr[0])+" "+
-//                                                        count++,
-//                                                splitStr[1],
-//                                                Double.parseDouble(splitStr[2]),
-//                                                Double.parseDouble(splitStr[3]),
-//                                                Double.parseDouble(splitStr[4]),
-//                                                Double.parseDouble(splitStr[5]),
-//                                                Double.parseDouble(splitStr[6])
-//                                        });
-//                                modeltab.insertRow(modeltab.getRowCount(),
-//                                        new Object[]{
-//                                                Integer.parseInt(splitStr[0])+" "+
-//                                                        count++,
-//                                                splitStr[1],
-//                                                Double.parseDouble(splitStr[2]),
-//                                                Double.parseDouble(splitStr[3]),
-//                                                Double.parseDouble(splitStr[4]),
-//                                                Double.parseDouble(splitStr[5]),
-//                                                Double.parseDouble(splitStr[6])
-//                                        }
-//                                );
-//                                predString = str;
-//                            }
-//                        }
-
-                        // currentlyData.setLocation_table2(modeltab);
-
-//                    }
-//                }
-//                catch(Exception ex) {
-//                    ex.printStackTrace();
-//                }
-//
-//                try {
-//                    Thread.sleep(2000);
-//                } catch (InterruptedException ex) {
-//                    Logger.getLogger(MonitoringFrame.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//            }
-//
-//        };
-//        positionThread = new Thread(run);
-//        positionThread.start();
-//
-//    }
     private ServerSocket serverSocket;
     private void server_btnActionPerformed(ActionEvent evt) {
         statusShow.setIcon(uploadIcon("ok"));
@@ -382,7 +290,6 @@ public class ImportData extends JPanel {
                             executeIt.execute(createsev.get(1));
 //                        venichles.add(new Tripper( (float)((Math.random()- 300)+ 100), (float) ((Math.random()- 300)+ 100), "tripper.png"));
 
-//                        create_btnActionPerformed(evt);
 
 //                        createsev[i] = new CreateServer(clientSocket,class_list, location_table2,excep_msg,i);
 //                        executeIt.execute(createsev[i]);

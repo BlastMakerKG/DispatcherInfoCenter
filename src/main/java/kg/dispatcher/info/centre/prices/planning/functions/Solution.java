@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * Рптимальные решения планирования смено-суточных параметров ЭТК
+ * Оптимальные решения планирования смено-суточных параметров ЭТК
  */
 @Service
 public class Solution {

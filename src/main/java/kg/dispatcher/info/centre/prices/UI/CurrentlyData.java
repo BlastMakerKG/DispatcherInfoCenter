@@ -70,4 +70,8 @@ public class CurrentlyData extends JPanel {
         }
         location_table2.updateUI();
     }
+
+    public DefaultTableModel getModeltab() {
+        return modeltab;
+    }
 }

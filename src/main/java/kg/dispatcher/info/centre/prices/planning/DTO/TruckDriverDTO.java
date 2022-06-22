@@ -22,4 +22,10 @@ public class TruckDriverDTO {
     @Column(unique = true)
     private String name;
 
+    @Column(unique = true)
+    private String login;
+
+    @Column(unique = true)
+    private String unique;
+
 }

@@ -261,8 +261,4 @@ public interface TruckTripsRepository extends JpaRepository<TruckTripsDTO, Long>
          "order by g.trip_number", nativeQuery = true)
  List<TruckTripsDTO> getObjectsByDateAndByTypeTruck(Timestamp time, String typeTruck);
 
-
-// @Query(value = "select type_of_work from object group by type_of_work", nativeQuery = true)
-// List<String> getAllTypeOfWork();
-
 }
