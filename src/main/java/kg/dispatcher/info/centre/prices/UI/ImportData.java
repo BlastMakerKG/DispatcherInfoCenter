@@ -48,10 +48,13 @@ public class ImportData extends JPanel {
 
     public ImportData(){}
 
+    private GroupLayout groupLayout;
 
     public ImportData(List<CreateServer> createsev, ExecutorService executeIt, CreateLWJGL lwjgl, CurrentlyData currentlyData, DataService dataService) {
 
         this.setLayout(null);
+//        groupLayout = new GroupLayout(this);
+//        this.setLayout(groupLayout);
         this.setSize(800,600);
         menu();
         pane();
@@ -94,6 +97,8 @@ public class ImportData extends JPanel {
         location_table2 = new JTable();
         menu.setSize(this.getWidth(), 30);
         menu.setLayout(null);
+//        GroupLayout contentPaneLayout = new GroupLayout(menu);
+//        menu.setLayout(contentPaneLayout);
         menu.setLocation(5,5);
         menu.setVisible(true);
         menu.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
@@ -112,31 +117,69 @@ public class ImportData extends JPanel {
         start.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
         start.addActionListener(this::server_btnActionPerformed);
         menu.add(start);
+//        contentPaneLayout.setHorizontalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+//                                .addComponent(start, 20, 20, 25)
+//                                .addGap(10))
+//        );
+//        contentPaneLayout.setVerticalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addComponent(start));
 
         stop.setSize(20,20);
         stop.setLocation(40,5);
         stop.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
         stop.addActionListener(this::stop_btnActionPerformed);
         menu.add(stop);
+//        contentPaneLayout.setHorizontalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+//                                .addComponent(stop, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(10))
+//        );
+//        contentPaneLayout.setVerticalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addComponent(stop));
 
         help.setSize(20,20);
         help.setLocation(70,5);
         help.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 //        help.addActionListener(this::create_btnActionPerformed);
         menu.add(help);
-        add(menu);
+//        contentPaneLayout.setHorizontalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+//                                .addComponent(help, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(10))
+//        );
+//        contentPaneLayout.setVerticalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addComponent(help));
+//        add(menu);
 
         save.setSize(20,20);
         save.setLocation(100,5);
         save.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
         save.addActionListener(this::save_bntActionPerformed);
         menu.add(save);
+//        contentPaneLayout.setHorizontalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+//                                .addComponent(save, GroupLayout.PREFERRED_SIZE, 1920, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(10))
+//        );
+//        contentPaneLayout.setVerticalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addComponent(save));
+
 
         status_msg = new JLabel("Status:");
         status_msg.setSize(70,20);
         status_msg.setLocation(130,5);
         status_msg.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
         menu.add(status_msg);
+//
 
         statusShow = new JLabel(uploadIcon("no"));
         statusShow.setSize(20,20);
@@ -162,6 +205,25 @@ public class ImportData extends JPanel {
         menu.add(maps);
 
 
+//        contentPaneLayout.setHorizontalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+//                                .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 1920, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(10))
+//        );
+//        contentPaneLayout.setVerticalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addComponent(jScrollPane2));
+//
+//        groupLayout.setHorizontalGroup(
+//                groupLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, groupLayout.createSequentialGroup()
+//                                .addComponent(menu, GroupLayout.PREFERRED_SIZE, 1920, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(10))
+//        );
+//        groupLayout.setVerticalGroup(
+//                groupLayout.createParallelGroup()
+//                        .addComponent(menu));
         add(menu);
     }
 
@@ -178,6 +240,8 @@ public class ImportData extends JPanel {
         main = new JPanel();
         main.setVisible(true);
         main.setLayout(null);
+//        GroupLayout contentPaneLayout = new GroupLayout(main);
+//        main.setLayout(contentPaneLayout);
         main.setLocation(5, 40);
         main.setSize(this.getWidth(), this.getHeight()-20);
 //        main.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
@@ -211,7 +275,26 @@ public class ImportData extends JPanel {
             jScrollPane2.setViewportView(location_table);
         }
 
+//        contentPaneLayout.setHorizontalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
+//                                .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 1920, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(10))
+//        );
+//        contentPaneLayout.setVerticalGroup(
+//                contentPaneLayout.createParallelGroup()
+//                        .addComponent(jScrollPane2));
+
         main.add(jScrollPane2);
+//        groupLayout.setHorizontalGroup(
+//                groupLayout.createParallelGroup()
+//                        .addGroup(GroupLayout.Alignment.TRAILING, groupLayout.createSequentialGroup()
+//                                .addComponent(main, GroupLayout.PREFERRED_SIZE, 1920, GroupLayout.PREFERRED_SIZE)
+//                                .addGap(10))
+//        );
+//        groupLayout.setVerticalGroup(
+//                groupLayout.createParallelGroup()
+//                        .addComponent(main));
         add(main);
 
     }

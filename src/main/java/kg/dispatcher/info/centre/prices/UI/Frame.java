@@ -83,7 +83,7 @@ public class Frame extends JFrame {
         contentPaneLayout.setHorizontalGroup(
                 contentPaneLayout.createParallelGroup()
                         .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                                .addComponent(main, GroupLayout.PREFERRED_SIZE, 810, GroupLayout.PREFERRED_SIZE)
+                                .addComponent(main, GroupLayout.PREFERRED_SIZE, 1920, GroupLayout.PREFERRED_SIZE)
                                 .addGap(10))
         );
         contentPaneLayout.setVerticalGroup(
